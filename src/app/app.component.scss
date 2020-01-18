@@ -1,0 +1,38 @@
+.app-studentloan {
+  position: relative;
+  min-height: 100vh;
+  .header-content {
+    // margin-top: 15px;
+    display: flex;
+    align-items: center;
+    padding-top: 10px;
+    padding-left: 30px;
+    padding-bottom: 10px;
+    padding-right: 30px;
+    .img {
+      display: inline;
+    }
+    .content {
+      display: inline;
+      margin-left: 20px;
+    }
+  }
+
+  .body-content {
+    padding-bottom: 70px;
+    .navbar {
+      background-color: #ffb728;
+    }
+  }
+
+  .footer-content {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    // border-radius: 10px;
+    background-color: #ffb728;
+    .footer-text {
+      padding: 7px;
+    }
+  }
+}

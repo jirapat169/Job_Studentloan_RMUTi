@@ -2,7 +2,6 @@ import { StudentGuard } from "./guards/student.guard";
 import { TeacherGuard } from "./guards/teacher.guard";
 import { CommitteeGuard } from "./guards/committee.guard";
 import { AdminGuard } from "./guards/admin.guard";
-import { HttpService } from "./services/http.service";
 import { AppService } from "./services/app.service";
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
@@ -15,7 +14,8 @@ import { LoginComponent } from "./components/login/login.component";
 import { RegisterComponent } from "./components/register/register.component";
 import { IndexComponent } from "./components/index/index.component";
 import { ContactComponent } from "./components/contact/contact.component";
-import { NotfoundComponent } from './components/notfound/notfound.component';
+import { NotfoundComponent } from "./components/notfound/notfound.component";
+import { StatisticsComponent } from "./components/statistics/statistics.component";
 
 @NgModule({
   declarations: [
@@ -24,7 +24,8 @@ import { NotfoundComponent } from './components/notfound/notfound.component';
     RegisterComponent,
     IndexComponent,
     ContactComponent,
-    NotfoundComponent
+    NotfoundComponent,
+    StatisticsComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +35,6 @@ import { NotfoundComponent } from './components/notfound/notfound.component';
   ],
   providers: [
     AppService,
-    HttpService,
     AdminGuard,
     CommitteeGuard,
     TeacherGuard,

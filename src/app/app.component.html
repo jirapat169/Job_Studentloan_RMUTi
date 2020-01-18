@@ -1,1 +1,83 @@
-<router-outlet></router-outlet>
+<div class="app-studentloan">
+  <div class="header-content">
+    <div class="img">
+      <img src="./assets/RMUTi_LOGO.png" alt="rmuti_logo" width="50px" />
+      <img src="./assets/RMUTi_ICON.png" alt="rmuti_icon" width="70px" />
+    </div>
+    <div class="content text-dark">
+      <h3>กองทุนให้กู้ยืมเพื่อการศึกษา</h3>
+      <h6>มหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน นครราชสีมา</h6>
+    </div>
+  </div>
+  <div class="body-content">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              [routerLink]="['/index']"
+              routerLinkActive="active"
+              >หน้าหลัก</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              [routerLink]="['/statistics']"
+              routerLinkActive="active"
+              >สถิติการกู้ยืมเงิน</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              [routerLink]="['/contact']"
+              routerLinkActive="active"
+              >ติดต่อเรา</a
+            >
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              [routerLink]="['/login']"
+              routerLinkActive="active"
+              >เข้าสู่ระบบ</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              [routerLink]="['/register']"
+              routerLinkActive="active"
+              >ลงทะเบียน</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container-fluid" style="margin-top: 15px;">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+  <nav class="navbar navbar-light footer-content">
+    <span class="footer-text">
+      Copyright © {{ year }} มหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน นครราชสีมา
+    </span>
+  </nav>
+</div>

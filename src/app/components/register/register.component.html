@@ -1,1 +1,240 @@
-<p>register works!</p>
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">ลงทะเบียน</h5>
+        <div
+          class="spinner-border text-warning mt-3"
+          role="status"
+          *ngIf="organize == null"
+        >
+          <span class="sr-only">Loading...</span>
+        </div>
+        <div style="padding: 15px;" *ngIf="organize != null">
+          <div *ngIf="organize.length > 0">
+            <form [formGroup]="formRegister" (ngSubmit)="submitRegister()">
+              <div class="row">
+                <div class="col-md-3 mb-3">
+                  <mat-form-field>
+                    <mat-label>คำนำหน้า</mat-label>
+                    <mat-select formControlName="title">
+                      <mat-option [value]="'นาย'">
+                        {{ "นาย" }}
+                      </mat-option>
+                      <mat-option [value]="'นาง'">
+                        {{ "นาง" }}
+                      </mat-option>
+                      <mat-option [value]="'นางสาว'">
+                        {{ "นางสาว" }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md mb-3">
+                  <mat-form-field>
+                    <input
+                      matInput
+                      placeholder="ชื่อจริง"
+                      type="text"
+                      formControlName="fname"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="col-md mb-3">
+                  <mat-form-field>
+                    <input
+                      matInput
+                      placeholder="นามสกุล"
+                      type="text"
+                      formControlName="lname"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <mat-form-field>
+                    <input
+                      matInput
+                      placeholder="รหัสนักศึกษา"
+                      type="text"
+                      formControlName="studentId"
+                      (change)="
+                        formRegister.patchValue({
+                          username: formRegister.value.studentId
+                        })
+                      "
+                    />
+                    <mat-hint class="text-dark">
+                      ใช้รหัสนักศึกษาเป็น Username ในการเข้าสู่ระบบ
+                    </mat-hint>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <mat-form-field>
+                    <input
+                      matInput
+                      placeholder="เลขประจำตัวประชาชน"
+                      type="text"
+                      formControlName="personalId"
+                      (change)="
+                        formRegister.patchValue({
+                          password: formRegister.value.personalId
+                        })
+                      "
+                    />
+                    <mat-hint class="text-dark">
+                      ใช้เลขประจำตัวประชาชนเป็น Password ในการเข้าสู่ระบบ
+                    </mat-hint>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <mat-form-field>
+                    <input
+                      matInput
+                      placeholder="E-mail"
+                      type="email"
+                      formControlName="email"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <mat-form-field>
+                    <input
+                      matInput
+                      placeholder="หมายเลขโทรศัพท์"
+                      type="text"
+                      formControlName="phone"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <mat-form-field>
+                    <mat-label>วิทยาเขต</mat-label>
+                    <mat-select
+                      formControlName="campus"
+                      (valueChange)="
+                        formRegister.patchValue({
+                          department: '',
+                          group: '',
+                          branch: ''
+                        })
+                      "
+                    >
+                      <mat-option value="" selected>
+                        {{ "กรุณาเลือกวิทยาเขต" }}
+                      </mat-option>
+                      <mat-option
+                        *ngFor="let x of getCampus()"
+                        [value]="x.code"
+                        [hidden]="!x.code"
+                      >
+                        {{ x.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <mat-form-field>
+                    <mat-label>คณะ</mat-label>
+                    <mat-select
+                      formControlName="department"
+                      (valueChange)="
+                        formRegister.patchValue({
+                          group: '',
+                          branch: ''
+                        })
+                      "
+                    >
+                      <mat-option value="" selected>
+                        {{ "กรุณาเลือกคณะ" }}
+                      </mat-option>
+                      <mat-option
+                        *ngFor="
+                          let x of getDepartment(formRegister.value.campus)
+                        "
+                        [value]="x.code"
+                        [hidden]="!x.code"
+                      >
+                        {{ x.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <mat-form-field>
+                    <mat-label>กลุ่มสาขาวิชา</mat-label>
+                    <mat-select
+                      formControlName="group"
+                      (valueChange)="
+                        formRegister.patchValue({
+                          branch: ''
+                        })
+                      "
+                    >
+                      <mat-option value="" selected>
+                        {{ "กรุณาเลือกกลุ่มสาขาวิชา" }}
+                      </mat-option>
+                      <mat-option
+                        *ngFor="
+                          let x of getGroup(formRegister.value.department)
+                        "
+                        [value]="x.code"
+                        [hidden]="!x.code"
+                      >
+                        {{ x.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <mat-form-field>
+                    <mat-label>สาขาวิชา</mat-label>
+                    <mat-select formControlName="branch">
+                      <mat-option value="" selected>
+                        {{ "กรุณาเลือกสาขาวิชา" }}
+                      </mat-option>
+                      <mat-option
+                        *ngFor="let x of getBranch(formRegister.value.group)"
+                        [value]="x.code"
+                        [hidden]="!x.code"
+                      >
+                        {{ x.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <br />
+              <div class="text-center">
+                <button
+                  type="submit"
+                  class="btn btn-warning"
+                  [disabled]="submitWaiting"
+                >
+                  <span
+                    *ngIf="submitWaiting"
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  ยืนยันการลงทะเบียน
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

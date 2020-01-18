@@ -1,0 +1,42 @@
+<div class="text-center">
+  <h4 class="mb-3">กองทุนให้กู้ยืม มทร.อีสาน ยินดีต้อนรับ</h4>
+</div>
+
+<div style="margin-top: 50px;">
+  <div class="mb-2">
+    <h6>
+      <b><u>แสดงความประสงค์ขอกู้ยืมเงิน</u></b>
+    </h6>
+  </div>
+  <div class="mb-2">
+    <span style="margin-left: 15px;">
+      <b>ลักษณะที่ 1 </b>เงินกู้ยืมเพื่อการศึกษา
+      ให้แก่นักเรียนหรือนักศึกษาที่ขาดแคลนทุนทรัพย์
+    </span>
+  </div>
+  <div>
+    <span style="margin-left: 15px;">
+      <b>ลักษณะที่ 2 </b>เงินกู้ยืมเพื่อการศึกษา
+      ให้แก่นักเรียนหรือนักศึกษาในสาขาที่เป็นความต้องการหลักฯ
+    </span>
+  </div>
+</div>
+
+<div style="margin-top: 50px;" class="text-center">
+  <h4 class="mb-1">โปรดเลือก ปีการศึกษาและภาคการศึกษา</h4>
+  <button
+    type="button"
+    class="btn btn-link"
+    [routerLink]="['/student/borrow/1']"
+  >
+    ปีการศึกษา&nbsp;{{ service.yearOnSystem() }}&nbsp;ภาคเรียนที่&nbsp;1
+  </button>
+  <br />
+  <button
+    type="button"
+    class="btn btn-link"
+    [routerLink]="['/student/borrow/2']"
+  >
+    ปีการศึกษา&nbsp;{{ service.yearOnSystem() }}&nbsp;ภาคเรียนที่&nbsp;2
+  </button>
+</div>

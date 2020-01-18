@@ -1,3 +1,4 @@
+import { ChangePasswordComponent } from "./shared/change-password/change-password.component";
 import { NgModule } from "@angular/core";
 import { A11yModule } from "@angular/cdk/a11y";
 import { DragDropModule } from "@angular/cdk/drag-drop";
@@ -44,6 +45,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HttpClientJsonpModule } from "@angular/common/http";
 
 @NgModule({
+  declarations: [ChangePasswordComponent],
   exports: [
     A11yModule,
     CdkStepperModule,
@@ -90,7 +92,8 @@ import { HttpClientModule, HttpClientJsonpModule } from "@angular/common/http";
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    HttpClientJsonpModule
+    HttpClientJsonpModule,
+    ChangePasswordComponent
   ]
 })
 export class SharedModules {}

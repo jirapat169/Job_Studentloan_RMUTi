@@ -1,3 +1,4 @@
+import { StatisticsComponent } from "./components/statistics/statistics.component";
 import { NotfoundComponent } from "./components/notfound/notfound.component";
 import { StudentGuard } from "./guards/student.guard";
 import { TeacherGuard } from "./guards/teacher.guard";
@@ -11,7 +12,8 @@ import { Routes, RouterModule } from "@angular/router";
 import { IndexComponent } from "./components/index/index.component";
 
 const routes: Routes = [
-  { path: "", component: IndexComponent },
+  { path: "index", component: IndexComponent },
+  { path: "statistics", component: StatisticsComponent },
   { path: "contact", component: ContactComponent },
   { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
@@ -41,6 +43,7 @@ const routes: Routes = [
       import("./components/student/student.module").then(m => m.StudentModule),
     canActivate: [StudentGuard]
   },
+  { path: "", redirectTo: "/index", pathMatch: "full" },
   {
     path: "**",
     component: NotfoundComponent
