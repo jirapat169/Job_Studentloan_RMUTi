@@ -50,7 +50,10 @@
             >
           </li>
         </ul>
-        <ul class="navbar-nav ml-auto">
+        <ul
+          class="navbar-nav ml-auto"
+          *ngIf="service.localStorage.get('userlogin') == null"
+        >
           <li class="nav-item">
             <a
               class="nav-link"
@@ -65,6 +68,38 @@
               [routerLink]="['/register']"
               routerLinkActive="active"
               >ลงทะเบียน</a
+            >
+          </li>
+        </ul>
+        <ul
+          class="navbar-nav ml-auto"
+          *ngIf="service.localStorage.get('userlogin') != null"
+        >
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              [routerLink]="[
+                service.localStorage.get('userlogin')['role'] === '4500'
+                  ? '/student'
+                  : service.localStorage.get('userlogin')['role'] === '3500'
+                  ? '/teacher'
+                  : service.localStorage.get('userlogin')['role'] === '2500'
+                  ? '/authorities'
+                  : service.localStorage.get('userlogin')['role'] === '1500'
+                  ? '/committee'
+                  : service.localStorage.get('userlogin')['role'] === '500'
+                  ? '/admin'
+                  : '/notfound'
+              ]"
+              routerLinkActive="active"
+              ><i class="fas fa-user"></i>&nbsp;{{
+                service.localStorage.get("userlogin")["fname"]
+              }}</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:void(0)" (click)="onLogout()"
+              ><i class="fas fa-sign-out-alt"></i> ออกจากระบบ</a
             >
           </li>
         </ul>

@@ -1,1 +1,54 @@
-<p>admin works!</p>
+<div class="row">
+  <div class="col-md-3 mb-3">
+    <div class="card">
+      <div class="card-body">
+        <b>ผู้ดูแลระบบ</b>
+        <mat-nav-list>
+          <mat-list-item>
+            <a
+              matLine
+              [routerLink]="['/admin/committee']"
+              routerLinkActive="menu-actived"
+            >
+              จัดการข้อมูลคณะกรรมการ
+            </a>
+          </mat-list-item>
+          <mat-list-item>
+            <a
+              matLine
+              [routerLink]="['/admin/authorities']"
+              routerLinkActive="menu-actived"
+            >
+              จัดการข้อมูลเจ้าหน้าที่
+            </a>
+          </mat-list-item>
+          <mat-list-item>
+            <a
+              matLine
+              [routerLink]="['/admin/teacher']"
+              routerLinkActive="menu-actived"
+            >
+              จัดการข้อมูลอาจารย์
+            </a>
+          </mat-list-item>
+          <mat-list-item>
+            <a
+              matLine
+              [routerLink]="['/admin/student']"
+              routerLinkActive="menu-actived"
+            >
+              จัดการข้อมูลนักศึกษา
+            </a>
+          </mat-list-item>
+        </mat-nav-list>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9 mb-3">
+    <div class="card">
+      <div class="card-body">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

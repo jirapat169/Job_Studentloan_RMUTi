@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { AppService } from "src/app/services/app.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-login",
@@ -11,7 +12,11 @@ export class LoginComponent implements OnInit {
   public formLogin: FormGroup;
   public loginWaiting: boolean = false;
 
-  constructor(public service: AppService, private formBuilder: FormBuilder) {}
+  constructor(
+    public service: AppService,
+    private formBuilder: FormBuilder,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.initalFormLogin();
@@ -34,6 +39,28 @@ export class LoginComponent implements OnInit {
       });
       let http: any = await this.service.http.post("member/st_login", formData);
       this.loginWaiting = false;
+      if (http.connect) {
+        if (http.success) {
+          this.service.localStorage.set("userlogin", http.result[0]);
+          this.router.navigate([
+            http.result[0]["role"] == "4500"
+              ? "/student"
+              : http.result[0]["role"] == "3500"
+              ? "/teacher"
+              : http.result[0]["role"] == "2500"
+              ? "/authorities"
+              : http.result[0]["role"] == "1500"
+              ? "/committee"
+              : http.result[0]["role"] == "500"
+              ? "/admin"
+              : "/notfound"
+          ]);
+        } else {
+          this.service.localStorage.clear();
+          this.service.alert.alert("warning", "ไม่พบบัญชีผู้ใช้งาน");
+        }
+      } else this.service.localStorage.clear();
+
       console.log(http);
     } else {
       this.service.alert.alert("warning", "โปรดตรวจสอบข้อมูลให้ถูกต้อง");

@@ -43,9 +43,10 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatTreeModule } from "@angular/material/tree";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HttpClientJsonpModule } from "@angular/common/http";
+import { ProfileComponent } from "./shared/profile/profile.component";
 
 @NgModule({
-  declarations: [ChangePasswordComponent],
+  declarations: [ChangePasswordComponent, ProfileComponent],
   exports: [
     A11yModule,
     CdkStepperModule,
@@ -93,7 +94,8 @@ import { HttpClientModule, HttpClientJsonpModule } from "@angular/common/http";
     ReactiveFormsModule,
     HttpClientModule,
     HttpClientJsonpModule,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    ProfileComponent
   ]
 })
 export class SharedModules {}

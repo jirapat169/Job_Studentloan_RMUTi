@@ -1,15 +1,22 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
 
-import { AdminRoutingModule } from './admin-routing.module';
-import { AdminComponent } from './admin.component';
-
+import { AdminRoutingModule } from "./admin-routing.module";
+import { AdminComponent } from "./admin.component";
+import { SharedModules } from "src/app/shared-modules";
+import { StudentComponent } from "./student/student.component";
+import { TeacherComponent } from "./teacher/teacher.component";
+import { CommitteeComponent } from "./committee/committee.component";
+import { AuthoritiesComponent } from "./authorities/authorities.component";
 
 @NgModule({
-  declarations: [AdminComponent],
-  imports: [
-    CommonModule,
-    AdminRoutingModule
-  ]
+  declarations: [
+    AdminComponent,
+    StudentComponent,
+    TeacherComponent,
+    CommitteeComponent,
+    AuthoritiesComponent
+  ],
+  imports: [CommonModule, AdminRoutingModule, SharedModules]
 })
-export class AdminModule { }
+export class AdminModule {}

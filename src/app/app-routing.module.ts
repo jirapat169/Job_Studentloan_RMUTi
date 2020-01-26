@@ -1,3 +1,4 @@
+import { AuthoritiesGuard } from "./guards/authorities.guard";
 import { StatisticsComponent } from "./components/statistics/statistics.component";
 import { NotfoundComponent } from "./components/notfound/notfound.component";
 import { StudentGuard } from "./guards/student.guard";
@@ -42,6 +43,14 @@ const routes: Routes = [
     loadChildren: () =>
       import("./components/student/student.module").then(m => m.StudentModule),
     canActivate: [StudentGuard]
+  },
+  {
+    path: "authorities",
+    loadChildren: () =>
+      import("./components/authorities/authorities.module").then(
+        m => m.AuthoritiesModule
+      ),
+    canActivate: [AuthoritiesGuard]
   },
   { path: "", redirectTo: "/index", pathMatch: "full" },
   {
