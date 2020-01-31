@@ -1,1 +1,104 @@
-<p>teacher works!</p>
+<div>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <h5><b>ข้อมูลอาจารย์</b></h5>
+    </div>
+    <div class="col-md-6 mb-3 text-right">
+      <button
+        type="button"
+        class="btn btn-warning btn-sm"
+        data-toggle="modal"
+        data-target="#CommitteeModal"
+        (click)="stateEdit = false; initialForm()"
+      >
+        เพิ่มข้อมูล
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Edit Committee-->
+<div
+  class="modal fade"
+  id="CommitteeModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="CommitteeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form [formGroup]="formTeacher" (ngSubmit)="submitForm()">
+        <div class="modal-header">
+          <h5 class="modal-title" id="CommitteeModalLabel">
+            {{ stateEdit ? "แก้ไขข้อมูล" : "เพิ่มข้อมูล" }}
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <mat-form-field>
+            <input matInput placeholder="ชื่อจริง" formControlName="fname" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput placeholder="นามสกุล" formControlName="lname" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="อีเมล์"
+              formControlName="email"
+              (change)="
+                formTeacher.patchValue({
+                  username: formTeacher.value.email
+                })
+              "
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="หมายเลขโทรศัพท์"
+              formControlName="phone"
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput placeholder="วิทยาเขต" formControlName="campus" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput placeholder="คณะ" formControlName="department" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="กลุ่มสาขาวิชา"
+              formControlName="group"
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput placeholder="สาขาวิชา" formControlName="branch" />
+          </mat-form-field>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            ปิด
+          </button>
+          <button type="submit" class="btn btn-warning">บันทึก</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

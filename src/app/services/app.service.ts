@@ -120,4 +120,33 @@ export class AppService {
       ? `${new Date().getFullYear() + 542}`
       : `${new Date().getFullYear() + 543}`;
   };
+
+  public termOnSystem = () => {
+    let month = new Date().getMonth();
+    return month >= 5 && month <= 9
+      ? 1
+      : (month >= 10 || month <= 2) && month >= 0
+      ? 2
+      : 3;
+  };
+
+  public stringToNumber = (x: any) => {
+    return parseFloat(x);
+  };
+
+  public numberWithCommas = (...x) => {
+    let sum = 0;
+    x.forEach(e => {
+      sum += this.stringToNumber(e);
+    });
+    return sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
+  public delay = (time: number) => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, time);
+    });
+  };
 }

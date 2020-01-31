@@ -1,6 +1,12 @@
 import { Component } from "@angular/core";
 import { AppService } from "./services/app.service";
-import { Router } from "@angular/router";
+import {
+  Router,
+  NavigationStart,
+  NavigationEnd,
+  NavigationCancel,
+  NavigationError
+} from "@angular/router";
 
 @Component({
   selector: "app-root",
@@ -9,7 +15,27 @@ import { Router } from "@angular/router";
 })
 export class AppComponent {
   year = new Date().getFullYear();
-  constructor(public service: AppService, private router: Router) {}
+  loading = false;
+  constructor(public service: AppService, private router: Router) {
+    this.router.events.subscribe(event => {
+      switch (true) {
+        case event instanceof NavigationStart: {
+          this.loading = true;
+          break;
+        }
+
+        case event instanceof NavigationEnd:
+        case event instanceof NavigationCancel:
+        case event instanceof NavigationError: {
+          this.loading = false;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+  }
 
   public onLogout = () => {
     this.service.alert.confirm("ยืนยันการออกจากะบบ").then((value: boolean) => {

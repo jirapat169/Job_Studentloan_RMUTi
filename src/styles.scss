@@ -53,3 +53,17 @@ mat-form-field {
 .cdk-overlay-container {
   z-index: 99999 !important;
 }
+
+.vertical-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.vertical-radio-button {
+  margin: 5px;
+}
+
+.box-padding {
+  padding: 15px;
+}

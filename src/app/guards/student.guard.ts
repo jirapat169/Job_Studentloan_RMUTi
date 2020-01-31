@@ -21,14 +21,15 @@ export class StudentGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (this.service.localStorage.get("userlogin")) {
-      let userlogin: any = this.service.localStorage.get("userlogin");
-      if (userlogin.role == "4500") {
-        return true;
-      }
-    }
-    this.router.navigate(["/notfound"]);
-    return false;
+    // if (this.service.localStorage.get("userlogin")) {
+    //   let userlogin: any = this.service.localStorage.get("userlogin");
+    //   if (userlogin.role == "4500") {
+    //     return true;
+    //   }
+    // }
+    // this.router.navigate(["/notfound"]);
+    // return false;
+    return true;
   }
   constructor(private service: AppService, private router: Router) {}
 }

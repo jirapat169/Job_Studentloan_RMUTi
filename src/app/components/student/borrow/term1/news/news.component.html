@@ -1,0 +1,16 @@
+<h5 class="mb-3"><b>เอกสารทั้งหมด</b></h5>
+
+<nav mat-tab-nav-bar>
+  <a
+    *ngFor="let x of listPath"
+    mat-tab-link
+    [routerLink]="[x.path]"
+    routerLinkActive
+    #rla="routerLinkActive"
+    [active]="rla.isActive"
+  >
+    {{ x.title }}
+  </a>
+</nav>
+
+<router-outlet></router-outlet>

@@ -1,1 +1,117 @@
-<p>term1 works!</p>
+<h5 class="mb-3"><b>ข้อมูลกู้ยืมกองทุน</b></h5>
+
+<form
+  [formGroup]="formFirst"
+  (ngSubmit)="
+    formFirst.invalid
+      ? service.alert.alert('warning', 'โปรดกรอกข้อมูลให้ครบถ้วน')
+      : nextPage()
+  "
+>
+  <div class="ml-3">
+    <div class="mb-3 ">
+      <mat-radio-group class="vertical-radio-group" formControlName="type">
+        <mat-radio-button class="vertical-radio-button" value="รายใหม่">
+          <img src="./assets/รายใหม่.jpg" width="60px;" alt="{{ 'รายใหม่' }}" />
+          รายใหม่
+        </mat-radio-button>
+        <mat-radio-button
+          class="vertical-radio-button"
+          value="รายเก่าย้ายสถานศึกษาหรือเปลี่ยนระดับชั้น"
+        >
+          <img
+            src="./assets/รายเก่าเปลี่ยนสถานศึกษา.jpg"
+            width="60px;"
+            alt="{{ 'รายเก่าย้ายสถานศึกษาหรือเปลี่ยนระดับชั้น' }}"
+          />
+          รายเก่าย้ายสถานศึกษาหรือเปลี่ยนระดับชั้น
+        </mat-radio-button>
+        <mat-radio-button class="vertical-radio-button" value="รายเก่า">
+          <img src="./assets/รายเก่า.jpg" width="60px;" alt="{{ 'รายเก่า' }}" />
+          รายเก่า
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <mat-form-field>
+          <mat-label>ค่าเล่าเรียน</mat-label>
+          <mat-select formControlName="termMoney">
+            <mat-option value="">
+              โปรดเลือกค่าเล่าเรียน
+            </mat-option>
+            <mat-option [value]="'ไม่กู้'">
+              ไม่กู้ค่าเล่าเรียน
+            </mat-option>
+            <mat-option [value]="'7150'">
+              7150 บาท
+            </mat-option>
+            <mat-option [value]="'7500'">
+              7500 บาท
+            </mat-option>
+            <mat-option [value]="'8650'">
+              8650 บาท
+            </mat-option>
+            <mat-option [value]="'10150'">
+              10,150 บาท
+            </mat-option>
+            <mat-option [value]="'30000'">
+              30,000 บาท
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <mat-form-field>
+          <mat-label>ค่าใช้จ่ายรายเดือน</mat-label>
+          <mat-select formControlName="monthMoney">
+            <mat-option value="">
+              โปรดเลือกค่าใช้จ่ายรายเดือน
+            </mat-option>
+            <mat-option [value]="'ไม่กู้'">
+              ไม่กู้ค่าใช้จ่ายรายเดือน
+            </mat-option>
+            <mat-option [value]="'กู้'">
+              กู้ค่าใช้จ่ายรายเดือน
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <div *ngIf="formFirst.value.monthMoney == 'กู้'">
+        <b>ค่าใช้จ่ายรายเดือน</b>
+        <div class="ml-3">
+          เดือนละ 2,400 บาท จำนวน 6 เดือน
+        </div>
+        <div class="mb-3 ml-3">
+          ค่าใช้จ่ายรายเดือนทั้งหมด 14,400 บาท
+        </div>
+      </div>
+      <div *ngIf="formFirst.value.termMoney != ''">
+        <b>ค่าใช้จ่ายทั้งหมด (รวมค่าเล่าเรียนและค่าใช้จ่ายรายเดือน)</b>
+        <div class="ml-3">
+          {{
+            service.numberWithCommas(
+              formFirst.value.termMoney != "ไม่กู้"
+                ? formFirst.value.termMoney
+                : 0,
+              formFirst.value.monthMoney != "ไม่กู้"
+                ? formFirst.value.monthMoney != ""
+                  ? 14400
+                  : 0
+                : 0
+            )
+          }}
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button type="submit" class="btn btn-warning">ตกลง</button>
+    </div>
+  </div>
+</form>

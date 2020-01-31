@@ -1,1 +1,624 @@
-<p>profile works!</p>
+<form [formGroup]="formProfile" (ngSubmit)="submitProfile()">
+  <div formGroupName="profile">
+    <b>ข้าพเจ้ามีความประสงค์ขอกู้ยืมเงิน ดังนี้</b>
+    <div class="box-padding">
+      <mat-radio-group class="radio-group-borrow" formControlName="type">
+        <mat-radio-button class="radio-button-borrow" value="กยศ.เดิม">
+          ลักษณะที่ 1 เงินกู้ยืมเพื่อการศึกษา
+          ให้แก่นักเรียนหรือนักศึกษาที่ขาดแคลนทุนทรัพย์
+          <b>(กยศ.เดิม)</b>
+        </mat-radio-button>
+        <mat-radio-button class="radio-button-borrow" value="กรอ.เดิม">
+          ลักษณะที่ 2 เงินกู้ยืมเพื่อการศึกษา
+          ให้แก่นักเรียนหรือนักศึกษาในสาขาที่เป็นความต้องการหลักฯ
+          <b>(กรอ.เดิม)</b>
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <b class="mb-3">1. ข้อมูลผู้ขอกู้ยืมเงิน</b>
+    <div class="box-padding">
+      <div class="row">
+        <div class="col-md-6">
+          <mat-form-field>
+            <input matInput placeholder="ชื่อ" value="ทดสอบ" readonly />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              placeholder="วัน/เดือน/ปีเกิด"
+              formControlName="bdate"
+              (click)="picker.open()"
+              readonly
+              (dateChange)="calBdate(formProfile.value.profile.bdate)"
+              [max]="dateNow"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-2">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="อายุ (ปี)"
+              formControlName="age"
+              readonly
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="สัญชาติ"
+              formControlName="nationality"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md">
+          <mat-form-field>
+            <input matInput placeholder="เชื้อชาติ" formControlName="race" />
+          </mat-form-field>
+        </div>
+        <div class="col-md">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="เลขประจำตัวประชาชน"
+              readonly
+              value="12345678"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field>
+            <mat-label>ระดับการศึกษา</mat-label>
+            <mat-select
+              formControlName="educationLevel"
+              #educationLevel_select
+              (valueChange)="
+                formProfile.patchValue({
+                  profile: {
+                    level: undefined
+                  }
+                })
+              "
+            >
+              <mat-option>โปรดเลือก</mat-option>
+              <mat-option value="ป.ตรี">ป.ตรี</mat-option>
+              <mat-option value="ปวส">ปวส</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <mat-label>ชั้นปี</mat-label>
+            <mat-select formControlName="level">
+              <mat-option>โปรดเลือก</mat-option>
+              <mat-option value="1">1</mat-option>
+              <mat-option value="2">2</mat-option>
+              <mat-option value="3">3</mat-option>
+              <mat-option value="4">4</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <input matInput placeholder="คณะ" readonly value="ไม่บอก" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-5">
+          <mat-form-field>
+            <input matInput placeholder="สาขาวิชา" readonly value="ลืม" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="เกรดเฉลี่ยสะสม"
+              formControlName="gpx"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="รหัสนักศึกษา"
+              readonly
+              value="ลืมอีกแล้ว"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>อาจารย์ที่ปรึกษา</mat-label>
+            <mat-select formControlName="advisors">
+              <mat-option>ไม่มี</mat-option>
+            </mat-select>
+            <!-- <mat-select formControlName="advisors" *ngIf="listTeacher == null">
+              <mat-option>โปรดเลือก</mat-option>
+            </mat-select> -->
+            <!-- <mat-select formControlName="advisors" *ngIf="listTeacher != null">
+              <mat-option>โปรดเลือก</mat-option>
+              <mat-option *ngFor="let x of listTeacher" [value]="x.username"
+                >{{ x.title }}{{ x.fname }}&nbsp;{{ x.lname }}</mat-option
+              >
+            </mat-select> -->
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div formGroupName="birthAddress">
+    <b class="mb-3">2. ที่อยู่ตามทะเบียนบ้าน</b>
+    <div class="box-padding">
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="บ้านเลขที่"
+              formControlName="homeNumber"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="หมู่ที่"
+              formControlName="villageNumber"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <input matInput placeholder="ตรอก/ซอย" formControlName="alley" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <input matInput placeholder="ถนน" formControlName="road" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="ตำบล/แขวง"
+              formControlName="subDistrict"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="อำเภอ/เขต"
+              formControlName="district"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field>
+            <input matInput placeholder="จังหวัด" formControlName="province" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field>
+            <input
+              readonly
+              matInput
+              placeholder="รหัสไปรษณีย์"
+              formControlName="zipCode"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-3">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="หมายเลขโทรศัพท์"
+              formControlName="phone"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div formGroupName="currentAddress">
+    <b class="mb-3">3. ที่อยู่ปัจจุบัน</b>
+    <div class="box-padding">
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="บ้านเลขที่"
+              formControlName="homeNumber"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="หมู่ที่"
+              formControlName="villageNumber"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <input matInput placeholder="ตรอก/ซอย" formControlName="alley" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <input matInput placeholder="ถนน" formControlName="road" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="ตำบล/แขวง"
+              formControlName="subDistrict"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="อำเภอ/เขต"
+              formControlName="district"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field>
+            <input matInput placeholder="จังหวัด" formControlName="province" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field>
+            <input
+              readonly
+              matInput
+              placeholder="รหัสไปรษณีย์"
+              formControlName="zipCode"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-3">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="หมายเลขโทรศัพท์"
+              formControlName="phone"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div formGroupName="bachelor">
+    <b class="mb-3">4. การสำเร็จการศึกษาระดับปริญญาตรี</b>
+    <div class="box-padding">
+      <div>
+        <mat-radio-group class="vertical-radio-group" formControlName="status">
+          <mat-radio-button class="vertical-radio-button" value="ไม่เคย">
+            ไม่เคยสำเร็จการศึกษาระดับปริญญาตรี
+          </mat-radio-button>
+          <mat-radio-button class="vertical-radio-button" value="เคย">
+            เคยสำเร็จการศึกษาระดับปริญญาตรี
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div *ngIf="formProfile.value.bachelor.status == 'เคย'">
+        <hr />
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="มหาวิทยาลัย"
+                formControlName="schoolName"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field>
+              <input matInput placeholder="คณะ" formControlName="department" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field>
+              <input matInput placeholder="สาขาวิชา" formControlName="branch" />
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div formGroupName="scholarship">
+    <b class="mb-3">5. เคยได้รับทุนการศึกษา</b>
+    <div class="box-padding">
+      <div>
+        <mat-radio-group class="vertical-radio-group" formControlName="status">
+          <mat-radio-button class="vertical-radio-button" value="ไม่เคย">
+            ไม่เคยได้รับทุนการศึกษา
+          </mat-radio-button>
+          <mat-radio-button class="vertical-radio-button" value="เคย">
+            เคยได้รับทุนการศึกษา
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div *ngIf="formProfile.value.scholarship.status == 'เคย'">
+        <hr />
+        <div class="text-left mb-3">
+          <button
+            type="button"
+            class="btn btn-warning btn-sm"
+            (click)="addRowScholarship()"
+          >
+            เพิ่มแถว
+          </button>
+        </div>
+        <table class="table table-bordered table-sm" formArrayName="items">
+          <thead>
+            <tr>
+              <th scope="col">ปีการศึกษา</th>
+              <th scope="col">ประเภท</th>
+              <th scope="col">ชื่อทุนการศึกษา</th>
+              <th scope="col">จำนวนเงิน</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let item of getRowScholarship(); let i = index"
+              [formGroupName]="i"
+            >
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="year"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="type"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="name"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="amount"
+                />
+              </td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-danger btn-sm"
+                  (click)="delRowScholarship(i)"
+                >
+                  ลบ
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div formGroupName="borrow">
+    <b class="mb-3">
+      6. เคยกู้ยืมเงินจากกองทุนเงินให้กู้ยืมเพื่อการศึกษา
+    </b>
+    <div class="box-padding">
+      <div>
+        <mat-radio-group class="vertical-radio-group" formControlName="status">
+          <mat-radio-button class="vertical-radio-button" value="ไม่เคย">
+            ไม่เคยกู้ยืมเงินจากกองทุนเงินให้กู้ยืมเพื่อการศึกษา
+          </mat-radio-button>
+          <mat-radio-button class="vertical-radio-button" value="เคย">
+            เคยกู้ยืมเงินจากกองทุนเงินให้กู้ยืมเพื่อการศึกษา
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div *ngIf="formProfile.value.borrow.status == 'เคย'">
+        <hr />
+        <mat-radio-group class="vertical-radio-group" formControlName="type">
+          <mat-radio-button class="vertical-radio-button" value="กยศ.">
+            กยศ.
+          </mat-radio-button>
+          <mat-radio-button class="vertical-radio-button" value="กรอ.">
+            กรอ.
+          </mat-radio-button>
+        </mat-radio-group>
+
+        <div class="text-left mb-3">
+          <button
+            type="button"
+            class="btn btn-warning btn-sm"
+            (click)="addRowBorrow()"
+          >
+            เพิ่มแถว
+          </button>
+        </div>
+        <table class="table table-bordered table-sm" formArrayName="items">
+          <thead>
+            <tr>
+              <th scope="col">ปีการศึกษา</th>
+              <th scope="col">ระดับการศึกษา</th>
+              <th scope="col">ชั้นปี</th>
+              <th scope="col">สถานศึกษา</th>
+              <th scope="col">จำนวนเงิน</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let item of getRowBorrow(); let i = index"
+              [formGroupName]="i"
+            >
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="year"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="educationLevel"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="level"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="schoolName"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="amount"
+                />
+              </td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-danger btn-sm"
+                  (click)="delRowBorrow(i)"
+                >
+                  ลบ
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div formGroupName="support">
+    <b class="mb-3">
+      7. ข้าพเจ้าได้รับการอุปการะด้านการเงินจาก
+    </b>
+    <div class="box-padding">
+      <div class="row">
+        <div class="col-md-6">
+          <mat-form-field>
+            <input matInput placeholder="ชื่อ - สกุล" formControlName="name" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="ความสัมพันธ์"
+              formControlName="relationship"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <b class="mb-3">
+      8. ข้าพเจ้าได้รับค่าใช่จ่ายเดือนละ
+    </b>
+    <div class="box-padding">
+      <div class="row">
+        <div class="col-md-6">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="จำนวนเงิน (นอกเหนือจากค่าเล่าเรียน)"
+              formControlName="amount"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-warning">
+    บันทึกข้อมูลผู้ขอกู้ยืมเงิน
+  </button>
+</form>

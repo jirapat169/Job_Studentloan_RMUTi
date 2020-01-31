@@ -105,6 +105,8 @@
         </ul>
       </div>
     </nav>
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
     <div class="container-fluid" style="margin-top: 15px;">
       <router-outlet></router-outlet>
     </div>

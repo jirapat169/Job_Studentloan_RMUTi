@@ -14,7 +14,8 @@ const routes: Routes = [
       { path: "student", component: StudentComponent },
       { path: "teacher", component: TeacherComponent },
       { path: "committee", component: CommitteeComponent },
-      { path: "authorities", component: AuthoritiesComponent }
+      { path: "authorities", component: AuthoritiesComponent },
+      { path: "", redirectTo: "/admin/committee", pathMatch: "full" }
     ]
   }
 ];

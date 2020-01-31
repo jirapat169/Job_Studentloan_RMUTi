@@ -1,3 +1,5 @@
+import { StudentTerm2Guard } from "./guards/student-term2.guard";
+import { StudentTerm1Guard } from "./guards/student-term1.guard";
 import { StudentGuard } from "./guards/student.guard";
 import { TeacherGuard } from "./guards/teacher.guard";
 import { CommitteeGuard } from "./guards/committee.guard";
@@ -16,6 +18,7 @@ import { IndexComponent } from "./components/index/index.component";
 import { ContactComponent } from "./components/contact/contact.component";
 import { NotfoundComponent } from "./components/notfound/notfound.component";
 import { StatisticsComponent } from "./components/statistics/statistics.component";
+import { MAT_DATE_LOCALE } from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -38,7 +41,10 @@ import { StatisticsComponent } from "./components/statistics/statistics.componen
     AdminGuard,
     CommitteeGuard,
     TeacherGuard,
-    StudentGuard
+    StudentGuard,
+    StudentTerm1Guard,
+    StudentTerm2Guard,
+    { provide: MAT_DATE_LOCALE, useValue: "th-TH" }
   ],
   bootstrap: [AppComponent]
 })
