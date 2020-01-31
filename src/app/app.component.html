@@ -1,4 +1,9 @@
 <div class="app-studentloan">
+  <mat-progress-bar
+    *ngIf="loading"
+    mode="indeterminate"
+    style="position: absolute;z-index: 9999;width: 100%;top: 0;"
+  ></mat-progress-bar>
   <div class="header-content">
     <div class="img">
       <img src="./assets/RMUTi_LOGO.png" alt="rmuti_logo" width="50px" />
@@ -105,7 +110,6 @@
         </ul>
       </div>
     </nav>
-    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 
     <div class="container-fluid" style="margin-top: 15px;">
       <router-outlet></router-outlet>

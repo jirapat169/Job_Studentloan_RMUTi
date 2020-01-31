@@ -56,7 +56,8 @@ export class CommitteeComponent implements OnInit {
           Validators.maxLength(10)
         ]
       ],
-      campus: [data != null ? data.campus : "", Validators.required]
+      campus: [data != null ? data.campus : "", Validators.required],
+      status: [data != null ? data.status : "insert"]
     });
   };
 }

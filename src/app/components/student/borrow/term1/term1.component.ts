@@ -10,7 +10,9 @@ import { Router } from "@angular/router";
 })
 export class Term1Component implements OnInit {
   public formFirst: FormGroup;
-  private formStateEdit: boolean = false;
+  public loadData: boolean = false;
+  public databaseSave: boolean = false;
+  public saveDataWaitting: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     public service: AppService,
@@ -19,36 +21,75 @@ export class Term1Component implements OnInit {
 
   ngOnInit() {
     this.initialFormFirst();
+    this.getFormFirst();
   }
+
+  private getFormFirst = async () => {
+    let formData = new FormData();
+    let data = {
+      username: this.service.localStorage.get("userlogin")["username"],
+      year: this.service.yearOnSystem(),
+      term: "1"
+    };
+    Object.keys(data).forEach(key => {
+      formData.append(key, data[key]);
+    });
+
+    let http: any = await this.service.http.post(
+      "Initial_borrow/get",
+      formData
+    );
+    // console.log(http);
+    this.loadData = true;
+    if (http.connect) {
+      if (http.result.length > 0) {
+        this.databaseSave = true;
+        this.formFirst.patchValue({
+          type: http.result[0]["type"],
+          termMoney: http.result[0]["termMoney"],
+          monthMoney: http.result[0]["monthMoney"]
+        });
+      }
+    }
+  };
 
   private initialFormFirst = () => {
     this.formFirst = this.formBuilder.group({
-      username: [""],
+      username: [this.service.localStorage.get("userlogin")["username"]],
       type: ["", Validators.required],
       termMoney: ["", Validators.required],
       monthMoney: ["", Validators.required],
       year: [this.service.yearOnSystem()],
-      term: [this.service.termOnSystem()]
-    });
-
-    this.formFirst.valueChanges.subscribe(v => {
-      // Edit Event
-      this.formStateEdit = true;
+      term: ["1"]
     });
   };
 
   public nextPage = async () => {
-    if (this.formStateEdit) {
-      // Save Data
-      let submit = await this.submitFormFirst();
-      this.formStateEdit = false;
-    } else {
-    }
+    let submit = await this.submitFormFirst();
+    if (submit == true) {
+      this.saveDataWaitting = true;
+      let formData = new FormData();
+      Object.keys(this.formFirst.value).forEach(key => {
+        formData.append(key, this.formFirst.value[key]);
+      });
 
-    if (this.formFirst.value.type == "รายเก่า") {
-      this.router.navigate(["/student/borrow/1/old"]);
+      let http: any = await this.service.http.post(
+        "Initial_borrow/inup",
+        formData
+      );
+      this.saveDataWaitting = false;
+      // console.log(http);
+      if (http.connect) {
+        if (http.success) {
+          if (this.formFirst.value.type == "รายเก่า") {
+            this.router.navigate(["/student/borrow/1/old"]);
+          } else {
+            this.router.navigate(["/student/borrow/1/new"]);
+          }
+        }
+      }
     } else {
-      this.router.navigate(["/student/borrow/1/new"]);
+      return false;
     }
   };
 

@@ -13,7 +13,7 @@ const _localStorage: any = new _window.SecureLS({
   providedIn: "root"
 })
 export class AppService {
-  private rootAPI: string = "http://172.16.20.134/studentloan/api/";
+  private rootAPI: string = "http://cpeng.rmuti.ac.th/project/studentloan/api/";
   public underscore = _window._;
   // LocalStorage
   public localStorage = {
@@ -148,5 +148,9 @@ export class AppService {
         resolve();
       }, time);
     });
+  };
+
+  public modalClose = (id: string) => {
+    _window.$(`#${id}`).modal("hide");
   };
 }

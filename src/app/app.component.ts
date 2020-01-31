@@ -17,7 +17,8 @@ export class AppComponent {
   year = new Date().getFullYear();
   loading = false;
   constructor(public service: AppService, private router: Router) {
-    this.router.events.subscribe(event => {
+    this.router.events.subscribe(async event => {
+      // console.log(event)
       switch (true) {
         case event instanceof NavigationStart: {
           this.loading = true;
@@ -27,6 +28,7 @@ export class AppComponent {
         case event instanceof NavigationEnd:
         case event instanceof NavigationCancel:
         case event instanceof NavigationError: {
+          await this.service.delay(200);
           this.loading = false;
           break;
         }

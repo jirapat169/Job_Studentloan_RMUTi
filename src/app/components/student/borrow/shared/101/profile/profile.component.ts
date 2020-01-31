@@ -94,6 +94,7 @@ export class ProfileComponent implements OnInit {
 
   public submitProfile = () => {
     console.log(this.formProfile.value);
+    this.router.navigate(['/student/borrow/1/new/101/parent'])
   };
 
   public calBdate = date => {
