@@ -10,6 +10,7 @@
         data-toggle="modal"
         data-target="#AuthoritiesModal"
         (click)="stateEdit = false; initialForm()"
+        [disabled]="organize == null"
       >
         เพิ่มข้อมูล
       </button>
@@ -50,7 +51,7 @@
         </thead>
         <tbody *ngIf="authoritiesList.length > 0">
           <tr *ngIf="filterAuthorities(campusSelect.value).length <= 0">
-            <td colspan="6">ไม่พบข้อมูล</td>
+            <td colspan="7">ไม่พบข้อมูล</td>
           </tr>
           <tr
             *ngFor="

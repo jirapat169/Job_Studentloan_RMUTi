@@ -170,7 +170,16 @@
           </button>
         </span>
         <span style="margin-left: 10px;margin-right: 10px;">
-          <button type="button" class="btn btn-warning" *ngIf="databaseSave">
+          <button
+            type="button"
+            class="btn btn-warning"
+            *ngIf="databaseSave"
+            [routerLink]="[
+              this.formFirst.value.type == 'รายเก่า'
+                ? '/student/borrow/1/old'
+                : '/student/borrow/1/new'
+            ]"
+          >
             ต่อไป
           </button>
           <button

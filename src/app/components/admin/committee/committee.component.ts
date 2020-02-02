@@ -10,32 +10,71 @@ import { AppService } from "src/app/services/app.service";
 export class CommitteeComponent implements OnInit {
   public stateEdit: boolean = false;
   public formCommittee: FormGroup;
-  public campusList: Array<any> = null;
+  public organize: Array<any> = null;
   public committeeList: Array<any> = null;
+  public saveWaitting: boolean = false;
 
   constructor(private formBuilder: FormBuilder, public service: AppService) {}
 
   ngOnInit() {
-    // this.getCampus();
-    // this.getCommittee();
+    this.getOrganize();
+    this.getCommittee();
     this.initialForm();
   }
 
-  private getCampus = () => {
-    return false;
+  private getOrganize = () => {
+    this.service.http.get("organize").then((value: any) => {
+      if (value.connect) {
+        if (value.rowCount > 0) this.organize = value.result;
+        else this.organize = null;
+      } else this.organize = null;
+    });
   };
 
-  private getCommittee = () => {
-    return false;
+  public getCampus = () => {
+    return this.service.underscore.where(this.organize, {
+      parent: "0000"
+    });
   };
 
-  public submitForm = () => {
-    if (this.stateEdit == false) {
-      // Insert
-    } else {
-      // Update
+  public filterCommittee = (campus: string) => {
+    return this.committeeList.filter(
+      value => value.campus.indexOf(campus) > -1
+    );
+  };
+
+  private getCommittee = async () => {
+    this.committeeList = null;
+    let http: any = await this.service.http.get("member/getmember/1500");
+    if (http.connect) {
+      if (http.rowCount > 0) {
+        this.committeeList = http.result;
+      } else {
+        this.committeeList = [];
+      }
     }
-    console.log(this.formCommittee.value);
+    return false;
+  };
+
+  public submitForm = async () => {
+    // console.log(this.formCommittee.value);
+    this.saveWaitting = true;
+    let formData = new FormData();
+    Object.keys(this.formCommittee.value).forEach(key => {
+      formData.append(key, this.formCommittee.value[key]);
+    });
+    let http: any = await this.service.http.post("member/committee", formData);
+    this.saveWaitting = false;
+    console.log(http);
+    if (http.connect) {
+      if (http.success) {
+        this.service.modalClose("CommitteeModal");
+        this.service.alert.alert("success", "บันทึกสำเร็จ");
+        this.getCommittee();
+      } else {
+        this.service.alert.alert("warning", "ไม่สามารถใช้อีเมล์นี้ได้");
+      }
+    }
   };
 
   public initialForm = (data: any = null) => {
@@ -57,7 +96,7 @@ export class CommitteeComponent implements OnInit {
         ]
       ],
       campus: [data != null ? data.campus : "", Validators.required],
-      status: [data != null ? data.status : "insert"]
+      status: [data != null ? "update" : "insert"]
     });
   };
 }

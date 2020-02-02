@@ -1,4 +1,20 @@
-<form [formGroup]="formProfile" (ngSubmit)="submitProfile()">
+<div
+  class="spinner-border text-warning"
+  role="status"
+  [hidden]="!fetchWaitting"
+>
+  <span class="sr-only">Loading...</span>
+</div>
+
+<form
+  [formGroup]="formProfile"
+  (ngSubmit)="
+    formProfile.valid
+      ? submitProfile()
+      : service.alert.alert('warning', 'โปรดกรอกข้อมูลให้ครบถ้วน')
+  "
+  [hidden]="fetchWaitting"
+>
   <div formGroupName="profile">
     <b>ข้าพเจ้ามีความประสงค์ขอกู้ยืมเงิน ดังนี้</b>
     <div class="box-padding">
@@ -21,7 +37,18 @@
       <div class="row">
         <div class="col-md-6">
           <mat-form-field>
-            <input matInput placeholder="ชื่อ" value="ทดสอบ" readonly />
+            <input
+              matInput
+              placeholder="ชื่อ"
+              value="{{
+                service.localStorage.get('userlogin')['title'] +
+                  '' +
+                  service.localStorage.get('userlogin')['fname'] +
+                  ' ' +
+                  service.localStorage.get('userlogin')['lname']
+              }}"
+              readonly
+            />
           </mat-form-field>
         </div>
 
@@ -78,7 +105,7 @@
               matInput
               placeholder="เลขประจำตัวประชาชน"
               readonly
-              value="12345678"
+              value="{{ service.localStorage.get('userlogin')['personalId'] }}"
             />
           </mat-form-field>
         </div>
@@ -119,7 +146,14 @@
         </div>
         <div class="col-md-6">
           <mat-form-field>
-            <input matInput placeholder="คณะ" readonly value="ไม่บอก" />
+            <input
+              matInput
+              placeholder="คณะ"
+              readonly
+              value="{{
+                service.localStorage.get('userlogin')['department_name']
+              }}"
+            />
           </mat-form-field>
         </div>
       </div>
@@ -127,7 +161,12 @@
       <div class="row">
         <div class="col-md-5">
           <mat-form-field>
-            <input matInput placeholder="สาขาวิชา" readonly value="ลืม" />
+            <input
+              matInput
+              placeholder="สาขาวิชา"
+              readonly
+              value="{{ service.localStorage.get('userlogin')['branch_name'] }}"
+            />
           </mat-form-field>
         </div>
         <div class="col-md-3">
@@ -145,7 +184,7 @@
               matInput
               placeholder="รหัสนักศึกษา"
               readonly
-              value="ลืมอีกแล้ว"
+              value="{{ service.localStorage.get('userlogin')['studentId'] }}"
             />
           </mat-form-field>
         </div>
@@ -153,20 +192,26 @@
 
       <div class="row">
         <div class="col-md-6">
-          <mat-form-field>
+          <mat-form-field *ngIf="teacherList != null">
             <mat-label>อาจารย์ที่ปรึกษา</mat-label>
-            <mat-select formControlName="advisors">
+            <!-- <mat-select formControlName="advisors">
               <mat-option>ไม่มี</mat-option>
-            </mat-select>
-            <!-- <mat-select formControlName="advisors" *ngIf="listTeacher == null">
+            </mat-select> -->
+            <!-- <mat-select formControlName="advisors" *ngIf="teacherList == null">
               <mat-option>โปรดเลือก</mat-option>
             </mat-select> -->
-            <!-- <mat-select formControlName="advisors" *ngIf="listTeacher != null">
+            <mat-select formControlName="advisors">
               <mat-option>โปรดเลือก</mat-option>
-              <mat-option *ngFor="let x of listTeacher" [value]="x.username"
+              <mat-option
+                *ngFor="
+                  let x of getTeacherInBranch(
+                    service.localStorage.get('userlogin')['branch']
+                  )
+                "
+                [value]="x.username"
                 >{{ x.title }}{{ x.fname }}&nbsp;{{ x.lname }}</mat-option
               >
-            </mat-select> -->
+            </mat-select>
           </mat-form-field>
         </div>
       </div>
@@ -239,7 +284,6 @@
         <div class="col-md-3">
           <mat-form-field>
             <input
-              readonly
               matInput
               placeholder="รหัสไปรษณีย์"
               formControlName="zipCode"
@@ -261,7 +305,14 @@
   </div>
 
   <div formGroupName="currentAddress">
-    <b class="mb-3">3. ที่อยู่ปัจจุบัน</b>
+    <div class="mb-1"><b>3. ที่อยู่ปัจจุบัน</b></div>
+    <button
+      type="button"
+      class="btn btn-warning btn-sm mb-1"
+      (click)="addressCopy()"
+    >
+      คัดลอกจากที่อยู่ตามทะเบียนบ้าน
+    </button>
     <div class="box-padding">
       <div class="row">
         <div class="col-md-3">
@@ -326,7 +377,6 @@
         <div class="col-md-3">
           <mat-form-field>
             <input
-              readonly
               matInput
               placeholder="รหัสไปรษณีย์"
               formControlName="zipCode"

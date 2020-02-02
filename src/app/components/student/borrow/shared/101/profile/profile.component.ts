@@ -11,7 +11,9 @@ import { Router } from "@angular/router";
 export class ProfileComponent implements OnInit {
   public formProfile: FormGroup;
   public dateNow = new Date();
-
+  public teacherList: Array<any> = null;
+  public saveWaitting: boolean = false;
+  public fetchWaitting: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     public service: AppService,
@@ -20,13 +22,90 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.initialFormProfile();
+    this.getTeacher();
+    this.getProfile();
+    // console.log(this.service.localStorage.get("userlogin"));
   }
+
+  private getProfile = async () => {
+    this.fetchWaitting = true;
+    let profile: any = await this.service.http.get(
+      `101_profile/get/${
+        this.service.localStorage.get("userlogin")["username"]
+      }`
+    );
+    console.log("profile", profile);
+    if (profile.connect) {
+      if (profile.result.length > 0) {
+        Object.keys(profile.result[0]).forEach(key => {
+          this.formProfile.patchValue({
+            profile: { [`${key}`]: profile.result[0][key] }
+          });
+        });
+
+        this.formProfile.patchValue({
+          profile: { bdate: new Date(parseInt(profile.result[0]["bdate"])) }
+        });
+      }
+    }
+
+    let birthAddress: any = await this.service.http.get(
+      `101_birthaddress/get/${
+        this.service.localStorage.get("userlogin")["username"]
+      }`
+    );
+    console.log("birthAddress", birthAddress);
+    if (birthAddress.connect) {
+      if (birthAddress.result.length > 0) {
+        Object.keys(birthAddress.result[0]).forEach(key => {
+          this.formProfile.patchValue({
+            birthAddress: { [`${key}`]: birthAddress.result[0][key] }
+          });
+        });
+      }
+    }
+
+    let currentAddress: any = await this.service.http.get(
+      `101_currentaddress/get/${
+        this.service.localStorage.get("userlogin")["username"]
+      }`
+    );
+    console.log("currentAddress", currentAddress);
+    if (currentAddress.connect) {
+      if (currentAddress.result.length > 0) {
+        Object.keys(currentAddress.result[0]).forEach(key => {
+          this.formProfile.patchValue({
+            currentAddress: { [`${key}`]: currentAddress.result[0][key] }
+          });
+        });
+      }
+    }
+
+    this.fetchWaitting = false;
+  };
+
+  private getTeacher = async () => {
+    this.teacherList = null;
+    let http: any = await this.service.http.get("member/getmember/3500");
+    if (http.connect) {
+      if (http.rowCount > 0) {
+        this.teacherList = http.result;
+      } else {
+        this.teacherList = [];
+      }
+    }
+  };
+
+  public getTeacherInBranch = branch => {
+    // console.log(branch)
+    return this.teacherList.filter(value => value.branch.indexOf(branch) > -1);
+  };
 
   private initialFormProfile = () => {
     this.formProfile = this.formBuilder.group({
       profile: this.formBuilder.group({
         // ข้อมูลผู้ขอกู้ยืม
-        username: [""],
+        username: [this.service.localStorage.get("userlogin")["username"]],
         type: ["", Validators.required],
         bdate: ["", Validators.required],
         age: ["", Validators.required],
@@ -39,7 +118,7 @@ export class ProfileComponent implements OnInit {
       }),
       birthAddress: this.formBuilder.group({
         // ที่อยู่ตามทะเบียนบ้าน
-        username: [""],
+        username: [this.service.localStorage.get("userlogin")["username"]],
         homeNumber: ["", Validators.required],
         villageNumber: ["", Validators.required],
         alley: ["", Validators.required],
@@ -52,7 +131,7 @@ export class ProfileComponent implements OnInit {
       }),
       currentAddress: this.formBuilder.group({
         // ที่อยู่ปัจจุบัน
-        username: [""],
+        username: [this.service.localStorage.get("userlogin")["username"]],
         homeNumber: ["", Validators.required],
         villageNumber: ["", Validators.required],
         alley: ["", Validators.required],
@@ -65,7 +144,7 @@ export class ProfileComponent implements OnInit {
       }),
       bachelor: this.formBuilder.group({
         // สำเร็จการศึกษาระดับปริญญาตรี
-        username: [""],
+        username: [this.service.localStorage.get("userlogin")["username"]],
         status: ["ไม่เคย"],
         schoolName: [""],
         department: [""],
@@ -82,19 +161,69 @@ export class ProfileComponent implements OnInit {
         status: ["ไม่เคย"],
         items: this.formBuilder.array([])
       }),
+      // support: this.formBuilder.group({
+      //   // การอุปการะด้านการเงิน
+      //   username: [this.service.localStorage.get("userlogin")["username"]],
+      //   name: ["", Validators.required],
+      //   relationship: ["", Validators.required],
+      //   amount: ["", Validators.required]
+      // }),
       support: this.formBuilder.group({
         // การอุปการะด้านการเงิน
-        username: [""],
-        name: ["", Validators.required],
-        relationship: ["", Validators.required],
-        amount: ["", Validators.required]
+        username: [this.service.localStorage.get("userlogin")["username"]],
+        name: [""],
+        relationship: [""],
+        amount: [""]
       })
     });
   };
 
-  public submitProfile = () => {
-    console.log(this.formProfile.value);
-    this.router.navigate(['/student/borrow/1/new/101/parent'])
+  public addressCopy = () => {
+    Object.keys(this.formProfile.value.birthAddress).forEach(key => {
+      this.formProfile.patchValue({
+        currentAddress: {
+          [`${key}`]: this.formProfile.value.birthAddress[key]
+        }
+      });
+    });
+  };
+
+  public submitProfile = async () => {
+    // Profile
+    let profileForm = { ...this.formProfile.value };
+
+    let profileFormData = new FormData();
+    profileForm.profile.bdate = this.formProfile.value.profile.bdate.getTime();
+    Object.keys(profileForm.profile).forEach(e => {
+      profileFormData.append(e, profileForm.profile[e]);
+    });
+    let http_profile = await this.service.http.post(
+      "101_profile/inup",
+      profileFormData
+    );
+    // console.log(http_profile);
+
+    let birthAddressFormData = new FormData();
+    Object.keys(profileForm.birthAddress).forEach(e => {
+      birthAddressFormData.append(e, profileForm.birthAddress[e]);
+    });
+    let http_birthAddress = await this.service.http.post(
+      "101_birthaddress/inup",
+      birthAddressFormData
+    );
+    console.log(http_birthAddress);
+
+    let currentAddressFormData = new FormData();
+    Object.keys(profileForm.currentAddress).forEach(e => {
+      currentAddressFormData.append(e, profileForm.currentAddress[e]);
+    });
+    let http_currentAddress = await this.service.http.post(
+      "101_currentaddress/inup",
+      currentAddressFormData
+    );
+    console.log(http_currentAddress);
+
+    // this.router.navigate(['/student/borrow/1/new/101/parent'])
   };
 
   public calBdate = date => {
@@ -115,7 +244,7 @@ export class ProfileComponent implements OnInit {
     ) as FormArray;
     items.push(
       this.formBuilder.group({
-        username: [""],
+        username: [this.service.localStorage.get("userlogin")["username"]],
         year: [""],
         type: [""],
         name: [""],
@@ -147,7 +276,7 @@ export class ProfileComponent implements OnInit {
     const items = this.formProfile.controls.borrow.get("items") as FormArray;
     items.push(
       this.formBuilder.group({
-        username: [""],
+        username: [this.service.localStorage.get("userlogin")["username"]],
         year: [""],
         educationLevel: [""],
         level: [""],
