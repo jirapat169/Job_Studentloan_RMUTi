@@ -668,7 +668,10 @@
     </div>
   </div>
 
-  <button type="submit" class="btn btn-warning">
+  <button type="submit" class="btn btn-warning" [disabled]="saveWaitting">
+    <div class="spinner-border text-warning" role="status" *ngIf="saveWaitting">
+      <span class="sr-only">Loading...</span>
+    </div>
     บันทึกข้อมูลผู้ขอกู้ยืมเงิน
   </button>
 </form>

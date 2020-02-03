@@ -39,7 +39,7 @@ export class Term1Component implements OnInit {
       "Initial_borrow/get",
       formData
     );
-    // console.log(http);
+    console.log(http);
     this.loadData = true;
     if (http.connect) {
       if (http.result.length > 0) {

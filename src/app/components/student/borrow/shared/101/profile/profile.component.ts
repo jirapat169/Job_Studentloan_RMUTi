@@ -27,8 +27,7 @@ export class ProfileComponent implements OnInit {
     // console.log(this.service.localStorage.get("userlogin"));
   }
 
-  private getProfile = async () => {
-    this.fetchWaitting = true;
+  private getProfileForm = async () => {
     let profile: any = await this.service.http.get(
       `101_profile/get/${
         this.service.localStorage.get("userlogin")["username"]
@@ -48,7 +47,9 @@ export class ProfileComponent implements OnInit {
         });
       }
     }
+  };
 
+  private getBirthAddress = async () => {
     let birthAddress: any = await this.service.http.get(
       `101_birthaddress/get/${
         this.service.localStorage.get("userlogin")["username"]
@@ -64,7 +65,9 @@ export class ProfileComponent implements OnInit {
         });
       }
     }
+  };
 
+  private getCurrentAddress = async () => {
     let currentAddress: any = await this.service.http.get(
       `101_currentaddress/get/${
         this.service.localStorage.get("userlogin")["username"]
@@ -80,6 +83,54 @@ export class ProfileComponent implements OnInit {
         });
       }
     }
+  };
+
+  private getBachelor = async () => {
+    let bachelor: any = await this.service.http.get(
+      `101_bachelor/get/${
+        this.service.localStorage.get("userlogin")["username"]
+      }`
+    );
+    console.log("bachelor", bachelor);
+    if (bachelor.connect) {
+      if (bachelor.result.length > 0) {
+        Object.keys(bachelor.result[0]).forEach(key => {
+          this.formProfile.patchValue({
+            bachelor: { [`${key}`]: bachelor.result[0][key] }
+          });
+        });
+      }
+    }
+  };
+
+  private getSupport = async () => {
+    let support: any = await this.service.http.get(
+      `101_support/get/${
+        this.service.localStorage.get("userlogin")["username"]
+      }`
+    );
+    console.log("support", support);
+    if (support.connect) {
+      if (support.result.length > 0) {
+        Object.keys(support.result[0]).forEach(key => {
+          this.formProfile.patchValue({
+            support: { [`${key}`]: support.result[0][key] }
+          });
+        });
+      }
+    }
+  };
+
+  private getProfile = async () => {
+    this.fetchWaitting = true;
+
+    await this.getScholarship();
+    await this.getBorrow();
+    await this.getProfileForm();
+    await this.getBirthAddress();
+    await this.getCurrentAddress();
+    await this.getBachelor();
+    await this.getSupport();
 
     this.fetchWaitting = false;
   };
@@ -97,7 +148,6 @@ export class ProfileComponent implements OnInit {
   };
 
   public getTeacherInBranch = branch => {
-    // console.log(branch)
     return this.teacherList.filter(value => value.branch.indexOf(branch) > -1);
   };
 
@@ -106,7 +156,7 @@ export class ProfileComponent implements OnInit {
       profile: this.formBuilder.group({
         // ข้อมูลผู้ขอกู้ยืม
         username: [this.service.localStorage.get("userlogin")["username"]],
-        type: ["", Validators.required],
+        type: ["กยศ.เดิม", Validators.required],
         bdate: ["", Validators.required],
         age: ["", Validators.required],
         nationality: ["", Validators.required],
@@ -161,19 +211,12 @@ export class ProfileComponent implements OnInit {
         status: ["ไม่เคย"],
         items: this.formBuilder.array([])
       }),
-      // support: this.formBuilder.group({
-      //   // การอุปการะด้านการเงิน
-      //   username: [this.service.localStorage.get("userlogin")["username"]],
-      //   name: ["", Validators.required],
-      //   relationship: ["", Validators.required],
-      //   amount: ["", Validators.required]
-      // }),
       support: this.formBuilder.group({
         // การอุปการะด้านการเงิน
         username: [this.service.localStorage.get("userlogin")["username"]],
-        name: [""],
-        relationship: [""],
-        amount: [""]
+        name: ["", Validators.required],
+        relationship: ["", Validators.required],
+        amount: ["", Validators.required]
       })
     });
   };
@@ -190,18 +233,23 @@ export class ProfileComponent implements OnInit {
 
   public submitProfile = async () => {
     // Profile
+    this.saveWaitting = true;
     let profileForm = { ...this.formProfile.value };
 
     let profileFormData = new FormData();
-    profileForm.profile.bdate = this.formProfile.value.profile.bdate.getTime();
     Object.keys(profileForm.profile).forEach(e => {
       profileFormData.append(e, profileForm.profile[e]);
     });
+    profileFormData.append(
+      "bdate",
+      this.formProfile.value.profile.bdate.getTime()
+    );
     let http_profile = await this.service.http.post(
       "101_profile/inup",
       profileFormData
     );
-    // console.log(http_profile);
+    console.log(http_profile);
+    // ------------------------------------------------------------------------
 
     let birthAddressFormData = new FormData();
     Object.keys(profileForm.birthAddress).forEach(e => {
@@ -212,6 +260,7 @@ export class ProfileComponent implements OnInit {
       birthAddressFormData
     );
     console.log(http_birthAddress);
+    // ------------------------------------------------------------------------
 
     let currentAddressFormData = new FormData();
     Object.keys(profileForm.currentAddress).forEach(e => {
@@ -222,8 +271,67 @@ export class ProfileComponent implements OnInit {
       currentAddressFormData
     );
     console.log(http_currentAddress);
+    // ------------------------------------------------------------------------
 
-    // this.router.navigate(['/student/borrow/1/new/101/parent'])
+    let bachelorFormData = new FormData();
+    Object.keys(profileForm.bachelor).forEach(e => {
+      bachelorFormData.append(e, profileForm.bachelor[e]);
+    });
+    let http_bachelor = await this.service.http.post(
+      "101_bachelor/inup",
+      bachelorFormData
+    );
+    console.log(http_bachelor);
+    // ------------------------------------------------------------------------
+
+    let scholarshipFormData: FormData;
+    Object.keys(profileForm.scholarship.items).forEach(async i => {
+      scholarshipFormData = new FormData();
+      Object.keys(profileForm.scholarship.items[i]).forEach(j => {
+        scholarshipFormData.append(j, profileForm.scholarship.items[i][j]);
+      });
+      scholarshipFormData.append("status", profileForm.scholarship.status);
+
+      let http_scholarship = await this.service.http.post(
+        "101_scholarship/inup",
+        scholarshipFormData
+      );
+      console.log(http_scholarship);
+    });
+    await this.getScholarship();
+    // ------------------------------------------------------------------------
+
+    let borrowFormData: FormData;
+    Object.keys(profileForm.borrow.items).forEach(async i => {
+      borrowFormData = new FormData();
+      Object.keys(profileForm.borrow.items[i]).forEach(j => {
+        borrowFormData.append(j, profileForm.borrow.items[i][j]);
+      });
+      borrowFormData.append("status", profileForm.borrow.status);
+      borrowFormData.append("type", profileForm.borrow.type);
+
+      let http_borrow = await this.service.http.post(
+        "101_borrow/inup",
+        borrowFormData
+      );
+      console.log(http_borrow);
+    });
+    await this.getBorrow();
+    // ------------------------------------------------------------------------
+
+    let supportFormData = new FormData();
+    Object.keys(profileForm.support).forEach(e => {
+      supportFormData.append(e, profileForm.support[e]);
+    });
+    let http_support = await this.service.http.post(
+      "101_support/inup",
+      supportFormData
+    );
+    console.log(http_support);
+    // ------------------------------------------------------------------------
+
+    this.saveWaitting = false;
+    this.router.navigate(['/student/borrow/1/new/101/parent'])
   };
 
   public calBdate = date => {
@@ -235,6 +343,31 @@ export class ProfileComponent implements OnInit {
         age: ageDate.getUTCFullYear() - 1970
       }
     });
+  };
+
+  private getScholarship = async () => {
+    const items = this.formProfile.controls.scholarship.get(
+      "items"
+    ) as FormArray;
+    items.clear();
+    let http: any = await this.service.http.get(
+      `101_scholarship/get/${
+        this.service.localStorage.get("userlogin")["username"]
+      }`
+    );
+
+    if (http.connect) {
+      if (http.result.length > 0) {
+        http.result.forEach(i => {
+          this.formProfile.patchValue({
+            scholarship: {
+              status: i["status"]
+            }
+          });
+          items.push(this.formBuilder.group(i));
+        });
+      }
+    }
   };
 
   public addRowScholarship = () => {
@@ -263,12 +396,45 @@ export class ProfileComponent implements OnInit {
     return items.controls;
   };
 
-  public delRowScholarship = (index: string) => {
+  public delRowScholarship = async (index: string) => {
+    let confirm = await this.service.alert.confirm("ยืนยันการลบข้อมูล");
     const items = this.formProfile.controls.scholarship.get(
       "items"
     ) as FormArray;
     let i = parseInt(index);
-    items.removeAt(i);
+    if (confirm) {
+      let http: any = await this.service.http.get(
+        `/101_scholarship/delete/${items.controls[i].value["row"]}`
+      );
+      console.log(http);
+      if (http.connect) {
+        if (http.success) {
+          this.service.alert.alert("success", "ลบข้อมูลสำเร็จ");
+        }
+      }
+      await this.getScholarship();
+    }
+  };
+
+  private getBorrow = async () => {
+    const items = this.formProfile.controls.borrow.get("items") as FormArray;
+    items.clear();
+    let http: any = await this.service.http.get(
+      `101_borrow/get/${this.service.localStorage.get("userlogin")["username"]}`
+    );
+    if (http.connect) {
+      if (http.result.length > 0) {
+        http.result.forEach(i => {
+          this.formProfile.patchValue({
+            borrow: {
+              status: i["status"],
+              type: i["type"]
+            }
+          });
+          items.push(this.formBuilder.group(i));
+        });
+      }
+    }
   };
 
   public addRowBorrow = () => {
@@ -294,9 +460,21 @@ export class ProfileComponent implements OnInit {
     return items.controls;
   };
 
-  public delRowBorrow = (index: string) => {
+  public delRowBorrow = async (index: string) => {
+    let confirm = await this.service.alert.confirm("ยืนยันการลบข้อมูล");
     const items = this.formProfile.controls.borrow.get("items") as FormArray;
     let i = parseInt(index);
-    items.removeAt(i);
+    if (confirm) {
+      let http: any = await this.service.http.get(
+        `/101_borrow/delete/${items.controls[i].value["row"]}`
+      );
+      console.log(http);
+      if (http.connect) {
+        if (http.success) {
+          this.service.alert.alert("success", "ลบข้อมูลสำเร็จ");
+        }
+      }
+      await this.getBorrow();
+    }
   };
 }
