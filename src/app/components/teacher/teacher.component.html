@@ -1,1 +1,36 @@
-<router-outlet></router-outlet>
+<div class="row">
+  <div class="col-md-3 mb-3">
+    <div class="card">
+      <div class="card-body">
+        <b>อาจารย์</b>
+        <mat-nav-list>
+          <mat-list-item>
+            <a
+              matLine
+              [routerLink]="['/teacher/check103']"
+              routerLinkActive="menu-actived"
+            >
+              ตรวจสอบเอกสาร กยศ.103
+            </a>
+          </mat-list-item>
+          <mat-list-item>
+            <a
+              matLine
+              [routerLink]="['/teacher/changepass']"
+              routerLinkActive="menu-actived"
+            >
+              เปลี่ยนรหัสผ่าน
+            </a>
+          </mat-list-item>
+        </mat-nav-list>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9 mb-3">
+    <div class="card">
+      <div class="card-body">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

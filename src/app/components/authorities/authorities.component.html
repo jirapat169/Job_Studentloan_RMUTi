@@ -1,1 +1,36 @@
-<p>authorities works!</p>
+<div class="row">
+  <div class="col-md-3 mb-3">
+    <div class="card">
+      <div class="card-body">
+        <b>เจ้าหน้าที่</b>
+        <mat-nav-list>
+          <mat-list-item>
+            <a
+              matLine
+              [routerLink]="['/authorities/checkdoc']"
+              routerLinkActive="menu-actived"
+            >
+              นักศึกษาที่มีความประสงค์ขอกู้ยืม
+            </a>
+          </mat-list-item>
+          <mat-list-item>
+            <a
+              matLine
+              [routerLink]="['/authorities/changepass']"
+              routerLinkActive="menu-actived"
+            >
+              เปลี่ยนรหัสผ่าน
+            </a>
+          </mat-list-item>
+        </mat-nav-list>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9 mb-3">
+    <div class="card">
+      <div class="card-body">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
