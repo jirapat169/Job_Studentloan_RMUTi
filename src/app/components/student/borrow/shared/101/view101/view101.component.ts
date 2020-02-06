@@ -18,13 +18,23 @@ export class View101Component implements OnInit {
       path: "/student/borrow/1/new/101/nparent",
       title: "ข้อมูลผู้ปกครอง (ถ้ามี)"
     },
-    { path: "/student/borrow/1/new/101/spouse", title: "ข้อมูลคู่สมรส (ถ้ามี)" }
+    {
+      path: "/student/borrow/1/new/101/spouse",
+      title: "ข้อมูลคู่สมรส (ถ้ามี)"
+    },
+    { path: "/student/borrow/1/new/101/confirm", title: "ยืนยันข้อมูล กยศ.101" }
   ];
   public selectedIndex: number = 0;
   public pageWait: boolean = false;
+
+  // Check Confirm
+  public onLoadForm: boolean = true;
+  public remark: string = "";
+  public confirmWait: boolean = false;
   constructor(public service: AppService, private router: Router) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.getConfirm();
     this.router.events.subscribe(async event => {
       // console.log(event)
       if (event instanceof NavigationEnd) {
@@ -46,6 +56,35 @@ export class View101Component implements OnInit {
       .indexOf(window.location.pathname);
     this.router.navigate([this.listPage[this.selectedIndex].path]);
   }
+
+  private getConfirm = async () => {
+    this.confirmWait = true;
+    let formData = new FormData();
+    formData.append(
+      "username",
+      this.service.localStorage.get("userlogin")["username"]
+    );
+    formData.append("year", this.service.yearOnSystem());
+    formData.append("term", "1");
+
+    let http_confirm: any = await this.service.http.post(
+      `student_confirm/get`,
+      formData
+    );
+
+    if (http_confirm.result.length > 0) {
+      if (
+        http_confirm.result[0]["remark"] ==
+          "รอการตรวจสอบจากเจ้าหน้าที่กองทุน" &&
+        http_confirm.result[0]["formDoc"] == "101"
+      ) {
+        this.onLoadForm = false;
+        this.remark = http_confirm.result[0]["remark"];
+      }
+    }
+    this.confirmWait = false;
+    console.log("http_confirm", http_confirm);
+  };
 
   public tabsSelect = async event => {
     this.selectedIndex = event.selectedIndex;

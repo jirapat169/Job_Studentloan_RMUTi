@@ -1,1 +1,346 @@
-<p>spouse works!</p>
+<div
+  class="spinner-border text-warning"
+  role="status"
+  [hidden]="!fetchWaitting"
+>
+  <span class="sr-only">Loading...</span>
+</div>
+
+<form
+  [hidden]="fetchWaitting"
+  [formGroup]="formSpouse"
+  (ngSubmit)="
+    formSpouse.valid
+      ? submitSpouse()
+      : service.alert.alert('warning', 'โปรดกรอกข้อมูลให้ครบถ้วน')
+  "
+>
+  <b class="mb-3">15. ข้อมูลคู่สมรส (ถ้ามี)</b>
+
+  <div class="box-padding">
+    <mat-radio-group class="vertical-radio-group" formControlName="status">
+      <mat-radio-button class="vertical-radio-button" value="ไม่มีคู่สมรส">
+        ไม่มีคู่สมรส
+      </mat-radio-button>
+      <mat-radio-button class="vertical-radio-button" value="มีคู่สมรส">
+        มีคู่สมรส
+      </mat-radio-button>
+    </mat-radio-group>
+    <hr />
+  </div>
+
+  <div class="box-padding" *ngIf="formSpouse.value.status == 'มีคู่สมรส'">
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field>
+          <input matInput placeholder="ชื่อ - นามสกุล" formControlName="name" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-radio-group formControlName="life">
+          <mat-radio-button value="ยังมีชีวิตอยู่" style="margin-right: 16px;">
+            ยังมีชีวิตอยู่
+          </mat-radio-button>
+          <mat-radio-button value="ถึงแก่กรรม" style="margin-right: 16px;"
+            >ถึงแก่กรรม</mat-radio-button
+          >
+        </mat-radio-group>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <mat-form-field>
+          <input matInput placeholder="อายุ" formControlName="age" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-5">
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="เลขประจำตัวประชาชน"
+            formControlName="personalId"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field>
+          <mat-label>ระดับการศึกษา</mat-label>
+          <mat-select formControlName="levelEducation">
+            <mat-option value="">
+              โปรดเลือก
+            </mat-option>
+            <mat-option value="ป.4">
+              ป.4
+            </mat-option>
+            <mat-option value="ป.6">
+              ป.6
+            </mat-option>
+            <mat-option value="ม.3">
+              ม.3
+            </mat-option>
+            <mat-option value="ม.6">
+              ม.6
+            </mat-option>
+            <mat-option value="ปวช.">
+              ปวช.
+            </mat-option>
+            <mat-option value="ปวส.">
+              ปวส.
+            </mat-option>
+            <mat-option value="ปริญญาตรี">
+              ปริญญาตรี
+            </mat-option>
+            <mat-option value="ปริญญาโท">
+              ปริญญาโท
+            </mat-option>
+            <mat-option value="ปริญญาเอก">
+              ปริญญาเอก
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="จบจากสถานศึกษา"
+            formControlName="schoolName"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field>
+          <mat-label>อาชีพ</mat-label>
+          <mat-select
+            (selectionChange)="careerSpouseChange($event)"
+            formControlName="career"
+          >
+            <mat-option [value]="''">
+              {{ "โปรดเลือก" }}
+            </mat-option>
+            <mat-option [value]="'รับราชการ'">
+              {{ "รับราชการ" }}
+            </mat-option>
+            <mat-option [value]="'พนักงาน/ลูกจ้างบริษัท'">
+              {{ "พนักงาน/ลูกจ้างบริษัท" }}
+            </mat-option>
+            <mat-option [value]="'ค้าขาย'">
+              {{ "ค้าขาย" }}
+            </mat-option>
+            <mat-option [value]="'รับจ้าง'">
+              {{ "รับจ้าง" }}
+            </mat-option>
+            <mat-option [value]="'เกษตรกร'">
+              {{ "เกษตรกร" }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="getCareerSpouse() != ''">
+      <div
+        class="col-md-{{ getCareerSpouse() == 'เกษตรกร' ? 4 : 6 }}"
+        *ngIf="getCareerSpouse() != 'ค้าขาย'"
+      >
+        <mat-form-field>
+          <input
+            matInput
+            [placeholder]="
+              getCareerSpouse() == 'รับราชการ' ||
+              getCareerSpouse() == 'พนักงาน/ลูกจ้างบริษัท'
+                ? 'ตำแหน่ง'
+                : getCareerSpouse() == 'รับจ้าง'
+                ? 'ประเภทงานรับจ้าง'
+                : 'ประเภท'
+            "
+            formControlName="typeCareer"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6" *ngIf="getCareerSpouse() == 'ค้าขาย'">
+        <mat-form-field>
+          <mat-label>ค้าขายโดยเป็น</mat-label>
+          <mat-select formControlName="typeCareer">
+            <mat-option [value]="'เจ้าของร้าน'">
+              เจ้าของร้าน
+            </mat-option>
+            <mat-option [value]="'หาบเร่/แผงลอย'">
+              หาบเร่/แผงลอย
+            </mat-option>
+            <mat-option [value]="'เช่าร้าน'">
+              เช่าร้าน
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div
+        class="col-md-6"
+        *ngIf="getCareerSpouse() != 'รับจ้าง' && getCareerSpouse() != 'เกษตรกร'"
+      >
+        <mat-form-field>
+          <input
+            matInput
+            [placeholder]="
+              getCareerSpouse() == 'รับราชการ' ||
+              getCareerSpouse() == 'พนักงาน/ลูกจ้างบริษัท'
+                ? 'สถานที่ทำงาน'
+                : getCareerSpouse() == 'ค้าขาย'
+                ? 'ลักษณะสินค้า'
+                : 'สถานที่ทำงาน'
+            "
+            formControlName="locationCareer"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-4" *ngIf="getCareerSpouse() == 'เกษตรกร'">
+        <mat-form-field>
+          <mat-label>ที่ดิน</mat-label>
+          <mat-select formControlName="locationCareer">
+            <mat-option [value]="''">
+              โปรดเลือก
+            </mat-option>
+            <mat-option [value]="'เป็นเจ้าของที่'">
+              เป็นเจ้าของที่
+            </mat-option>
+            <mat-option [value]="'เช่าที่'">
+              เช่าที่
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-4" *ngIf="getCareerSpouse() == 'เกษตรกร'">
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="จำนวนที่ดิน (ไร่)"
+            formControlName="land"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field>
+          <mat-label>รายได้ (ต่อปี)</mat-label>
+          <mat-select formControlName="income">
+            <mat-option value="">
+              โปรดเลือก
+            </mat-option>
+            <mat-option value="น้อยกว่า 100,000 บาท/ปี">
+              น้อยกว่า 100,000 บาท/ปี
+            </mat-option>
+            <mat-option value="100,001 - 120,000 บาท/ปี">
+              100,001 - 120,000 บาท/ปี
+            </mat-option>
+            <mat-option value="120,001 - 150,000 บาท/ปี">
+              120,001 - 150,000 บาท/ปี
+            </mat-option>
+            <mat-option value="150,001 - 200,000 บาท/ปี">
+              150,001 - 200,000 บาท/ปี
+            </mat-option>
+            <mat-option value="มากกว่า 200,001 บาท/ปี">
+              มากกว่า 200,001 บาท/ปี
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="บ้านเลขที่"
+            formControlName="homeNumber"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="หมู่ที่"
+            formControlName="villageNumber"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field>
+          <input matInput placeholder="ตรอก/ซอย" formControlName="alley" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field>
+          <input matInput placeholder="ถนน" formControlName="road" />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="ตำบล/แขวง"
+            formControlName="subDistrict"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field>
+          <input matInput placeholder="อำเภอ/เขต" formControlName="district" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field>
+          <input matInput placeholder="จังหวัด" formControlName="province" />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="รหัสไปรษณีย์"
+            formControlName="zipCode"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="หมายเลขโทรศัพท์"
+            formControlName="phone"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <button type="submit" class="btn btn-warning" [disabled]="saveWaitting">
+      <div
+        class="spinner-border text-warning"
+        role="status"
+        *ngIf="saveWaitting"
+      >
+        <span class="sr-only">Loading...</span>
+      </div>
+      บันทึกข้อมูล
+    </button>
+  </div>
+</form>

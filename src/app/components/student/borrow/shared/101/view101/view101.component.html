@@ -1,24 +1,34 @@
-<div class="text-center mt-3 mb-3">
-  <p style="margin:unset;">แบบคำขอกู้ยืมเงิน</p>
-  <p style="margin:unset;">กองทุนเงินให้กู้ยืมเพื่อการศึกษา</p>
-  <p style="margin:unset;">ประจำปีการศึกษา {{ service.yearOnSystem() }}</p>
-  <p style="margin:unset;">
-    สถานศึกษา มทร.อีสาน
-  </p>
+<div *ngIf="onLoadForm && !confirmWait">
+  <div class="text-center mt-3 mb-3">
+    <p style="margin:unset;">แบบคำขอกู้ยืมเงิน</p>
+    <p style="margin:unset;">กองทุนเงินให้กู้ยืมเพื่อการศึกษา</p>
+    <p style="margin:unset;">ประจำปีการศึกษา {{ service.yearOnSystem() }}</p>
+    <p style="margin:unset;">
+      สถานศึกษา มทร.อีสาน
+    </p>
+  </div>
+
+  <mat-horizontal-stepper
+    labelPosition="bottom"
+    #stepper
+    (selectionChange)="tabsSelect($event)"
+    [selectedIndex]="selectedIndex"
+  >
+    <mat-step [completed]="false" *ngFor="let x of listPage">
+      <ng-template matStepLabel>{{ x.title }}</ng-template>
+
+      <div class="spinner-border text-warning" role="status" *ngIf="pageWait">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <router-outlet *ngIf="!pageWait"></router-outlet>
+    </mat-step>
+  </mat-horizontal-stepper>
 </div>
 
-<mat-horizontal-stepper
-  labelPosition="bottom"
-  #stepper
-  (selectionChange)="tabsSelect($event)"
-  [selectedIndex]="selectedIndex"
->
-  <mat-step [completed]="false" *ngFor="let x of listPage">
-    <ng-template matStepLabel>{{ x.title }}</ng-template>
+<div class="spinner-border text-warning" role="status" *ngIf="confirmWait">
+  <span class="sr-only">Loading...</span>
+</div>
 
-    <div class="spinner-border text-warning" role="status" *ngIf="pageWait">
-      <span class="sr-only">Loading...</span>
-    </div>
-    <router-outlet *ngIf="!pageWait"></router-outlet>
-  </mat-step>
-</mat-horizontal-stepper>
+<div *ngIf="!onLoadForm" class="box-padding">
+  <b>{{ remark }}</b>
+</div>

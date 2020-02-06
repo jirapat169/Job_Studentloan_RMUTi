@@ -18,13 +18,13 @@
   <div formGroupName="profile">
     <b>ข้าพเจ้ามีความประสงค์ขอกู้ยืมเงิน ดังนี้</b>
     <div class="box-padding">
-      <mat-radio-group class="radio-group-borrow" formControlName="type">
-        <mat-radio-button class="radio-button-borrow" value="กยศ.เดิม">
+      <mat-radio-group class="vertical-radio-group" formControlName="type">
+        <mat-radio-button class="vertical-radio-button" value="กยศ.เดิม">
           ลักษณะที่ 1 เงินกู้ยืมเพื่อการศึกษา
           ให้แก่นักเรียนหรือนักศึกษาที่ขาดแคลนทุนทรัพย์
           <b>(กยศ.เดิม)</b>
         </mat-radio-button>
-        <mat-radio-button class="radio-button-borrow" value="กรอ.เดิม">
+        <mat-radio-button class="vertical-radio-button" value="กรอ.เดิม">
           ลักษณะที่ 2 เงินกู้ยืมเพื่อการศึกษา
           ให้แก่นักเรียนหรือนักศึกษาในสาขาที่เป็นความต้องการหลักฯ
           <b>(กรอ.เดิม)</b>
@@ -668,10 +668,16 @@
     </div>
   </div>
 
-  <button type="submit" class="btn btn-warning" [disabled]="saveWaitting">
-    <div class="spinner-border text-warning" role="status" *ngIf="saveWaitting">
-      <span class="sr-only">Loading...</span>
-    </div>
-    บันทึกข้อมูลผู้ขอกู้ยืมเงิน
-  </button>
+  <div class="text-center">
+    <button type="submit" class="btn btn-warning" [disabled]="saveWaitting">
+      <div
+        class="spinner-border text-warning"
+        role="status"
+        *ngIf="saveWaitting"
+      >
+        <span class="sr-only">Loading...</span>
+      </div>
+      บันทึกข้อมูล
+    </button>
+  </div>
 </form>

@@ -1,4 +1,20 @@
-<form [formGroup]="formParent" (ngSubmit)="submitParent()">
+<div
+  class="spinner-border text-warning"
+  role="status"
+  [hidden]="!fetchWaitting"
+>
+  <span class="sr-only">Loading...</span>
+</div>
+
+<form
+  [hidden]="fetchWaitting"
+  [formGroup]="formParent"
+  (ngSubmit)="
+    formParent.valid
+      ? submitParent()
+      : service.alert.alert('warning', 'โปรดกรอกข้อมูลให้ครบถ้วน')
+  "
+>
   <div formGroupName="father">
     <b class="mb-3">9. ข้อมูลบิดา</b>
     <div class="box-padding">
@@ -14,10 +30,15 @@
         </div>
         <div class="col-md-6">
           <mat-radio-group formControlName="life">
-            <mat-radio-button value="ยังมีชีวิตอยู่" style="margin-right: 16px;">
+            <mat-radio-button
+              value="ยังมีชีวิตอยู่"
+              style="margin-right: 16px;"
+            >
               ยังมีชีวิตอยู่
             </mat-radio-button>
-            <mat-radio-button value="ถึงแก่กรรม" style="margin-right: 16px;">ถึงแก่กรรม</mat-radio-button>
+            <mat-radio-button value="ถึงแก่กรรม" style="margin-right: 16px;"
+              >ถึงแก่กรรม</mat-radio-button
+            >
           </mat-radio-group>
         </div>
       </div>
@@ -76,7 +97,848 @@
         </div>
       </div>
 
-      
+      <div class="row">
+        <div class="col-md-6">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="จบจากสถานศึกษา"
+              formControlName="schoolName"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>อาชีพ</mat-label>
+            <mat-select
+              (selectionChange)="careerFatherChange($event)"
+              formControlName="career"
+            >
+              <mat-option [value]="''">
+                {{ "โปรดเลือก" }}
+              </mat-option>
+              <mat-option [value]="'รับราชการ'">
+                {{ "รับราชการ" }}
+              </mat-option>
+              <mat-option [value]="'พนักงาน/ลูกจ้างบริษัท'">
+                {{ "พนักงาน/ลูกจ้างบริษัท" }}
+              </mat-option>
+              <mat-option [value]="'ค้าขาย'">
+                {{ "ค้าขาย" }}
+              </mat-option>
+              <mat-option [value]="'รับจ้าง'">
+                {{ "รับจ้าง" }}
+              </mat-option>
+              <mat-option [value]="'เกษตรกร'">
+                {{ "เกษตรกร" }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="getCareerFather() != ''">
+        <div
+          class="col-md-{{ getCareerFather() == 'เกษตรกร' ? 4 : 6 }}"
+          *ngIf="getCareerFather() != 'ค้าขาย'"
+        >
+          <mat-form-field>
+            <input
+              matInput
+              [placeholder]="
+                getCareerFather() == 'รับราชการ' ||
+                getCareerFather() == 'พนักงาน/ลูกจ้างบริษัท'
+                  ? 'ตำแหน่ง'
+                  : getCareerFather() == 'รับจ้าง'
+                  ? 'ประเภทงานรับจ้าง'
+                  : 'ประเภท'
+              "
+              formControlName="typeCareer"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-6" *ngIf="getCareerFather() == 'ค้าขาย'">
+          <mat-form-field>
+            <mat-label>ค้าขายโดยเป็น</mat-label>
+            <mat-select formControlName="typeCareer">
+              <mat-option [value]="'เจ้าของร้าน'">
+                เจ้าของร้าน
+              </mat-option>
+              <mat-option [value]="'หาบเร่/แผงลอย'">
+                หาบเร่/แผงลอย
+              </mat-option>
+              <mat-option [value]="'เช่าร้าน'">
+                เช่าร้าน
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div
+          class="col-md-6"
+          *ngIf="
+            getCareerFather() != 'รับจ้าง' && getCareerFather() != 'เกษตรกร'
+          "
+        >
+          <mat-form-field>
+            <input
+              matInput
+              [placeholder]="
+                getCareerFather() == 'รับราชการ' ||
+                getCareerFather() == 'พนักงาน/ลูกจ้างบริษัท'
+                  ? 'สถานที่ทำงาน'
+                  : getCareerFather() == 'ค้าขาย'
+                  ? 'ลักษณะสินค้า'
+                  : 'สถานที่ทำงาน'
+              "
+              formControlName="locationCareer"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4" *ngIf="getCareerFather() == 'เกษตรกร'">
+          <mat-form-field>
+            <mat-label>ที่ดิน</mat-label>
+            <mat-select formControlName="locationCareer">
+              <mat-option [value]="''">
+                โปรดเลือก
+              </mat-option>
+              <mat-option [value]="'เป็นเจ้าของที่'">
+                เป็นเจ้าของที่
+              </mat-option>
+              <mat-option [value]="'เช่าที่'">
+                เช่าที่
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4" *ngIf="getCareerFather() == 'เกษตรกร'">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="จำนวนที่ดิน (ไร่)"
+              formControlName="land"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>รายได้ (ต่อปี)</mat-label>
+            <mat-select formControlName="income">
+              <mat-option value="">
+                โปรดเลือก
+              </mat-option>
+              <mat-option value="น้อยกว่า 100,000 บาท/ปี">
+                น้อยกว่า 100,000 บาท/ปี
+              </mat-option>
+              <mat-option value="100,001 - 120,000 บาท/ปี">
+                100,001 - 120,000 บาท/ปี
+              </mat-option>
+              <mat-option value="120,001 - 150,000 บาท/ปี">
+                120,001 - 150,000 บาท/ปี
+              </mat-option>
+              <mat-option value="150,001 - 200,000 บาท/ปี">
+                150,001 - 200,000 บาท/ปี
+              </mat-option>
+              <mat-option value="มากกว่า 200,001 บาท/ปี">
+                มากกว่า 200,001 บาท/ปี
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="บ้านเลขที่"
+              formControlName="homeNumber"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="หมู่ที่"
+              formControlName="villageNumber"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <input matInput placeholder="ตรอก/ซอย" formControlName="alley" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <input matInput placeholder="ถนน" formControlName="road" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="ตำบล/แขวง"
+              formControlName="subDistrict"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="อำเภอ/เขต"
+              formControlName="district"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <input matInput placeholder="จังหวัด" formControlName="province" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="รหัสไปรษณีย์"
+              formControlName="zipCode"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-3">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="หมายเลขโทรศัพท์"
+              formControlName="phone"
+            />
+          </mat-form-field>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <div formGroupName="mother">
+    <b class="mb-3">10. ข้อมูลมารดา</b>
+    <div class="box-padding">
+      <div class="row">
+        <div class="col-md-6">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="ชื่อ - นามสกุล"
+              formControlName="name"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-radio-group formControlName="life">
+            <mat-radio-button
+              value="ยังมีชีวิตอยู่"
+              style="margin-right: 16px;"
+            >
+              ยังมีชีวิตอยู่
+            </mat-radio-button>
+            <mat-radio-button value="ถึงแก่กรรม" style="margin-right: 16px;"
+              >ถึงแก่กรรม</mat-radio-button
+            >
+          </mat-radio-group>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field>
+            <input matInput placeholder="อายุ" formControlName="age" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-5">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="เลขประจำตัวประชาชน"
+              formControlName="personalId"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>ระดับการศึกษา</mat-label>
+            <mat-select formControlName="levelEducation">
+              <mat-option value="">
+                โปรดเลือก
+              </mat-option>
+              <mat-option value="ป.4">
+                ป.4
+              </mat-option>
+              <mat-option value="ป.6">
+                ป.6
+              </mat-option>
+              <mat-option value="ม.3">
+                ม.3
+              </mat-option>
+              <mat-option value="ม.6">
+                ม.6
+              </mat-option>
+              <mat-option value="ปวช.">
+                ปวช.
+              </mat-option>
+              <mat-option value="ปวส.">
+                ปวส.
+              </mat-option>
+              <mat-option value="ปริญญาตรี">
+                ปริญญาตรี
+              </mat-option>
+              <mat-option value="ปริญญาโท">
+                ปริญญาโท
+              </mat-option>
+              <mat-option value="ปริญญาเอก">
+                ปริญญาเอก
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="จบจากสถานศึกษา"
+              formControlName="schoolName"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>อาชีพ</mat-label>
+            <mat-select
+              (selectionChange)="careerMotherChange($event)"
+              formControlName="career"
+            >
+              <mat-option [value]="''">
+                {{ "โปรดเลือก" }}
+              </mat-option>
+              <mat-option [value]="'รับราชการ'">
+                {{ "รับราชการ" }}
+              </mat-option>
+              <mat-option [value]="'พนักงาน/ลูกจ้างบริษัท'">
+                {{ "พนักงาน/ลูกจ้างบริษัท" }}
+              </mat-option>
+              <mat-option [value]="'ค้าขาย'">
+                {{ "ค้าขาย" }}
+              </mat-option>
+              <mat-option [value]="'รับจ้าง'">
+                {{ "รับจ้าง" }}
+              </mat-option>
+              <mat-option [value]="'เกษตรกร'">
+                {{ "เกษตรกร" }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="getCareerMother() != ''">
+        <div
+          class="col-md-{{ getCareerMother() == 'เกษตรกร' ? 4 : 6 }}"
+          *ngIf="getCareerMother() != 'ค้าขาย'"
+        >
+          <mat-form-field>
+            <input
+              matInput
+              [placeholder]="
+                getCareerMother() == 'รับราชการ' ||
+                getCareerMother() == 'พนักงาน/ลูกจ้างบริษัท'
+                  ? 'ตำแหน่ง'
+                  : getCareerMother() == 'รับจ้าง'
+                  ? 'ประเภทงานรับจ้าง'
+                  : 'ประเภท'
+              "
+              formControlName="typeCareer"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-6" *ngIf="getCareerMother() == 'ค้าขาย'">
+          <mat-form-field>
+            <mat-label>ค้าขายโดยเป็น</mat-label>
+            <mat-select formControlName="typeCareer">
+              <mat-option [value]="'เจ้าของร้าน'">
+                เจ้าของร้าน
+              </mat-option>
+              <mat-option [value]="'หาบเร่/แผงลอย'">
+                หาบเร่/แผงลอย
+              </mat-option>
+              <mat-option [value]="'เช่าร้าน'">
+                เช่าร้าน
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div
+          class="col-md-6"
+          *ngIf="
+            getCareerMother() != 'รับจ้าง' && getCareerMother() != 'เกษตรกร'
+          "
+        >
+          <mat-form-field>
+            <input
+              matInput
+              [placeholder]="
+                getCareerMother() == 'รับราชการ' ||
+                getCareerMother() == 'พนักงาน/ลูกจ้างบริษัท'
+                  ? 'สถานที่ทำงาน'
+                  : getCareerMother() == 'ค้าขาย'
+                  ? 'ลักษณะสินค้า'
+                  : 'สถานที่ทำงาน'
+              "
+              formControlName="locationCareer"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4" *ngIf="getCareerMother() == 'เกษตรกร'">
+          <mat-form-field>
+            <mat-label>ที่ดิน</mat-label>
+            <mat-select formControlName="locationCareer">
+              <mat-option [value]="''">
+                โปรดเลือก
+              </mat-option>
+              <mat-option [value]="'เป็นเจ้าของที่'">
+                เป็นเจ้าของที่
+              </mat-option>
+              <mat-option [value]="'เช่าที่'">
+                เช่าที่
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4" *ngIf="getCareerMother() == 'เกษตรกร'">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="จำนวนที่ดิน (ไร่)"
+              formControlName="land"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>รายได้ (ต่อปี)</mat-label>
+            <mat-select formControlName="income">
+              <mat-option value="">
+                โปรดเลือก
+              </mat-option>
+              <mat-option value="ร่วมกับบิดา">
+                ร่วมกับบิดา
+              </mat-option>
+              <mat-option value="น้อยกว่า 100,000 บาท/ปี">
+                น้อยกว่า 100,000 บาท/ปี
+              </mat-option>
+              <mat-option value="100,001 - 120,000 บาท/ปี">
+                100,001 - 120,000 บาท/ปี
+              </mat-option>
+              <mat-option value="120,001 - 150,000 บาท/ปี">
+                120,001 - 150,000 บาท/ปี
+              </mat-option>
+              <mat-option value="150,001 - 200,000 บาท/ปี">
+                150,001 - 200,000 บาท/ปี
+              </mat-option>
+              <mat-option value="มากกว่า 200,001 บาท/ปี">
+                มากกว่า 200,001 บาท/ปี
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="บ้านเลขที่"
+              formControlName="homeNumber"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="หมู่ที่"
+              formControlName="villageNumber"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <input matInput placeholder="ตรอก/ซอย" formControlName="alley" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <input matInput placeholder="ถนน" formControlName="road" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="ตำบล/แขวง"
+              formControlName="subDistrict"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="อำเภอ/เขต"
+              formControlName="district"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <input matInput placeholder="จังหวัด" formControlName="province" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="รหัสไปรษณีย์"
+              formControlName="zipCode"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-3">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="หมายเลขโทรศัพท์"
+              formControlName="phone"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div formGroupName="relationship">
+    <b class="mb-3">11. สถานะภาพสมรส</b>
+    <div class="box-padding">
+      <div class="row">
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>สถานะภาพ</mat-label>
+            <mat-select
+              formControlName="status"
+              (selectionChange)="
+                formParent.patchValue({
+                  relationship: {
+                    remark: getReletionship() == 'อื่นๆ' ? '' : '-'
+                  }
+                })
+              "
+            >
+              <mat-option value="">
+                โปรดเลือก
+              </mat-option>
+              <mat-option value="อยู่ด้วยกัน">
+                อยู่ด้วยกัน
+              </mat-option>
+              <mat-option value="หย่า">
+                หย่า
+              </mat-option>
+              <mat-option value="แยกกันอยู่ตามอาชีพ">
+                แยกกันอยู่ตามอาชีพ
+              </mat-option>
+              <mat-option value="อื่นๆ">
+                อื่นๆ
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6" *ngIf="getReletionship() == 'อื่นๆ'">
+          <mat-form-field>
+            <input matInput placeholder="สถานะอื่น" formControlName="remark" />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div formGroupName="brethren">
+    <b class="mb-3">12. พี่น้องร่วมบิดา - มารดา (รวมผู้ขอกู้ยืม)</b>
+    <div class="box-padding">
+      <div class="row">
+        <div class="col-md-4">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="จำนวนพี่น้องทั้งหมด"
+              formControlName="amount"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <input matInput placeholder="เป็นชาย" formControlName="male" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <input matInput placeholder="เป็นหญิง" formControlName="female" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="ข้าพเจ้าเป็นคนที่"
+              formControlName="iNum"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="จำนวนพี่น้องที่กำลังศึกษา"
+              formControlName="study"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="จำนวนพี่น้องที่ประกอบอาชีพแล้ว"
+              formControlName="worked"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div formArrayName="brethrenStudy">
+    <div class="box-padding" style="overflow: auto;">
+      <div class="mb-3">
+        <b>พี่น้องที่กำลังศึกษา (รวมผู้ขอกู้ยืม)</b>
+      </div>
+      <div class="text-left mb-3">
+        <button
+          type="button"
+          class="btn btn-warning btn-sm"
+          (click)="addRowBrethrenStudy()"
+        >
+          เพิ่มแถว
+        </button>
+      </div>
+
+      <table class="table table-bordered table-sm">
+        <thead>
+          <tr>
+            <th scope="col">คนที่</th>
+            <th scope="col" style="width: 15%">เพศ</th>
+            <th scope="col">อายุ</th>
+            <th scope="col">ชั้นปี</th>
+            <th scope="col" style="width: 40%">สถานศึกษา</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody *ngIf="getRowBrethrenStudy().length > 0">
+          <tr
+            *ngFor="let item of getRowBrethrenStudy(); let i = index"
+            [formGroupName]="i"
+          >
+            <td>
+              <input type="text" class="form-control" formControlName="num" />
+            </td>
+            <td>
+              <select class="form-control" formControlName="sex">
+                <option value="">โปรดเลือก</option>
+                <option value="ชาย">ชาย</option>
+                <option value="หญิง">หญิง</option>
+              </select>
+            </td>
+            <td>
+              <input type="text" class="form-control" formControlName="age" />
+            </td>
+            <td>
+              <input type="text" class="form-control" formControlName="level" />
+            </td>
+            <td>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="schoolName"
+              />
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-danger btn-sm"
+                (click)="delRowBrethrenStudy(i)"
+              >
+                ลบ
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div formArrayName="brethrenWorked">
+    <b class="mb-3">13. พี่น้องที่ประกอบอาชีพแล้ว</b>
+    <div class="box-padding">
+      <div class="text-left mb-3">
+        <button
+          type="button"
+          class="btn btn-warning btn-sm"
+          (click)="addRowBrethrenWorked()"
+        >
+          เพิ่มแถว
+        </button>
+      </div>
+
+      <table class="table table-bordered table-sm">
+        <thead>
+          <tr>
+            <th scope="col">คนที่</th>
+            <th scope="col" style="width: 15%">เพศ</th>
+            <th scope="col">อายุ</th>
+            <th scope="col" style="width: 15%">การศึกษาสูงสุด</th>
+            <th scope="col" style="width: 30%">สถานที่ทำงาน</th>
+            <th scope="col">รายได้เดือนละ</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let item of getRowBrethrenWorked(); let i = index"
+            [formGroupName]="i"
+          >
+            <td>
+              <input type="text" class="form-control" formControlName="num" />
+            </td>
+            <td>
+              <select class="form-control" formControlName="sex">
+                <option value="">โปรดเลือก</option>
+                <option value="ชาย">ชาย</option>
+                <option value="หญิง">หญิง</option>
+              </select>
+            </td>
+            <td>
+              <input type="text" class="form-control" formControlName="age" />
+            </td>
+            <td>
+              <select class="form-control" formControlName="level">
+                <option value="">
+                  โปรดเลือก
+                </option>
+                <option value="ป.4">
+                  ป.4
+                </option>
+                <option value="ป.6">
+                  ป.6
+                </option>
+                <option value="ม.3">
+                  ม.3
+                </option>
+                <option value="ม.6">
+                  ม.6
+                </option>
+                <option value="ปวช.">
+                  ปวช.
+                </option>
+                <option value="ปวส.">
+                  ปวส.
+                </option>
+                <option value="ปริญญาตรี">
+                  ปริญญาตรี
+                </option>
+                <option value="ปริญญาโท">
+                  ปริญญาโท
+                </option>
+                <option value="ปริญญาเอก">
+                  ปริญญาเอก
+                </option>
+              </select>
+            </td>
+            <td>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="workName"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="amount"
+              />
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-danger btn-sm"
+                (click)="delRowBrethrenWorked(i)"
+              >
+                ลบ
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <button type="submit" class="btn btn-warning" [disabled]="saveWaitting">
+      <div
+        class="spinner-border text-warning"
+        role="status"
+        *ngIf="saveWaitting"
+      >
+        <span class="sr-only">Loading...</span>
+      </div>
+      บันทึกข้อมูล
+    </button>
   </div>
 </form>

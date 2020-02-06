@@ -20,6 +20,7 @@ import { NewsComponent } from './borrow/term1/news/news.component';
 import { OldComponent } from './borrow/term1/old/old.component';
 import { View101Component } from './borrow/shared/101/view101/view101.component';
 import { DocComponent } from './borrow/term1/news/doc/doc.component';
+import { Confirm101Component } from './borrow/shared/101/confirm101/confirm101.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { DocComponent } from './borrow/term1/news/doc/doc.component';
     OldComponent,
     View101Component,
     DocComponent,
+    Confirm101Component,
   ],
   imports: [CommonModule, StudentRoutingModule, SharedModules]
 })

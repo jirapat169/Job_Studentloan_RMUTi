@@ -20,6 +20,7 @@ import { SpouseComponent } from "./borrow/shared/101/spouse/spouse.component";
 import { IncomeComponent } from "./borrow/shared/102/income/income.component";
 import { MapComponent } from "./borrow/shared/104/map/map.component";
 import { DocComponent } from "./borrow/term1/news/doc/doc.component";
+import { Confirm101Component } from "./borrow/shared/101/confirm101/confirm101.component";
 
 const routes: Routes = [
   {
@@ -66,6 +67,10 @@ const routes: Routes = [
                       {
                         path: "spouse",
                         component: SpouseComponent
+                      },
+                      {
+                        path: "confirm",
+                        component: Confirm101Component
                       },
                       {
                         path: "",

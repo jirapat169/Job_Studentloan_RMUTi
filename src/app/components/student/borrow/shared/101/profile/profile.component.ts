@@ -124,15 +124,17 @@ export class ProfileComponent implements OnInit {
   private getProfile = async () => {
     this.fetchWaitting = true;
 
-    await this.getScholarship();
-    await this.getBorrow();
-    await this.getProfileForm();
-    await this.getBirthAddress();
-    await this.getCurrentAddress();
-    await this.getBachelor();
-    await this.getSupport();
+    this.getScholarship();
+    this.getBorrow();
+    this.getProfileForm();
+    this.getBirthAddress();
+    this.getCurrentAddress();
+    this.getBachelor();
+    this.getSupport();
 
-    this.fetchWaitting = false;
+    setTimeout(() => {
+      this.fetchWaitting = false;
+    }, 3000);
   };
 
   private getTeacher = async () => {
@@ -331,7 +333,7 @@ export class ProfileComponent implements OnInit {
     // ------------------------------------------------------------------------
 
     this.saveWaitting = false;
-    this.router.navigate(['/student/borrow/1/new/101/parent'])
+    this.router.navigate(["/student/borrow/1/new/101/parent"]);
   };
 
   public calBdate = date => {
@@ -355,6 +357,8 @@ export class ProfileComponent implements OnInit {
         this.service.localStorage.get("userlogin")["username"]
       }`
     );
+
+    console.log(http)
 
     if (http.connect) {
       if (http.result.length > 0) {
@@ -389,11 +393,14 @@ export class ProfileComponent implements OnInit {
 
   public getRowScholarship = () => {
     // อ่านจำนวนแถวการรับทุน
-    const items = this.formProfile.controls.scholarship.get(
-      "items"
-    ) as FormArray;
-
-    return items.controls;
+    try {
+      const items = this.formProfile.controls.scholarship.get(
+        "items"
+      ) as FormArray;
+      return items.controls;
+    } catch {
+      return [];
+    }
   };
 
   public delRowScholarship = async (index: string) => {
@@ -422,6 +429,8 @@ export class ProfileComponent implements OnInit {
     let http: any = await this.service.http.get(
       `101_borrow/get/${this.service.localStorage.get("userlogin")["username"]}`
     );
+
+    console.log(http)
     if (http.connect) {
       if (http.result.length > 0) {
         http.result.forEach(i => {
