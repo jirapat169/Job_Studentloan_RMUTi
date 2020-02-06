@@ -14,6 +14,8 @@ const _localStorage: any = new _window.SecureLS({
 })
 export class AppService {
   private rootAPI: string = "http://cpeng.rmuti.ac.th/project/studentloan/api/";
+  public filePath: string =
+    "http://cpeng.rmuti.ac.th/project/studentloan/api/app/upload/";
   public underscore = _window._;
   // LocalStorage
   public localStorage = {

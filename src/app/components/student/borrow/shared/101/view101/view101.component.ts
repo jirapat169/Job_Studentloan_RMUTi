@@ -66,6 +66,7 @@ export class View101Component implements OnInit {
     );
     formData.append("year", this.service.yearOnSystem());
     formData.append("term", "1");
+    formData.append("formDoc", "101");
 
     let http_confirm: any = await this.service.http.post(
       `student_confirm/get`,
@@ -74,9 +75,7 @@ export class View101Component implements OnInit {
 
     if (http_confirm.result.length > 0) {
       if (
-        http_confirm.result[0]["remark"] ==
-          "รอการตรวจสอบจากเจ้าหน้าที่กองทุน" &&
-        http_confirm.result[0]["formDoc"] == "101"
+        http_confirm.result[0]["remark"] == "รอการตรวจสอบจากเจ้าหน้าที่กองทุน"
       ) {
         this.onLoadForm = false;
         this.remark = http_confirm.result[0]["remark"];
