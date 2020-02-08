@@ -77,6 +77,34 @@ export class IncomeComponent implements OnInit {
 
     let http_income = await this.service.http.post("102_income/inup", formData);
     console.log(http_income);
+    await this.getIncome()
+  };
+
+  public submitConfirm = async () => {
+    let confirmData: any = await this.service.alert.confirm(
+      "ยืนยันข้อมูล เอกสารรับรองรายได้"
+    );
+    if (confirmData) {
+      let formData = new FormData();
+      formData.append(
+        "username",
+        this.service.localStorage.get("userlogin")["username"]
+      );
+      formData.append("year", this.service.yearOnSystem());
+      formData.append("term", "1");
+      formData.append("formDoc", "102");
+      formData.append("remark", "รอการตรวจสอบจากเจ้าหน้าที่กองทุน");
+
+      let http_confirm: any = await this.service.http.post(
+        "student_confirm/inup",
+        formData
+      );
+
+      if(http_confirm.success){
+        window.location.reload();
+      }
+      console.log(http_confirm);
+    }
   };
 
   private initialFormIncome = () => {

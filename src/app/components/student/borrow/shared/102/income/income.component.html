@@ -1,76 +1,110 @@
-<form
-  [formGroup]="formIncome"
-  (ngSubmit)="
-    formIncome.valid
-      ? submitIncome()
-      : service.alert.alert('warning', 'โปรดกรอกข้อมูลให้ครบถ้วน')
-  "
->
-  <div class="mt-3 mb-3">
-    <b>หนังสือรับรองรายได้</b>
-    <p class="text-muted">*เลือกได้เพียง 1 ข้อ</p>
+<div *ngIf="onLoadForm && !confirmWait">
+  <form
+    [formGroup]="formIncome"
+    (ngSubmit)="
+      formIncome.valid
+        ? submitIncome()
+        : service.alert.alert('warning', 'โปรดกรอกข้อมูลให้ครบถ้วน')
+    "
+  >
+    <div class="mt-3 mb-3">
+      <b>หนังสือรับรองรายได้</b>
+      <p class="text-muted">*เลือกได้เพียง 1 ข้อ</p>
 
-    <div class="box-padding">
-      <mat-radio-group
-        class="vertical-radio-group"
-        formControlName="type"
-        (change)="
-          formIncome.patchValue({ val1: '', val2: '' });
-          fileDump.file1 = null;
-          fileDump.file2 = null
-        "
-      >
-        <mat-radio-button
-          class="vertical-radio-button"
-          value="มีรายได้ประจำ"
-          [disabled]="foundData"
+      <div class="box-padding">
+        <mat-radio-group
+          class="vertical-radio-group"
+          formControlName="type"
+          (change)="
+            formIncome.patchValue({ val1: '', val2: '' });
+            fileDump.file1 = null;
+            fileDump.file2 = null
+          "
         >
-          1. มีรายได้ประจำ
-        </mat-radio-button>
-        <mat-radio-button
-          class="vertical-radio-button"
-          value="มีบัตรสวัสดิการแห่งรัฐ"
-          [disabled]="foundData"
-        >
-          2. มีบัตรสวัสดิการแห่งรัฐ
-        </mat-radio-button>
-        <mat-radio-button
-          class="vertical-radio-button"
-          value="ไม่มีรายได้ประจำ"
-          [disabled]="foundData"
-        >
-          3. ไม่มีรายได้ประจำ
-        </mat-radio-button>
-      </mat-radio-group>
+          <mat-radio-button
+            class="vertical-radio-button"
+            value="มีรายได้ประจำ"
+            [disabled]="foundData"
+          >
+            1. มีรายได้ประจำ
+          </mat-radio-button>
+          <mat-radio-button
+            class="vertical-radio-button"
+            value="มีบัตรสวัสดิการแห่งรัฐ"
+            [disabled]="foundData"
+          >
+            2. มีบัตรสวัสดิการแห่งรัฐ
+          </mat-radio-button>
+          <mat-radio-button
+            class="vertical-radio-button"
+            value="ไม่มีรายได้ประจำ"
+            [disabled]="foundData"
+          >
+            3. ไม่มีรายได้ประจำ
+          </mat-radio-button>
+        </mat-radio-group>
 
-      <div *ngIf="formIncome.value.type == 'มีรายได้ประจำ'">
-        <div class="row mt-3">
-          <div class="col-md-4">
-            <mat-form-field>
-              <input
-                matInput
-                [readOnly]="foundData"
-                type="number"
-                placeholder="รายได้ต่อเดือน"
-                formControlName="val1"
-              />
-            </mat-form-field>
+        <div *ngIf="formIncome.value.type == 'มีรายได้ประจำ'">
+          <div class="row mt-3">
+            <div class="col-md-4">
+              <mat-form-field>
+                <input
+                  matInput
+                  [readOnly]="foundData"
+                  type="number"
+                  placeholder="รายได้ต่อเดือน"
+                  formControlName="val1"
+                />
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field>
+                <input
+                  matInput
+                  type="text"
+                  placeholder="รายได้ต่อปี"
+                  value="{{ formIncome.value.val1 * 12 }}"
+                  readonly
+                />
+              </mat-form-field>
+            </div>
           </div>
-          <div class="col-md-4">
-            <mat-form-field>
-              <input
-                matInput
-                type="text"
-                placeholder="รายได้ต่อปี"
-                value="{{ formIncome.value.val1 * 12 }}"
-                readonly
-              />
-            </mat-form-field>
+
+          <div class="mt-3">
+            <b>หนังสือรับรองเงินเดือน/สลิปเงินเดือน</b>
+            <div class="row  mb-1">
+              <div class="col-md-8">
+                <div class="input-group">
+                  <div class="custom-file">
+                    <input
+                      [disabled]="uploadWaitting || foundData"
+                      type="file"
+                      class="custom-file-input"
+                      id="inputFile1"
+                      (change)="fileInput($event, formIncome.value.type)"
+                    />
+                    <label class="custom-file-label" for="inputFile1">
+                      {{ fileDump.file2 ? fileDump.file2.name : "เลือกไฟล์" }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3" *ngIf="formIncome.value.val2.length > 0">
+              <a
+                target="_blank"
+                href="{{ service.filePath + formIncome.value.val2 }}"
+                >หนังสือรับรองเงินเดือน/สลิปเงินเดือน ที่บันทึกไว้</a
+              >
+            </div>
           </div>
         </div>
 
-        <div class="mt-3">
-          <b>หนังสือรับรองเงินเดือน/สลิปเงินเดือน</b>
+        <div
+          class="mt-3"
+          *ngIf="formIncome.value.type == 'มีบัตรสวัสดิการแห่งรัฐ'"
+        >
+          <b class="mb-1">สำเนาบัตรสวัสดิการแห่งรัฐของบิดา</b>
           <div class="row  mb-1">
             <div class="col-md-8">
               <div class="input-group">
@@ -80,9 +114,40 @@
                     type="file"
                     class="custom-file-input"
                     id="inputFile1"
-                    (change)="fileInput($event, formIncome.value.type)"
+                    (change)="
+                      fileInput($event, 'สำเนาบัตรสวัสดิการแห่งรัฐของบิดา')
+                    "
                   />
                   <label class="custom-file-label" for="inputFile1">
+                    {{ fileDump.file1 ? fileDump.file1.name : "เลือกไฟล์" }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="formIncome.value.val1.length > 0" class="mb-3">
+            <a
+              target="_blank"
+              href="{{ service.filePath + formIncome.value.val1 }}"
+              >สำเนาบัตรสวัสดิการแห่งรัฐของบิดา ที่บันทึกไว้</a
+            >
+          </div>
+
+          <b class="mb-1">สำเนาบัตรสวัสดิการแห่งรัฐของมารดา</b>
+          <div class="row  mb-1">
+            <div class="col-md-8">
+              <div class="input-group">
+                <div class="custom-file">
+                  <input
+                    [disabled]="uploadWaitting || foundData"
+                    type="file"
+                    class="custom-file-input"
+                    id="inputFile2"
+                    (change)="
+                      fileInput($event, 'สำเนาบัตรสวัสดิการแห่งรัฐของมารดา')
+                    "
+                  />
+                  <label class="custom-file-label" for="inputFile2">
                     {{ fileDump.file2 ? fileDump.file2.name : "เลือกไฟล์" }}
                   </label>
                 </div>
@@ -93,167 +158,121 @@
             <a
               target="_blank"
               href="{{ service.filePath + formIncome.value.val2 }}"
-              >หนังสือรับรองเงินเดือน/สลิปเงินเดือน ที่บันทึกไว้</a
+              >สำเนาบัตรสวัสดิการแห่งรัฐของมารดา ที่บันทึกไว้</a
+            >
+          </div>
+        </div>
+
+        <div class="mt-3" *ngIf="formIncome.value.type == 'ไม่มีรายได้ประจำ'">
+          <div class="mb-2">
+            <a href="./assets/102.pdf" target="_blank" download>
+              ดาวน์โหลด กยศ. 102
+            </a>
+          </div>
+          <b class="mb-1">กยศ. 102</b>
+          <div class="row mb-1">
+            <div class="col-md-8">
+              <div class="input-group">
+                <div class="custom-file">
+                  <input
+                    [disabled]="uploadWaitting || foundData"
+                    type="file"
+                    class="custom-file-input"
+                    id="inputFile1"
+                    (change)="
+                      fileInput($event, 'สำเนาบัตรสวัสดิการแห่งรัฐของบิดา')
+                    "
+                  />
+                  <label class="custom-file-label" for="inputFile1">
+                    {{ fileDump.file1 ? fileDump.file1.name : "เลือกไฟล์" }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3" *ngIf="formIncome.value.val1.length > 0">
+            <a
+              target="_blank"
+              href="{{ service.filePath + formIncome.value.val1 }}"
+              >กยศ. 102 ที่บันทึกไว้</a
+            >
+          </div>
+          <b class="mb-1">สำเนาบัตรข้าราชการผู้รับรองรายได้</b>
+          <div class="row mb-1">
+            <div class="col-md-8">
+              <div class="input-group">
+                <div class="custom-file">
+                  <input
+                    [disabled]="uploadWaitting || foundData"
+                    type="file"
+                    class="custom-file-input"
+                    id="inputFile2"
+                    (change)="
+                      fileInput($event, 'สำเนาบัตรสวัสดิการแห่งรัฐของมารดา')
+                    "
+                  />
+                  <label class="custom-file-label" for="inputFile2">
+                    {{ fileDump.file2 ? fileDump.file2.name : "เลือกไฟล์" }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3" *ngIf="formIncome.value.val2.length > 0">
+            <a
+              target="_blank"
+              href="{{ service.filePath + formIncome.value.val2 }}"
+              >สำเนาบัตรข้าราชการผู้รับรองรายได้ ที่บันทึกไว้</a
             >
           </div>
         </div>
       </div>
+    </div>
 
-      <div
-        class="mt-3"
-        *ngIf="formIncome.value.type == 'มีบัตรสวัสดิการแห่งรัฐ'"
-      >
-        <b class="mb-1">สำเนาบัตรสวัสดิการแห่งรัฐของบิดา</b>
-        <div class="row  mb-1">
-          <div class="col-md-8">
-            <div class="input-group">
-              <div class="custom-file">
-                <input
-                  [disabled]="uploadWaitting || foundData"
-                  type="file"
-                  class="custom-file-input"
-                  id="inputFile1"
-                  (change)="
-                    fileInput($event, 'สำเนาบัตรสวัสดิการแห่งรัฐของบิดา')
-                  "
-                />
-                <label class="custom-file-label" for="inputFile1">
-                  {{ fileDump.file1 ? fileDump.file1.name : "เลือกไฟล์" }}
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="formIncome.value.val1.length > 0" class="mb-3">
-          <a
-            target="_blank"
-            href="{{ service.filePath + formIncome.value.val1 }}"
-            >สำเนาบัตรสวัสดิการแห่งรัฐของบิดา ที่บันทึกไว้</a
+    <div class="text-center">
+      <span style="margin-left: 10px;margin-right: 10px;" *ngIf="foundData">
+        <button type="submit" class="btn btn-dark" (click)="foundData = false">
+          แก้ไข
+        </button>
+      </span>
+      <span style="margin-left: 10px;margin-right: 10px;" *ngIf="!foundData">
+        <button
+          type="submit"
+          class="btn btn-warning"
+          [disabled]="saveWaitting || uploadWaitting"
+        >
+          <div
+            class="spinner-border text-warning"
+            role="status"
+            *ngIf="saveWaitting || uploadWaitting"
           >
-        </div>
+            <span class="sr-only">Loading...</span>
+          </div>
+          บันทึกข้อมูล
+        </button>
+      </span>
+    </div>
+  </form>
 
-        <b class="mb-1">สำเนาบัตรสวัสดิการแห่งรัฐของมารดา</b>
-        <div class="row  mb-1">
-          <div class="col-md-8">
-            <div class="input-group">
-              <div class="custom-file">
-                <input
-                  [disabled]="uploadWaitting || foundData"
-                  type="file"
-                  class="custom-file-input"
-                  id="inputFile2"
-                  (change)="
-                    fileInput($event, 'สำเนาบัตรสวัสดิการแห่งรัฐของมารดา')
-                  "
-                />
-                <label class="custom-file-label" for="inputFile2">
-                  {{ fileDump.file2 ? fileDump.file2.name : "เลือกไฟล์" }}
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="mb-3" *ngIf="formIncome.value.val2.length > 0">
-          <a
-            target="_blank"
-            href="{{ service.filePath + formIncome.value.val2 }}"
-            >สำเนาบัตรสวัสดิการแห่งรัฐของมารดา ที่บันทึกไว้</a
-          >
-        </div>
-      </div>
-
-      <div class="mt-3" *ngIf="formIncome.value.type == 'ไม่มีรายได้ประจำ'">
-        <div class="mb-2">
-          <a href="./assets/102.pdf" target="_blank" download>
-            ดาวน์โหลด กยศ. 102
-          </a>
-        </div>
-        <b class="mb-1">กยศ. 102</b>
-        <div class="row mb-1">
-          <div class="col-md-8">
-            <div class="input-group">
-              <div class="custom-file">
-                <input
-                  [disabled]="uploadWaitting || foundData"
-                  type="file"
-                  class="custom-file-input"
-                  id="inputFile1"
-                  (change)="
-                    fileInput($event, 'สำเนาบัตรสวัสดิการแห่งรัฐของบิดา')
-                  "
-                />
-                <label class="custom-file-label" for="inputFile1">
-                  {{ fileDump.file1 ? fileDump.file1.name : "เลือกไฟล์" }}
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="mb-3" *ngIf="formIncome.value.val1.length > 0">
-          <a
-            target="_blank"
-            href="{{ service.filePath + formIncome.value.val1 }}"
-            >กยศ. 102 ที่บันทึกไว้</a
-          >
-        </div>
-        <b class="mb-1">สำเนาบัตรข้าราชการผู้รับรองรายได้</b>
-        <div class="row mb-1">
-          <div class="col-md-8">
-            <div class="input-group">
-              <div class="custom-file">
-                <input
-                  [disabled]="uploadWaitting || foundData"
-                  type="file"
-                  class="custom-file-input"
-                  id="inputFile2"
-                  (change)="
-                    fileInput($event, 'สำเนาบัตรสวัสดิการแห่งรัฐของมารดา')
-                  "
-                />
-                <label class="custom-file-label" for="inputFile2">
-                  {{ fileDump.file2 ? fileDump.file2.name : "เลือกไฟล์" }}
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="mb-3" *ngIf="formIncome.value.val2.length > 0">
-          <a
-            target="_blank"
-            href="{{ service.filePath + formIncome.value.val2 }}"
-            >สำเนาบัตรข้าราชการผู้รับรองรายได้ ที่บันทึกไว้</a
-          >
-        </div>
-      </div>
+  <div *ngIf="foundData">
+    <hr />
+    <b class="mb-3">ยืนยันข้อมูล เอกสารรับรองรายได้</b>
+    <div class="box-padding">
+      หากยืนยันข้อมูลแล้วจะไม่สามารถแก้ไขได้
+      จนกว่าจะได้รับการตรวจสอบจากเจ้าหน้าที่กองทุน
+    </div>
+    <div class="text-center">
+      <button type="button" class="btn btn-warning" (click)="submitConfirm()">
+        ยืนยัน
+      </button>
     </div>
   </div>
+</div>
 
-  <div class="text-center">
-    <span style="margin-left: 10px;margin-right: 10px;">
-      <button
-        type="submit"
-        class="btn btn-dark"
-        *ngIf="foundData"
-        (click)="foundData = false"
-      >
-        แก้ไข
-      </button>
-    </span>
-    <span style="margin-left: 10px;margin-right: 10px;">
-      <button
-        type="submit"
-        class="btn btn-warning"
-        [disabled]="saveWaitting || uploadWaitting"
-      >
-        <div
-          class="spinner-border text-warning"
-          role="status"
-          *ngIf="saveWaitting || uploadWaitting"
-        >
-          <span class="sr-only">Loading...</span>
-        </div>
-        บันทึกข้อมูล
-      </button>
-    </span>
-  </div>
-</form>
+<div class="spinner-border text-warning" role="status" *ngIf="confirmWait">
+  <span class="sr-only">Loading...</span>
+</div>
+
+<div *ngIf="!onLoadForm" class="box-padding">
+  <b>{{ remark }}</b>
+</div>

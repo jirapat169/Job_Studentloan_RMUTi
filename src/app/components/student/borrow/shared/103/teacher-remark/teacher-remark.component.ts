@@ -1,15 +1,76 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import { AppService } from "src/app/services/app.service";
 
 @Component({
-  selector: 'app-teacher-remark',
-  templateUrl: './teacher-remark.component.html',
-  styleUrls: ['./teacher-remark.component.scss']
+  selector: "app-teacher-remark",
+  templateUrl: "./teacher-remark.component.html",
+  styleUrls: ["./teacher-remark.component.scss"]
 })
 export class TeacherRemarkComponent implements OnInit {
+  public foundTeacher: boolean = false;
+  public pageWaitting: boolean = false;
+  private idTeacher: string = null;
+  public teacherRemark: string = null;
+  constructor(public service: AppService) {}
 
-  constructor() { }
+  async ngOnInit() {
+    this.pageWaitting = true;
+    await this.getRemark();
+    await this.getTeacher();
 
-  ngOnInit() {
+    this.pageWaitting = false;
   }
 
+  public sendToTeacher = async () => {
+    let formData = new FormData();
+    formData.append(
+      "username",
+      this.service.localStorage.get("userlogin").username
+    );
+    formData.append("term", "1");
+    formData.append("year", this.service.yearOnSystem());
+    formData.append("teacher", this.idTeacher);
+    formData.append("remark", "รอการอนุมัติจากอาจารย์ที่ปรึกษา");
+
+    let http_sentTeacher: any = await this.service.http.post(
+      "103_teacherremark/inup",
+      formData
+    );
+    console.log(http_sentTeacher);
+    await this.getRemark();
+  };
+
+  private getRemark = async () => {
+    let formData = new FormData();
+    formData.append(
+      "username",
+      this.service.localStorage.get("userlogin").username
+    );
+    formData.append("term", "1"),
+      formData.append("year", this.service.yearOnSystem());
+    let http_getRemark: any = await this.service.http.post(
+      `103_teacherremark/get`,
+      formData
+    );
+
+    if (http_getRemark.rowCount > 0) {
+      this.teacherRemark = http_getRemark.result[0]["remark"];
+    }
+    console.log(http_getRemark);
+  };
+
+  private getTeacher = async () => {
+    let profile: any = await this.service.http.get(
+      `101_profile/get/${
+        this.service.localStorage.get("userlogin")["username"]
+      }`
+    );
+    console.log("profile", profile);
+    if (profile.connect) {
+      if (profile.result.length > 0) {
+        this.foundTeacher = true;
+        this.idTeacher = profile.result[0]["advisors"];
+      }
+    }
+  };
 }

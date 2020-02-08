@@ -10,7 +10,7 @@
               [routerLink]="['/student/borrow']"
               routerLinkActive="menu-actived"
             >
-              ข้อมูลกู้ยืมกองทุน
+              ข้อมูลกู้ยืมกองทุน ({{ service.yearOnSystem() }})
             </a>
           </mat-list-item>
           <mat-list-item>
@@ -19,7 +19,7 @@
               [routerLink]="['/student/status']"
               routerLinkActive="menu-actived"
             >
-              ตรวจสอบสถานะ
+              ตรวจสอบสถานะเอกสาร ({{ service.yearOnSystem() }})
             </a>
           </mat-list-item>
           <mat-list-item>

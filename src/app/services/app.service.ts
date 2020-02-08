@@ -34,6 +34,10 @@ export class AppService {
     }
   };
 
+  public jq = id => {
+    return _window.$(`#${id}`);
+  };
+
   // SweetAlert
   public alert = {
     alert: (

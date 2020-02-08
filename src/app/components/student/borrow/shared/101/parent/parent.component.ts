@@ -13,11 +13,61 @@ export class ParentComponent implements OnInit {
   public saveWaitting: boolean = false;
   public fetchWaitting: boolean = false;
 
+  public fatherLife:boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     public service: AppService,
     private router: Router
   ) {}
+
+  changeLifeFather = val => {
+    if (val.value == "ถึงแก่กรรม") {
+      Object.keys(this.formParent.value.father).forEach((i: string) => {
+        if (i != "username" && i != "name" && i != "life") {
+          this.formParent.patchValue({
+            father: {
+              [i]: "-"
+            }
+          });
+        }
+      });
+    } else {
+      Object.keys(this.formParent.value.father).forEach((i: string) => {
+        if (i != "username" && i != "name" && i != "life") {
+          this.formParent.patchValue({
+            father: {
+              [i]: ""
+            }
+          });
+        }
+      });
+    }
+  };
+
+  changeLifeMother = val => {
+    if (val.value == "ถึงแก่กรรม") {
+      Object.keys(this.formParent.value.mother).forEach((i: string) => {
+        if (i != "username" && i != "name" && i != "life") {
+          this.formParent.patchValue({
+            mother: {
+              [i]: "-"
+            }
+          });
+        }
+      });
+    } else {
+      Object.keys(this.formParent.value.mother).forEach((i: string) => {
+        if (i != "username" && i != "name" && i != "life") {
+          this.formParent.patchValue({
+            mother: {
+              [i]: ""
+            }
+          });
+        }
+      });
+    }
+  };
 
   ngOnInit() {
     this.initialFormParent();

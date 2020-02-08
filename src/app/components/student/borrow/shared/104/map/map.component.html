@@ -1,1 +1,288 @@
-<p>map works!</p>
+<div class="spinner-border text-warning" role="status" *ngIf="pageWaitting">
+  <span class="sr-only">Loading...</span>
+</div>
+
+<div *ngIf="!onLoadForm" class="box-padding">
+  <b>{{ remark }}</b>
+</div>
+
+<div class="mt-3" *ngIf="!pageWaitting && onLoadForm">
+  <form
+    [formGroup]="formMap"
+    (ngSubmit)="
+      formMap.valid
+        ? submitFormMap()
+        : service.alert.alert('warning', 'โปรดกรอกข้อมูลให้ครบถ้วน')
+    "
+  >
+    <div class="text-center">
+      <h5><b>แผนผังที่อยู่อาศัยตามทะเบียนบ้านของผู้กู้ยืม</b></h5>
+    </div>
+
+    <div class="box-padding">
+      ข้าพเจ้า&nbsp;{{ service.localStorage.get("userlogin")["title"]
+      }}{{ service.localStorage.get("userlogin")["fname"] }}&nbsp;{{
+        service.localStorage.get("userlogin")["lname"]
+      }}&nbsp;รหัสนักศึกษา&nbsp;{{
+        service.localStorage.get("userlogin")["studentId"]
+      }}&nbsp;เป็นผู้ขอกู้ยืม<br />ขอรับรองว่า&nbsp;รูปถ่ายบ้านเป็นบ้านพักของ<br />
+      <div>
+        <div class="row">
+          <div class="col-md">
+            <mat-form-field>
+              <mat-label>คำนำหน้า</mat-label>
+              <mat-select
+                formControlName="guesthouse_title"
+                [disabled]="foundData"
+              >
+                <mat-option [value]="'นาย'">
+                  {{ "นาย" }}
+                </mat-option>
+                <mat-option [value]="'นาง'">
+                  {{ "นาง" }}
+                </mat-option>
+                <mat-option [value]="'นางสาว'">
+                  {{ "นางสาว" }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md">
+            <mat-form-field class="register-form">
+              <input
+                matInput
+                placeholder="ชื่อจริง"
+                type="text"
+                formControlName="guesthouse_fname"
+                readonly="{{ foundData }}"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="col-md">
+            <mat-form-field class="register-form">
+              <input
+                matInput
+                placeholder="นามสกุล"
+                type="text"
+                formControlName="guesthouse_lname"
+                readonly="{{ foundData }}"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="col-md">
+            <mat-form-field class="register-form">
+              <input
+                matInput
+                placeholder="เกียวข้องเป็น"
+                type="text"
+                formControlName="guesthouse_related"
+                readonly="{{ foundData }}"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <b>เจ้าบ้านคือ</b><br />
+      <div>
+        <div class="row">
+          <div class="col-md">
+            <mat-form-field>
+              <mat-label>คำนำหน้า</mat-label>
+              <mat-select
+                formControlName="ownerhouse_title"
+                [disabled]="foundData"
+              >
+                <mat-option [value]="'นาย'">
+                  {{ "นาย" }}
+                </mat-option>
+                <mat-option [value]="'นาง'">
+                  {{ "นาง" }}
+                </mat-option>
+                <mat-option [value]="'นางสาว'">
+                  {{ "นางสาว" }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md">
+            <mat-form-field class="register-form">
+              <input
+                matInput
+                placeholder="ชื่อจริง"
+                type="text"
+                formControlName="ownerhouse_fname"
+                readonly="{{ foundData }}"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="col-md">
+            <mat-form-field class="register-form">
+              <input
+                matInput
+                placeholder="นามสกุล"
+                type="text"
+                formControlName="ownerhouse_lname"
+                readonly="{{ foundData }}"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="col-md">
+            <mat-form-field class="register-form">
+              <input
+                matInput
+                placeholder="เกียวข้องเป็น"
+                type="text"
+                formControlName="ownerhouse_related"
+                readonly="{{ foundData }}"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <b>ตั้งอยู่ ณ</b><br />
+      <div>
+        <div class="row">
+          <div class="col-md">
+            <mat-form-field class="register-form">
+              <input
+                matInput
+                placeholder="บ้านเลขที่"
+                type="text"
+                formControlName="address_num"
+                readonly="{{ foundData }}"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md">
+            <mat-form-field class="register-form">
+              <input
+                matInput
+                placeholder="หมู่ที่"
+                type="text"
+                formControlName="address_village"
+                readonly="{{ foundData }}"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md">
+            <mat-form-field class="register-form">
+              <input
+                matInput
+                placeholder="ซอย"
+                type="text"
+                formControlName="address_alley"
+                readonly="{{ foundData }}"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md">
+            <mat-form-field class="register-form">
+              <input
+                matInput
+                placeholder="ถนน"
+                type="text"
+                formControlName="address_road"
+                readonly="{{ foundData }}"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md">
+            <mat-form-field class="register-form">
+              <input
+                matInput
+                placeholder="ตำบล"
+                type="text"
+                formControlName="address_subdis"
+                readonly="{{ foundData }}"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md">
+            <mat-form-field class="register-form">
+              <input
+                matInput
+                placeholder="อำเภอ"
+                type="text"
+                formControlName="address_district"
+                readonly="{{ foundData }}"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md">
+            <mat-form-field class="register-form">
+              <input
+                matInput
+                placeholder="จังหวัด"
+                type="text"
+                formControlName="address_province"
+                readonly="{{ foundData }}"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md">
+            <mat-form-field class="register-form">
+              <input
+                matInput
+                placeholder="หมายเลขโทรศัพท์"
+                type="text"
+                formControlName="phone"
+                readonly="{{ foundData }}"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <b>แผนที่</b><br />
+
+      <div>
+        <div class="mb-3">
+          <mat-form-field class="register-form">
+            <input
+              matInput
+              placeholder="คำสั่งแสดงแผนนที่"
+              type="text"
+              formControlName="googlemap_text"
+              readonly="{{ foundData }}"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-warning" *ngIf="!foundData">
+          บันทึก
+        </button>
+        <button
+          type="button"
+          class="btn btn-dark"
+          *ngIf="foundData"
+          (click)="foundData = true"
+        >
+          แก้ไข
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div *ngIf="foundData">
+    <hr />
+    <b class="mb-3">ยืนยันข้อมูล กยศ.104</b>
+    <div class="box-padding">
+      หากยืนยันข้อมูลแล้วจะไม่สามารถแก้ไขได้
+      จนกว่าจะได้รับการตรวจสอบจากเจ้าหน้าที่กองทุน
+    </div>
+    <div class="text-center">
+      <button type="button" class="btn btn-warning" (click)="submitConfirm()">
+        ยืนยัน
+      </button>
+    </div>
+  </div>
+</div>

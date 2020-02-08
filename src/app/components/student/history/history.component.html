@@ -1,1 +1,24 @@
-<p>history works!</p>
+<b>ประวัติการขอกู้ยืม</b>
+
+<div class="mt-3">
+  <table *ngIf="history != null" class="table table-bordered table-sm">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">ประเภทผู้กู้ยืม</th>
+        <th scope="col">ค่าเล่าเรียน</th>
+        <th scope="col">ค่าใช้จ่ายรายเดือน</th>
+        <th scope="col">สถานะการกู้ยืม</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="history.length > 0">
+      <tr *ngFor="let x of history; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ x.type }}</td>
+        <td>{{ service.numberWithCommas(x.termMoney) }} บาท</td>
+        <td>{{ x.monthMoney }}</td>
+        <td>{{ x.remark }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

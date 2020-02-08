@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { AppService } from 'src/app/services/app.service';
 
 @Component({
   selector: "app-student",
@@ -6,7 +7,7 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./student.component.scss"]
 })
 export class StudentComponent implements OnInit {
-  constructor() {}
+  constructor(public service:AppService) {}
 
   ngOnInit() {}
 }
