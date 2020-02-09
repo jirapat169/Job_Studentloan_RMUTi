@@ -18,11 +18,22 @@
         <td>{{ i + 1 }}</td>
         <td>{{ x.type }}</td>
         <td>{{ service.numberWithCommas(x.termMoney) }} บาท</td>
-        <td>{{ x.monthMoney }}</td>
+        <td>
+          {{ x.monthMoney == "กู้" ? service.numberWithCommas("14400") : 0 }}
+        </td>
         <td>{{ x.term }}</td>
         <td>{{ x.year }}</td>
         <td>{{ x.remark }}</td>
       </tr>
     </tbody>
   </table>
+</div>
+
+<div class="mt-3" *ngIf="history != null">
+  <p>รวมค่าเล่าเรียน : {{ service.numberWithCommas(cal().term) }} บาท</p>
+  <p>รวมค่าใช้จ่ายรายเดือน: {{ service.numberWithCommas(cal().month) }} บาท</p>
+  <b
+    >รวมค่าใช้จ่ายทั้งหมด :
+    {{ service.numberWithCommas(cal().month + cal().term) }}</b
+  >
 </div>

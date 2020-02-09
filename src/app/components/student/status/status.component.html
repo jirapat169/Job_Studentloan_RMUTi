@@ -5,8 +5,8 @@
 <div *ngIf="!pageWaitting">
   <b>ตรวจสอบสถานะ ปีการศึกษา{{ service.yearOnSystem() }}</b>
 
-  <div class="mt-3" *ngIf="history.type != 'รายเก่า'">
-    <b><p>ภาคเรียนที่ 1</p></b> ({{history.type}})
+  <div class="mt-3" *ngIf="history1.type != 'รายเก่า'">
+    <b><p>ภาคเรียนที่ 1</p></b> ({{history1.type}})
     <table class="table table-bordered table-sm table-striped table-hover">
       <thead>
         <tr>
@@ -49,8 +49,8 @@
     </table>
   </div>
 
-  <div class="mt-3" *ngIf="history.type == 'รายเก่า'">
-    <b><p>ภาคเรียนที่ 1</p></b> ({{history.type}})
+  <div class="mt-3" *ngIf="history1.type == 'รายเก่า'">
+    <b><p>ภาคเรียนที่ 1</p></b> ({{history1.type}})
     <table class="table table-bordered table-sm table-striped table-hover">
       <thead>
         <tr>
@@ -69,6 +69,32 @@
           <td>เอกสารประกอบ</td>
           <td>
             {{ getFormDoc(statusTerm1, "doc") }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-3">
+    <b><p>ภาคเรียนที่ 2</p></b>
+    <table class="table table-bordered table-sm table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">เอกสาร</th>
+          <th scope="col">สถานะ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- <tr>
+          <td>กยศ.103</td>
+          <td>
+            {{ teacherRemark == null ? "ยังไม่ยืนยันเอกสาร" : teacherRemark }}
+          </td>
+        </tr> -->
+        <tr>
+          <td>เอกสารประกอบ</td>
+          <td>
+            {{ getFormDoc(statusTerm2, "doc") }}
           </td>
         </tr>
       </tbody>

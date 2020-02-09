@@ -22,6 +22,11 @@ export class Doc2Component implements OnInit {
       year: [this.service.yearOnSystem()],
       term: ["2"],
       eStudentLoan: ["", Validators.required],
+      gpx: ["-", Validators.required],
+      studentDoc: [-"", Validators.required],
+      fatherDoc: ["-"],
+      motherDoc: ["-"],
+      parentDoc: ["-"],
       volunteerDoc: ["", Validators.required],
       volunteerImg: ["", Validators.required]
     });
@@ -131,7 +136,7 @@ export class Doc2Component implements OnInit {
         this.service.localStorage.get("userlogin")["username"]
       );
       formData.append("year", this.service.yearOnSystem());
-      formData.append("term", "1");
+      formData.append("term", "2");
       formData.append("formDoc", "doc");
       formData.append("remark", "รอการตรวจสอบจากเจ้าหน้าที่กองทุน");
 

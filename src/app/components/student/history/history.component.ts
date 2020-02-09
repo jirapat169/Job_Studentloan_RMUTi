@@ -24,4 +24,19 @@ export class HistoryComponent implements OnInit {
     }
     console.log(this.history);
   };
+
+  public cal = () => {
+    let money = {
+      term: 0,
+      month: 0
+    };
+    this.history.forEach(i => {
+      if (i["remark"] == "อนุมัติให้กู้ยืม") {
+        money.term += parseInt(i["termMoney"]);
+        money.month += parseInt(i["monthMoney"] == "กู้" ? "14400" : "0");
+      }
+    });
+
+    return money;
+  };
 }

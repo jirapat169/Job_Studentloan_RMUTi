@@ -10,7 +10,8 @@ export class StatusComponent implements OnInit {
   public statusTerm1: Array<any> = null;
   public statusTerm2: Array<any> = null;
   public teacherRemark: string = null;
-  public history: any = null;
+  public history1: any = null;
+  public history2: any = null;
   public pageWaitting: boolean = false;
 
   constructor(public service: AppService) {}
@@ -28,13 +29,20 @@ export class StatusComponent implements OnInit {
   private getInitial = async () => {
     let init: any = await this.service.http.get("Initial_borrow/getall");
     if (init.rowCount > 0) {
-      this.history = this.service.underscore.where(init.result, {
+      this.history1 = this.service.underscore.where(init.result, {
         username: this.service.localStorage.get("userlogin")["username"],
         term: "1",
         year: this.service.yearOnSystem()
       })[0];
+      
+      this.history2 = this.service.underscore.where(init.result, {
+        username: this.service.localStorage.get("userlogin")["username"],
+        term: "2",
+        year: this.service.yearOnSystem()
+      })[0];
     }
-    console.log("history", this.history);
+    console.log("history1", this.history1);
+    console.log("history2", this.history2);
   };
 
   private getRemark = async () => {
