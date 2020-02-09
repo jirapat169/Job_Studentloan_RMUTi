@@ -1,1 +1,158 @@
-<p>term2 works!</p>
+<h5 class="mb-3"><b>ข้อมูลกู้ยืมกองทุน</b> (ภาคเรียนที่ 2)</h5>
+
+<div
+  class="spinner-border text-warning"
+  role="status"
+  [hidden]="loadData == true"
+>
+  <span class="sr-only">Loading...</span>
+</div>
+
+<div [hidden]="loadData == false">
+  <form
+    [formGroup]="formFirst"
+    (ngSubmit)="
+      formFirst.invalid
+        ? service.alert.alert('warning', 'โปรดกรอกข้อมูลให้ครบถ้วน')
+        : nextPage()
+    "
+  >
+    <div class="ml-3">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <mat-form-field>
+            <mat-label>ค่าเล่าเรียน</mat-label>
+            <input
+              matInput
+              [hidden]="!databaseSave"
+              value="{{
+                formFirst.value.termMoney != 'ไม่กู้'
+                  ? service.numberWithCommas(formFirst.value.termMoney) + ' บาท'
+                  : 'ไม่กู้ค่าเล่าเรียน'
+              }}"
+              readonly
+            />
+            <mat-select [hidden]="databaseSave" formControlName="termMoney">
+              <mat-option value="">
+                โปรดเลือกค่าเล่าเรียน
+              </mat-option>
+              <mat-option [value]="'ไม่กู้'">
+                ไม่กู้ค่าเล่าเรียน
+              </mat-option>
+              <mat-option [value]="'7150'">
+                7150 บาท
+              </mat-option>
+              <mat-option [value]="'7500'">
+                7500 บาท
+              </mat-option>
+              <mat-option [value]="'8650'">
+                8650 บาท
+              </mat-option>
+              <mat-option [value]="'10150'">
+                10,150 บาท
+              </mat-option>
+              <mat-option [value]="'30000'">
+                30,000 บาท
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <mat-form-field>
+            <mat-label>ค่าใช้จ่ายรายเดือน</mat-label>
+            <input
+              matInput
+              [hidden]="!databaseSave"
+              value="{{
+                formFirst.value.monthMoney != 'ไม่กู้'
+                  ? 'กู้ค่าใช้จ่ายรายเดือน'
+                  : 'ไม่กู้ค่าใช้จ่ายรายเดือน'
+              }}"
+              readonly
+            />
+            <mat-select [hidden]="databaseSave" formControlName="monthMoney">
+              <mat-option value="">
+                โปรดเลือกค่าใช้จ่ายรายเดือน
+              </mat-option>
+              <mat-option [value]="'ไม่กู้'">
+                ไม่กู้ค่าใช้จ่ายรายเดือน
+              </mat-option>
+              <mat-option [value]="'กู้'">
+                กู้ค่าใช้จ่ายรายเดือน
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div *ngIf="formFirst.value.monthMoney == 'กู้'">
+          <b>ค่าใช้จ่ายรายเดือน</b>
+          <div class="ml-3">
+            เดือนละ 2,400 บาท จำนวน 6 เดือน
+          </div>
+          <div class="mb-3 ml-3">
+            ค่าใช้จ่ายรายเดือนทั้งหมด 14,400 บาท
+          </div>
+        </div>
+        <div *ngIf="formFirst.value.termMoney != ''">
+          <b>ค่าใช้จ่ายทั้งหมด (รวมค่าเล่าเรียนและค่าใช้จ่ายรายเดือน)</b>
+          <div class="ml-3">
+            {{
+              service.numberWithCommas(
+                formFirst.value.termMoney != "ไม่กู้"
+                  ? formFirst.value.termMoney
+                  : 0,
+                formFirst.value.monthMoney != "ไม่กู้"
+                  ? formFirst.value.monthMoney != ""
+                    ? 14400
+                    : 0
+                  : 0
+              )
+            }}
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <span
+          style="margin-left: 10px;margin-right: 10px;"
+          *ngIf="databaseSave"
+        >
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="databaseSave = false"
+          >
+            แก้ไข
+          </button>
+        </span>
+        <span style="margin-left: 10px;margin-right: 10px;">
+          <button
+            type="button"
+            class="btn btn-warning"
+            *ngIf="databaseSave"
+            [routerLink]="['/student/borrow/2/doc']"
+          >
+            ต่อไป
+          </button>
+          <button
+            type="submit"
+            class="btn btn-warning"
+            *ngIf="!databaseSave"
+            [disabled]="saveDataWaitting"
+          >
+            <span
+              *ngIf="saveDataWaitting"
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            บันทึก
+          </button>
+        </span>
+      </div>
+    </div>
+  </form>
+</div>

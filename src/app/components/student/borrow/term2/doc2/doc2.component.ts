@@ -1,35 +1,27 @@
-import { Validators } from "@angular/forms";
-import { FormGroup, FormBuilder } from "@angular/forms";
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { AppService } from "src/app/services/app.service";
 
 @Component({
-  selector: "app-doc",
-  templateUrl: "./doc.component.html",
-  styleUrls: ["./doc.component.scss"]
+  selector: "app-doc2",
+  templateUrl: "./doc2.component.html",
+  styleUrls: ["./doc2.component.scss"]
 })
-export class DocComponent implements OnInit {
+export class Doc2Component implements OnInit {
   public foundData: boolean = false;
   public onLoadForm: boolean = true;
   public remark: string = null;
   public formDoc: FormGroup;
   public pageWaitting: boolean = false;
-  @Input("selectBorrow") selectBorrow: string = "news";
   constructor(public service: AppService, private formBuilder: FormBuilder) {}
 
   async ngOnInit() {
-    console.log(this.selectBorrow);
     this.pageWaitting = true;
     this.formDoc = this.formBuilder.group({
       username: [this.service.localStorage.get("userlogin")["username"]],
       year: [this.service.yearOnSystem()],
-      term: ["1"],
+      term: ["2"],
       eStudentLoan: ["", Validators.required],
-      gpx: ["", Validators.required],
-      studentDoc: ["", Validators.required],
-      fatherDoc: [""],
-      motherDoc: [""],
-      parentDoc: [""],
       volunteerDoc: ["", Validators.required],
       volunteerImg: ["", Validators.required]
     });
@@ -37,14 +29,6 @@ export class DocComponent implements OnInit {
     await this.getDoc();
     await this.getConfirm();
 
-    if (this.selectBorrow == "old") {
-      this.formDoc.patchValue({
-        studentDoc: "-",
-        fatherDoc: "-",
-        motherDoc: "-",
-        parentDoc: "-"
-      });
-    }
     this.pageWaitting = false;
   }
 
@@ -55,7 +39,7 @@ export class DocComponent implements OnInit {
       this.service.localStorage.get("userlogin")["username"]
     );
     formData.append("year", this.service.yearOnSystem());
-    formData.append("term", "1");
+    formData.append("term", "2");
     formData.append("formDoc", "doc");
 
     let http_confirm: any = await this.service.http.post(
@@ -82,7 +66,7 @@ export class DocComponent implements OnInit {
       this.service.localStorage.get("userlogin")["username"]
     );
     formData.append("year", this.service.yearOnSystem());
-    formData.append("term", "1");
+    formData.append("term", "2");
 
     let getDoc: any = await this.service.http.post(
       "document_required/get",

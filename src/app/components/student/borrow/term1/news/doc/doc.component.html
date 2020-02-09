@@ -81,7 +81,7 @@
     </div>
   </div>
 
-  <div class="mb-3">
+  <div class="mb-3" *ngIf="selectBorrow == 'news'">
     <b>สำเนาบัตรประชาชนและสำเนาทะเบียนบ้านของนักศึกษา</b>
     <div class="mt-1">
       <button
@@ -118,8 +118,8 @@
     </div>
   </div>
 
-  <div class="mb-3">
-    <b>สำเนาบัตรประชาชนและสำเนาทะเบียนบ้านของบิดา</b>
+  <div class="mb-3" *ngIf="selectBorrow == 'news'">
+    <b>สำเนาบัตรประชาชนและสำเนาทะเบียนบ้านของบิดา (กรณีบิดายังมีชีวิต)</b>
     <div class="mt-1">
       <button
         type="button"
@@ -155,8 +155,8 @@
     </div>
   </div>
 
-  <div class="mb-3">
-    <b>สำเนาบัตรประชาชนและสำเนาทะเบียนบ้านของมารดา</b>
+  <div class="mb-3" *ngIf="selectBorrow == 'news'">
+    <b>สำเนาบัตรประชาชนและสำเนาทะเบียนบ้านของมารดา (กรณีมารดายังมีชีวิต)</b>
     <div class="mt-1">
       <button
         type="button"
@@ -192,7 +192,7 @@
     </div>
   </div>
 
-  <div class="mb-3">
+  <div class="mb-3" *ngIf="selectBorrow == 'news'">
     <b>สำเนาบัตรประชาชนและสำเนาทะเบียนบ้านของผู้ปกครอง (ถ้ามี)</b>
     <div class="mt-1">
       <button

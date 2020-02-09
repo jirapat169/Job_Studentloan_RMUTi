@@ -1,3 +1,4 @@
+import { UploadImgComponent } from "./upload-img/upload-img.component";
 import { TeacherRemarkComponent } from "./borrow/shared/103/teacher-remark/teacher-remark.component";
 import { NonParentComponent } from "./borrow/shared/101/non-parent/non-parent.component";
 import { View101Component } from "./borrow/shared/101/view101/view101.component";
@@ -21,6 +22,7 @@ import { IncomeComponent } from "./borrow/shared/102/income/income.component";
 import { MapComponent } from "./borrow/shared/104/map/map.component";
 import { DocComponent } from "./borrow/term1/news/doc/doc.component";
 import { Confirm101Component } from "./borrow/shared/101/confirm101/confirm101.component";
+import { Doc2Component } from "./borrow/term2/doc2/doc2.component";
 
 const routes: Routes = [
   {
@@ -155,11 +157,16 @@ const routes: Routes = [
               {
                 path: "",
                 component: Term2Component
+              },
+              {
+                path: "doc",
+                component: Doc2Component
               }
             ]
           }
         ]
       },
+      { path: "uploadImg", component: UploadImgComponent },
       { path: "status", component: StatusComponent },
       { path: "history", component: HistoryComponent },
       { path: "changepass", component: ChangePasswordComponent },

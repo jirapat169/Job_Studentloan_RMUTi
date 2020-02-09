@@ -1,0 +1,142 @@
+<h5 class="mb-3"><b>ข้อมูลกู้ยืมกองทุน</b> (ภาคเรียนที่ 2)</h5>
+
+<div *ngIf="!onLoadForm && !pageWaitting" class="box-padding">
+  <b>{{ remark }}</b>
+</div>
+
+<div class="spinner-border text-warning" role="status" *ngIf="pageWaitting">
+  <span class="sr-only">Loading...</span>
+</div>
+
+<div class="box-padding" *ngIf="onLoadForm && !pageWaitting">
+  <div class="mb-3">
+    <b>แบบคำขอกู้ยืมเงิน จากระบบ e-Studentloan</b>
+    <div class="mt-1">
+      <button
+        type="button"
+        class="btn btn-secondary btn-sm"
+        (click)="service.jq('estudent').click()"
+      >
+        เลือกไฟล์
+      </button>
+
+      <a
+        *ngIf="formDoc.value.eStudentLoan.length > 0"
+        href="{{ service.filePath + formDoc.value.eStudentLoan }}"
+        role="button"
+        aria-pressed="true"
+        target="_blank"
+        class="ml-3"
+        >ไฟล์ที่อัพโหลด</a
+      >
+    </div>
+
+    <div class="input-group" [hidden]="'true'">
+      <div class="custom-file">
+        <input
+          type="file"
+          class="custom-file-input"
+          id="estudent"
+          (change)="fileUpload($event, 'eStudentLoan')"
+        />
+        <label class="custom-file-label" for="estudent">
+          {{ "เลือกไฟล์ใหม่" }}
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <b>รูปถ่ายการเข้าร่วมโครงการ/กิจกรรมจิตอาสา</b>
+    <div class="mt-1">
+      <button
+        type="button"
+        class="btn btn-secondary btn-sm"
+        (click)="service.jq('volunteerImg').click()"
+      >
+        เลือกไฟล์
+      </button>
+
+      <a
+        *ngIf="formDoc.value.volunteerImg.length > 0"
+        href="{{ service.filePath + formDoc.value.volunteerImg }}"
+        role="button"
+        aria-pressed="true"
+        target="_blank"
+        class="ml-3"
+        >ไฟล์ที่อัพโหลด</a
+      >
+    </div>
+
+    <div class="input-group" [hidden]="'true'">
+      <div class="custom-file">
+        <input
+          type="file"
+          class="custom-file-input"
+          id="volunteerImg"
+          (change)="fileUpload($event, 'volunteerImg')"
+        />
+        <label class="custom-file-label" for="volunteerImg">
+          {{ "เลือกไฟล์ใหม่" }}
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <b>ใบรับรองการเข้าร่วมโครงการ/กิจกรรมจิตอาสา</b>
+    <div class="mt-1">
+      <button
+        type="button"
+        class="btn btn-secondary btn-sm"
+        (click)="service.jq('volunteerDoc').click()"
+      >
+        เลือกไฟล์
+      </button>
+
+      <a
+        *ngIf="formDoc.value.volunteerDoc.length > 0"
+        href="{{ service.filePath + formDoc.value.volunteerDoc }}"
+        role="button"
+        aria-pressed="true"
+        target="_blank"
+        class="ml-3"
+        >ไฟล์ที่อัพโหลด</a
+      >
+    </div>
+
+    <div class="input-group" [hidden]="'true'">
+      <div class="custom-file">
+        <input
+          type="file"
+          class="custom-file-input"
+          id="volunteerDoc"
+          (change)="fileUpload($event, 'volunteerDoc')"
+        />
+        <label class="custom-file-label" for="volunteerDoc">
+          {{ "เลือกไฟล์ใหม่" }}
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <button type="button" class="btn btn-warning" (click)="submitDoc()">
+      บันทึกข้อมูล
+    </button>
+  </div>
+
+  <div *ngIf="foundData">
+    <hr />
+    <b class="mb-3">ยืนยันข้อมูล กยศ.104</b>
+    <div class="box-padding">
+      หากยืนยันข้อมูลแล้วจะไม่สามารถแก้ไขได้
+      จนกว่าจะได้รับการตรวจสอบจากเจ้าหน้าที่กองทุน
+    </div>
+    <div class="text-center">
+      <button type="button" class="btn btn-warning" (click)="submitConfirm()">
+        ยืนยัน
+      </button>
+    </div>
+  </div>
+</div>

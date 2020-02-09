@@ -3,6 +3,29 @@
     <div class="card">
       <div class="card-body">
         <b>นักศึกษา</b>
+        <div class="text-center mt-3">
+          <img
+            *ngIf="service.localStorage.get('userlogin')['imgpath'] == null"
+            src="./assets/รายเก่าเปลี่ยนสถานศึกษา.jpg"
+            width="150px"
+            alt="profileImg"
+          />
+
+          <img
+            *ngIf="service.localStorage.get('userlogin')['imgpath'] != null"
+            src="{{
+              service.filePath +
+                service.localStorage.get('userlogin')['imgpath']
+            }}"
+            width="60%"
+            alt="profileImg"
+          />
+        </div>
+        <div class="text-right">
+          <a [routerLink]="['/student/uploadImg']">
+            เปลี่ยนรูปประจำตัว
+          </a>
+        </div>
         <mat-nav-list>
           <mat-list-item>
             <a

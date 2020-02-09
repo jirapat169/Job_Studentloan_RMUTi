@@ -10,13 +10,32 @@ export class StatusComponent implements OnInit {
   public statusTerm1: Array<any> = null;
   public statusTerm2: Array<any> = null;
   public teacherRemark: string = null;
+  public history: any = null;
+  public pageWaitting: boolean = false;
 
   constructor(public service: AppService) {}
 
   async ngOnInit() {
+    this.pageWaitting = true;
+
+    await this.getInitial();
     await this.getStatus();
     await this.getRemark();
+
+    this.pageWaitting = false;
   }
+
+  private getInitial = async () => {
+    let init: any = await this.service.http.get("Initial_borrow/getall");
+    if (init.rowCount > 0) {
+      this.history = this.service.underscore.where(init.result, {
+        username: this.service.localStorage.get("userlogin")["username"],
+        term: "1",
+        year: this.service.yearOnSystem()
+      })[0];
+    }
+    console.log("history", this.history);
+  };
 
   private getRemark = async () => {
     let formData = new FormData();

@@ -21,6 +21,8 @@ import { OldComponent } from './borrow/term1/old/old.component';
 import { View101Component } from './borrow/shared/101/view101/view101.component';
 import { DocComponent } from './borrow/term1/news/doc/doc.component';
 import { Confirm101Component } from './borrow/shared/101/confirm101/confirm101.component';
+import { UploadImgComponent } from './upload-img/upload-img.component';
+import { Doc2Component } from './borrow/term2/doc2/doc2.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { Confirm101Component } from './borrow/shared/101/confirm101/confirm101.c
     View101Component,
     DocComponent,
     Confirm101Component,
+    UploadImgComponent,
+    Doc2Component,
   ],
   imports: [CommonModule, StudentRoutingModule, SharedModules]
 })

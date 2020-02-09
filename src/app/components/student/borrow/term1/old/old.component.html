@@ -1,1 +1,13 @@
-<p>old works!</p>
+<h5 class="mb-3"><b>ข้อมูลกู้ยืมกองทุน</b> (ภาคเรียนที่ 1)</h5>
+
+<mat-horizontal-stepper labelPosition="bottom">
+  <mat-step [completed]="false">
+    <ng-template matStepLabel>กยศ. 103</ng-template>
+    <app-teacher-remark></app-teacher-remark>
+  </mat-step>
+
+  <mat-step [completed]="false">
+    <ng-template matStepLabel>เอกสารประกอบ</ng-template>
+    <app-doc [selectBorrow]="'old'"></app-doc>
+  </mat-step>
+</mat-horizontal-stepper>
