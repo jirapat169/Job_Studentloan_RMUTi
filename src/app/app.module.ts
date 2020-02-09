@@ -1,3 +1,4 @@
+import { HttpClientModule } from "@angular/common/http";
 import { StudentTerm2Guard } from "./guards/student-term2.guard";
 import { StudentTerm1Guard } from "./guards/student-term1.guard";
 import { StudentGuard } from "./guards/student.guard";
@@ -33,6 +34,7 @@ import { MAT_DATE_LOCALE } from "@angular/material/core";
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     SharedModules
   ],

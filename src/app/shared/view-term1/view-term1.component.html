@@ -1,0 +1,30 @@
+<b>ตรวจสอบเอกสาร</b>
+<div *ngIf="initialBorrow != null">
+  <!-- รายใหม่ -->
+  <mat-tab-group
+    *ngIf="initialBorrow.type != 'รายเก่า'"
+    (selectedTabChange)="tabSelect($event)"
+  >
+    <mat-tab label="กยศ.101">
+      <app-std101 *ngIf="tabIndex == 0" [route]="routeValue"></app-std101>
+    </mat-tab>
+    <mat-tab label="เอกสารรับรองรายได้"> Content 2 </mat-tab>
+    <mat-tab label="กยศ.103"> Content 3 </mat-tab>
+    <mat-tab label="กยศ.104"> Content 3 </mat-tab>
+    <mat-tab label="เอกสารประกอบ"> Content 3 </mat-tab>
+  </mat-tab-group>
+
+  <!-- รายเก่า -->
+  <mat-horizontal-stepper
+    labelPosition="bottom"
+    *ngIf="initialBorrow.type == 'รายเก่า'"
+  >
+    <mat-step [completed]="false">
+      <ng-template matStepLabel>กยศ. 103</ng-template>
+    </mat-step>
+
+    <mat-step [completed]="false">
+      <ng-template matStepLabel>เอกสารประกอบ</ng-template>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>

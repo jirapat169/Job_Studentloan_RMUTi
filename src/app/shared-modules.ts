@@ -1,3 +1,7 @@
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserModule } from "@angular/platform-browser";
+import { ViewTerm2Component } from "./shared/view-term2/view-term2.component";
+import { ViewTerm1Component } from "./shared/view-term1/view-term1.component";
 import { ChangePasswordComponent } from "./shared/change-password/change-password.component";
 import { NgModule } from "@angular/core";
 import { A11yModule } from "@angular/cdk/a11y";
@@ -42,11 +46,68 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatTreeModule } from "@angular/material/tree";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { HttpClientModule, HttpClientJsonpModule } from "@angular/common/http";
+import { HttpClientJsonpModule } from "@angular/common/http";
 import { ProfileComponent } from "./shared/profile/profile.component";
+import { CommonModule } from "@angular/common";
+import { Std101Component } from './shared/view-term1/std101/std101.component';
 
 @NgModule({
-  declarations: [ChangePasswordComponent, ProfileComponent],
+  imports: [
+
+    CommonModule,
+    A11yModule,
+    CdkStepperModule,
+    CdkTableModule,
+    CdkTreeModule,
+    DragDropModule,
+    MatAutocompleteModule,
+    MatBadgeModule,
+    MatBottomSheetModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatStepperModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatExpansionModule,
+    MatGridListModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatTableModule,
+    MatTabsModule,
+    MatToolbarModule,
+    MatTooltipModule,
+    MatTreeModule,
+    PortalModule,
+    ScrollingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientJsonpModule
+  ],
+  declarations: [
+    ChangePasswordComponent,
+    ProfileComponent,
+    ViewTerm1Component,
+    ViewTerm2Component,
+    Std101Component
+  ],
   exports: [
     A11yModule,
     CdkStepperModule,
@@ -92,10 +153,12 @@ import { ProfileComponent } from "./shared/profile/profile.component";
     ScrollingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
     HttpClientJsonpModule,
     ChangePasswordComponent,
-    ProfileComponent
+    ProfileComponent,
+    ViewTerm1Component,
+    ViewTerm2Component,
+    Std101Component
   ]
 })
 export class SharedModules {}

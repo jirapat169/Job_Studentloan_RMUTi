@@ -140,7 +140,7 @@
             <input matInput placeholder="นามสกุล" formControlName="lname" />
           </mat-form-field>
 
-          <mat-form-field>
+          <mat-form-field *ngIf="formCommittee.value.status == 'insert'">
             <input
               matInput
               placeholder="อีเมล์"

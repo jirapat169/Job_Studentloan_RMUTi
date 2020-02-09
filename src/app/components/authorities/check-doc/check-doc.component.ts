@@ -9,6 +9,7 @@ import { Component, OnInit } from "@angular/core";
 export class CheckDocComponent implements OnInit {
   public organize: Array<any> = null;
   public studentInitial: Array<any> = null;
+  public termSelect: string = "1";
 
   constructor(public service: AppService) {}
 
@@ -17,6 +18,18 @@ export class CheckDocComponent implements OnInit {
     this.getInitialBorrow();
     this.getOrganize();
   }
+
+  public searchStudent = (branch: string = "") => {
+    if (branch.length > 0)
+      return this.service.underscore.where(this.studentInitial, {
+        branch: branch,
+        term: this.termSelect
+      });
+    else
+      return this.service.underscore.where(this.studentInitial, {
+        term: this.termSelect
+      });
+  };
 
   private getOrganize = () => {
     this.service.http.get("organize").then((value: any) => {
@@ -37,5 +50,38 @@ export class CheckDocComponent implements OnInit {
     }
 
     console.log(dataInitial);
+  };
+
+  public getDepartment = (code: string = "1000") => {
+    return this.service.underscore.filter(
+      this.service.underscore.where(this.organize, {
+        parent: code
+      }),
+      (x: any) => {
+        return x.name.includes("คณะ");
+      }
+    );
+  };
+
+  public getGroup = (code: string) => {
+    return this.service.underscore.filter(
+      this.service.underscore.where(this.organize, {
+        parent: code
+      }),
+      (x: any) => {
+        return x.name.includes("กลุ่มสาขา");
+      }
+    );
+  };
+
+  public getBranch = (code: string) => {
+    return this.service.underscore.filter(
+      this.service.underscore.where(this.organize, {
+        parent: code
+      }),
+      (x: any) => {
+        return x.name.includes("สาขา");
+      }
+    );
   };
 }
