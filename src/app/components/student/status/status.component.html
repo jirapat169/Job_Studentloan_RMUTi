@@ -6,7 +6,7 @@
   <b>ตรวจสอบสถานะ ปีการศึกษา{{ service.yearOnSystem() }}</b>
 
   <div class="mt-3" *ngIf="history1.type != 'รายเก่า'">
-    <b><p>ภาคเรียนที่ 1</p></b> ({{history1.type}})
+    <b><p>ภาคเรียนที่ 1</p></b> ({{ history1.type }})
     <table class="table table-bordered table-sm table-striped table-hover">
       <thead>
         <tr>
@@ -30,7 +30,14 @@
         <tr>
           <td>กยศ.103</td>
           <td>
-            {{ teacherRemark == null ? "ยังไม่ยืนยันเอกสาร" : teacherRemark }}
+            {{
+              teacherRemark == null
+                ? "ยังไม่ยืนยันเอกสาร"
+                : teacherRemark == "อนุมัติให้กู้ยืม" ||
+                  teacherRemark == "รอการอนุมัติจากอาจารย์ที่ปรึกษา"
+                ? teacherRemark
+                : "ไม่อนุมัติให้กู้ยืม เพราะ" + teacherRemark
+            }}
           </td>
         </tr>
         <tr>
@@ -50,7 +57,7 @@
   </div>
 
   <div class="mt-3" *ngIf="history1.type == 'รายเก่า'">
-    <b><p>ภาคเรียนที่ 1</p></b> ({{history1.type}})
+    <b><p>ภาคเรียนที่ 1</p></b> ({{ history1.type }})
     <table class="table table-bordered table-sm table-striped table-hover">
       <thead>
         <tr>
@@ -62,7 +69,14 @@
         <tr>
           <td>กยศ.103</td>
           <td>
-            {{ teacherRemark == null ? "ยังไม่ยืนยันเอกสาร" : teacherRemark }}
+            {{
+              teacherRemark == null
+                ? "ยังไม่ยืนยันเอกสาร"
+                : teacherRemark == "อนุมัติให้กู้ยืม" ||
+                  teacherRemark == "รอการอนุมัติจากอาจารย์ที่ปรึกษา"
+                ? teacherRemark
+                : "ไม่อนุมัติให้กู้ยืม เพราะ" + teacherRemark
+            }}
           </td>
         </tr>
         <tr>
