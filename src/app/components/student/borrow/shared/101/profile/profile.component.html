@@ -401,7 +401,27 @@
     <b class="mb-3">4. การสำเร็จการศึกษาระดับปริญญาตรี</b>
     <div class="box-padding">
       <div>
-        <mat-radio-group class="vertical-radio-group" formControlName="status">
+        <mat-radio-group
+          class="vertical-radio-group"
+          formControlName="status"
+          (change)="
+            $event.value == 'ไม่เคย'
+              ? formProfile.patchValue({
+                  bachelor: {
+                    schoolName: '-',
+                    department: '-',
+                    branch: '-'
+                  }
+                })
+              : formProfile.patchValue({
+                  bachelor: {
+                    schoolName: '',
+                    department: '',
+                    branch: ''
+                  }
+                })
+          "
+        >
           <mat-radio-button class="vertical-radio-button" value="ไม่เคย">
             ไม่เคยสำเร็จการศึกษาระดับปริญญาตรี
           </mat-radio-button>

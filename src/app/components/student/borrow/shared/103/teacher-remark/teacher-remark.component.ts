@@ -30,7 +30,7 @@ export class TeacherRemarkComponent implements OnInit {
     formData.append("term", "1");
     formData.append("year", this.service.yearOnSystem());
     formData.append("teacher", this.idTeacher);
-    formData.append("remark", "รอการอนุมัติจากอาจารย์ที่ปรึกษา");
+    formData.append("remark", "รอความเห็นจากอาจารย์ที่ปรึกษา");
 
     let http_sentTeacher: any = await this.service.http.post(
       "103_teacherremark/inup",

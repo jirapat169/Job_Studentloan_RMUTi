@@ -198,9 +198,9 @@ export class ProfileComponent implements OnInit {
         // สำเร็จการศึกษาระดับปริญญาตรี
         username: [this.service.localStorage.get("userlogin")["username"]],
         status: ["ไม่เคย"],
-        schoolName: [""],
-        department: [""],
-        branch: [""]
+        schoolName: ["", Validators.required],
+        department: ["", Validators.required],
+        branch: ["", Validators.required]
       }),
       scholarship: this.formBuilder.group({
         // เคยได้รับทุน
@@ -222,6 +222,10 @@ export class ProfileComponent implements OnInit {
       })
     });
   };
+
+  public a = (aa)=>{
+    console.log(aa)
+  }
 
   public addressCopy = () => {
     Object.keys(this.formProfile.value.birthAddress).forEach(key => {

@@ -29,7 +29,7 @@ import { MAT_DATE_LOCALE } from "@angular/material/core";
     IndexComponent,
     ContactComponent,
     NotfoundComponent,
-    StatisticsComponent
+    StatisticsComponent,
   ],
   imports: [
     BrowserModule,

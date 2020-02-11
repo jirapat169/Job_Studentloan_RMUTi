@@ -23,18 +23,18 @@
         </td>
         <td style="vertical-align: middle;">
           {{
-            x.remark == "อนุมัติให้กู้ยืม"
+            x.remark == "เห็นสมควร"
               ? x.remark
-              : x.remark == "รอการอนุมัติจากอาจารย์ที่ปรึกษา"
+              : x.remark == "รอความเห็นจากอาจารย์ที่ปรึกษา"
               ? x.remark
-              : "ไม่อนุมัติให้กู้ยืม"
+              : "ไม่เห็นสมควร"
           }}
         </td>
         <td style="vertical-align: middle;">
           {{
-            x.remark == "อนุมัติให้กู้ยืม" ||
-            x.remark == "รอการอนุมัติจากอาจารย์ที่ปรึกษา"
-              ? ""
+            x.remark == "เห็นสมควร" ||
+            x.remark == "รอความเห็นจากอาจารย์ที่ปรึกษา"
+              ? "-"
               : x.remark
           }}
         </td>
@@ -107,28 +107,23 @@
             class="vertical-radio-group"
             formControlName="selectRemark"
             (change)="
-              formRemark.value.selectRemark == 'อนุมัติให้กู้ยืม'
-                ? formRemark.patchValue({ remark: 'อนุมัติให้กู้ยืม' })
+              formRemark.value.selectRemark == 'เห็นสมควร'
+                ? formRemark.patchValue({ remark: 'เห็นสมควร' })
                 : formRemark.patchValue({ remark: '' })
             "
           >
-            <mat-radio-button
-              class="vertical-radio-button"
-              value="อนุมัติให้กู้ยืม"
-            >
-              อนุมัติให้กู้ยืม
+            <mat-radio-button class="vertical-radio-button" value="เห็นสมควร">
+              เห็นสมควร
             </mat-radio-button>
             <mat-radio-button
               class="vertical-radio-button"
-              value="ไม่อนุมัติให้กู้ยืม"
+              value="ไม่เห็นสมควร"
             >
-              ไม่อนุมัติให้กู้ยืม
+              ไม่เห็นสมควร
             </mat-radio-button>
           </mat-radio-group>
 
-          <mat-form-field
-            *ngIf="formRemark.value.selectRemark == 'ไม่อนุมัติให้กู้ยืม'"
-          >
+          <mat-form-field *ngIf="formRemark.value.selectRemark == 'ไม่เห็นสมควร'">
             <input matInput placeholder="เหตุผล" formControlName="remark" />
           </mat-form-field>
         </div>

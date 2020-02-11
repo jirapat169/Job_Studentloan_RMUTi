@@ -49,11 +49,14 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientJsonpModule } from "@angular/common/http";
 import { ProfileComponent } from "./shared/profile/profile.component";
 import { CommonModule } from "@angular/common";
-import { Std101Component } from './shared/view-term1/std101/std101.component';
+import { Std101Component } from "./shared/view-term1/std101/std101.component";
+import { ProfileComponent as Profile101 } from "./shared/view-term1/std101/profile/profile.component";
+import { ParentComponent } from "./shared/view-term1/std101/parent/parent.component";
+import { NonParentComponent } from "./shared/view-term1/std101/non-parent/non-parent.component";
+import { SpouseComponent } from "./shared/view-term1/std101/spouse/spouse.component";
 
 @NgModule({
   imports: [
-
     CommonModule,
     A11yModule,
     CdkStepperModule,
@@ -106,7 +109,11 @@ import { Std101Component } from './shared/view-term1/std101/std101.component';
     ProfileComponent,
     ViewTerm1Component,
     ViewTerm2Component,
-    Std101Component
+    Std101Component,
+    Profile101,
+    ParentComponent,
+    NonParentComponent,
+    SpouseComponent
   ],
   exports: [
     A11yModule,
@@ -158,7 +165,11 @@ import { Std101Component } from './shared/view-term1/std101/std101.component';
     ProfileComponent,
     ViewTerm1Component,
     ViewTerm2Component,
-    Std101Component
+    Std101Component,
+    Profile101,
+    ParentComponent,
+    NonParentComponent,
+    SpouseComponent
   ]
 })
 export class SharedModules {}

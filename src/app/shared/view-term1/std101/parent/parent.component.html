@@ -1,0 +1,10 @@
+<div class="spinner-border text-warning" role="status" *ngIf="pageWaitting">
+  <span class="sr-only">Loading...</span>
+</div>
+
+<div *ngIf="!pageWaitting">
+    <b>9. ข้อมูลบิดา</b>
+    <div class="box-padding">
+        <p><b>ชื่อ&nbsp;:&nbsp;</b>{{ parent.father.name }}</p>
+    </div>
+</div>

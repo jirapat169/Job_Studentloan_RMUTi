@@ -33,10 +33,10 @@
             {{
               teacherRemark == null
                 ? "ยังไม่ยืนยันเอกสาร"
-                : teacherRemark == "อนุมัติให้กู้ยืม" ||
-                  teacherRemark == "รอการอนุมัติจากอาจารย์ที่ปรึกษา"
+                : teacherRemark == "เห็นสมควร" ||
+                  teacherRemark == "รอความเห็นจากอาจารย์ที่ปรึกษา"
                 ? teacherRemark
-                : "ไม่อนุมัติให้กู้ยืม เพราะ" + teacherRemark
+                : "ไม่เห็นสมควร เพราะ" + teacherRemark
             }}
           </td>
         </tr>

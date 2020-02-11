@@ -1,22 +1,32 @@
 <div class="mt-3">
-  <mat-horizontal-stepper labelPosition="bottom">
+  <mat-horizontal-stepper
+    labelPosition="bottom"
+    (selectionChange)="stepper = $event.selectedIndex"
+  >
     <mat-step [completed]="false">
       <ng-template matStepLabel>ข้อมูลส่วนตัว</ng-template>
+      <app-profile-std *ngIf="stepper == 0" [route]="route"></app-profile-std>
     </mat-step>
 
     <mat-step [completed]="false">
       <ng-template matStepLabel>ข้อมูลบิดา - มารดา</ng-template>
+      <app-parent-std *ngIf="stepper == 1" [route]="route"></app-parent-std>
     </mat-step>
 
     <mat-step [completed]="false">
       <ng-template matStepLabel>ข้อมูลผู้ปกครอง</ng-template>
+      <app-non-parent-std
+        *ngIf="stepper == 2"
+        [route]="route"
+      ></app-non-parent-std>
     </mat-step>
 
     <mat-step [completed]="false">
       <ng-template matStepLabel>ข้อมูลคู่สมรส</ng-template>
+      <app-spouse-std *ngIf="stepper == 3" [route]="route"></app-spouse-std>
     </mat-step>
 
-    <mat-step [completed]="false">
+    <mat-step [completed]="false" *ngIf="route.role == 'authorities'">
       <ng-template matStepLabel>ยืนยันการตรวจสอบเอกสาร</ng-template>
     </mat-step>
   </mat-horizontal-stepper>

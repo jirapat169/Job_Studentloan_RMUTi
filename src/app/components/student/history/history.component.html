@@ -19,11 +19,13 @@
         <td>{{ x.type }}</td>
         <td>{{ service.numberWithCommas(x.termMoney) }} บาท</td>
         <td>
-          {{ x.monthMoney == "กู้" ? service.numberWithCommas("14400") : 0 }}
+          {{ x.monthMoney == "กู้" ? service.numberWithCommas("14400") : 0 }} บาท
         </td>
         <td>{{ x.term }}</td>
         <td>{{ x.year }}</td>
-        <td>{{ x.remark }}</td>
+        <td>
+          {{ x.remark == "กำลังจัดเตรียมเอกสาร" ? "รอตรวจสอบ" : x.remark }}
+        </td>
       </tr>
     </tbody>
   </table>

@@ -1,0 +1,274 @@
+<div class="spinner-border text-warning" role="status" *ngIf="pageWaitting">
+  <span class="sr-only">Loading...</span>
+</div>
+
+<div *ngIf="!pageWaitting">
+  <div style="height: 100px;overflow: hidden;" class="text-right">
+    <img
+      src="{{ this.service.filePath + student101.userInfo.imgpath }}"
+      width="100px"
+      alt="userprofileImg"
+      *ngIf="student101.userInfo.imgpath != null"
+    />
+    <img
+      src="./assets/รายเก่าเปลี่ยนสถานศึกษา.jpg"
+      width="100px"
+      alt="userprofileImg"
+      *ngIf="student101.userInfo.imgpath == null"
+    />
+  </div>
+
+  <b>ความประสงค์ขอกู้ยืมเงิน</b>
+  <div class="box-padding">
+    <p>
+      {{
+        this.student101.profile.type == "กยศ.เดิม"
+          ? "ลักษณะที่ 1 เงินกู้ยืมเพื่อการศึกษาให้แก่นักเรียนหรือนักศึกษาที่ขาดแคลนทุนทรัพย์"
+          : "ลักษณะที่ 2 เงินกู้ยืมเพื่อการศึกษาให้แก่นักเรียนหรือนักศึกษาในสาขาที่เป็นความต้องการหลักฯ"
+      }}
+    </p>
+  </div>
+
+  <b>1. ข้อมูลผู้ขอกู้ยืมเงิน</b>
+  <div class="box-padding">
+    <p>
+      <b>ชื่อ&nbsp;:&nbsp;</b>{{ this.student101.userInfo.title
+      }}{{ this.student101.userInfo.fname }}&nbsp;{{
+        this.student101.userInfo.lname
+      }}
+    </p>
+    <p>
+      <b>วัน/เดือน/ปีเกิด&nbsp;:&nbsp;</b
+      >{{
+        this.student101.profile.bdate.getDate() +
+          "/" +
+          (this.student101.profile.bdate.getMonth() + 1) +
+          "/" +
+          (this.student101.profile.bdate.getFullYear() + 543)
+      }}
+    </p>
+    <p><b>อายุ&nbsp;:&nbsp;</b>{{ calBdate(this.student101.profile.bdate) }}</p>
+    <p><b>สัญชาติ&nbsp;:&nbsp;</b>{{ this.student101.profile.nationality }}</p>
+    <p><b>เชื้อชาติ&nbsp;:&nbsp;</b>{{ this.student101.profile.race }}</p>
+    <p>
+      <b>เลขประจำตัวประชาชน&nbsp;:&nbsp;</b
+      >{{ this.student101.userInfo.personalId }}
+    </p>
+    <p>
+      <b>ระดับการศึกษา&nbsp;:&nbsp;</b
+      >{{ this.student101.profile.educationLevel }}
+    </p>
+    <p><b>ชั้นปีที่&nbsp;:&nbsp;</b>{{ this.student101.profile.level }}</p>
+    <p><b>คณะ&nbsp;:&nbsp;</b>{{ this.student101.userInfo.department_name }}</p>
+    <p>
+      <b>สาขาวิชา&nbsp;:&nbsp;</b>{{ this.student101.userInfo.branch_name }}
+    </p>
+    <p><b>เกรดเฉลี่ยสะสม&nbsp;:&nbsp;</b>{{ this.student101.profile.gpx }}</p>
+    <p>
+      <b>รหัสนักศึกษา&nbsp;:&nbsp;</b>{{ this.student101.userInfo.studentId }}
+    </p>
+    <p>
+      <b>อาจารย์ที่ปรึกษา&nbsp;:&nbsp;</b>{{ this.teacher.title
+      }}{{ this.teacher.fname }}&nbsp;{{ this.teacher.lname }}
+    </p>
+  </div>
+  <hr />
+  <b>2. ที่อยู่ตามทะเบียนบ้าน</b>
+  <div class="box-padding">
+    <p>
+      <b>บ้านเลขที่&nbsp;:&nbsp;</b
+      >{{ this.student101.birthAddress.homeNumber }}
+    </p>
+    <p>
+      <b>หมู่ที่&nbsp;:&nbsp;</b
+      >{{ this.student101.birthAddress.villageNumber }}
+    </p>
+    <p><b>ตรอก/ซอย&nbsp;:&nbsp;</b>{{ this.student101.birthAddress.alley }}</p>
+    <p><b>ถนน&nbsp;:&nbsp;</b>{{ this.student101.birthAddress.road }}</p>
+    <p>
+      <b>ตำบล/แขวง&nbsp;:&nbsp;</b
+      >{{ this.student101.birthAddress.subDistrict }}
+    </p>
+    <p>
+      <b>อำเภอ/เขต&nbsp;:&nbsp;</b>{{ this.student101.birthAddress.district }}
+    </p>
+    <p>
+      <b>จังหวัด&nbsp;:&nbsp;</b>{{ this.student101.birthAddress.province }}
+    </p>
+    <p>
+      <b>รหัสไปรษณีย์&nbsp;:&nbsp;</b>{{ this.student101.birthAddress.zipCode }}
+    </p>
+    <p>
+      <b>หมายเลขโทรศัพท์&nbsp;:&nbsp;</b
+      >{{ this.student101.birthAddress.phone }}
+    </p>
+  </div>
+  <hr />
+  <b>3. ที่อยู่ปัจจุบัน</b>
+  <div class="box-padding">
+    <p>
+      <b>บ้านเลขที่&nbsp;:&nbsp;</b
+      >{{ this.student101.currentAddress.homeNumber }}
+    </p>
+    <p>
+      <b>หมู่ที่&nbsp;:&nbsp;</b
+      >{{ this.student101.currentAddress.villageNumber }}
+    </p>
+    <p>
+      <b>ตรอก/ซอย&nbsp;:&nbsp;</b>{{ this.student101.currentAddress.alley }}
+    </p>
+    <p><b>ถนน&nbsp;:&nbsp;</b>{{ this.student101.currentAddress.road }}</p>
+    <p>
+      <b>ตำบล/แขวง&nbsp;:&nbsp;</b
+      >{{ this.student101.currentAddress.subDistrict }}
+    </p>
+    <p>
+      <b>อำเภอ/เขต&nbsp;:&nbsp;</b>{{ this.student101.currentAddress.district }}
+    </p>
+    <p>
+      <b>จังหวัด&nbsp;:&nbsp;</b>{{ this.student101.currentAddress.province }}
+    </p>
+    <p>
+      <b>รหัสไปรษณีย์&nbsp;:&nbsp;</b
+      >{{ this.student101.currentAddress.zipCode }}
+    </p>
+    <p>
+      <b>หมายเลขโทรศัพท์&nbsp;:&nbsp;</b
+      >{{ this.student101.currentAddress.phone }}
+    </p>
+  </div>
+  <hr />
+  <b>4. การสำเร็จการศึกษาระดับปริญญาตรี</b>
+  <div class="box-padding">
+    <p>
+      <b>สถานะ&nbsp;:&nbsp;</b
+      >{{
+        this.student101.bachelor.status == "เคย"
+          ? "เคยสำเร็จการศึกษาระดับปริญญาตรี"
+          : "ไม่เคยสำเร็จการศึกษาระดับปริญญาตรี"
+      }}
+    </p>
+    <div *ngIf="this.student101.bachelor.status == 'เคย'">
+      <p>
+        <b>มหาวิทยาลัย&nbsp;:&nbsp;</b
+        >{{
+          this.student101.bachelor.schoolName.length > 0
+            ? this.student101.bachelor.schoolName
+            : "ไม่ได้กรอกข้อมูล"
+        }}
+      </p>
+      <p>
+        <b>คณะ&nbsp;:&nbsp;</b
+        >{{
+          this.student101.bachelor.department.length > 0
+            ? this.student101.bachelor.department
+            : "ไม่ได้กรอกข้อมูล"
+        }}
+      </p>
+      <p>
+        <b>สาขาวิชา&nbsp;:&nbsp;</b
+        >{{
+          this.student101.bachelor.branch.length > 0
+            ? this.student101.bachelor.branch
+            : "ไม่ได้กรอกข้อมูล"
+        }}
+      </p>
+    </div>
+  </div>
+  <hr />
+  <b>5. เคยได้รับทุนการศึกษา</b>
+  <div class="box-padding">
+    <div *ngIf="this.student101.scholarship.length <= 0">
+      <p><b>สถานะ&nbsp;:&nbsp;</b>{{ "ไม่เคยได้รับทุนการศึกษา" }}</p>
+    </div>
+    <div *ngIf="this.student101.scholarship.length > 0">
+      <div *ngIf="this.student101.scholarship[0].status == 'เคย'">
+        <p><b>สถานะ&nbsp;:&nbsp;</b>{{ "เคยได้รับทุนการศึกษา" }}</p>
+        <table
+          class="table table-bordered mt-2 table-sm table-hover table-striped"
+        >
+          <thead>
+            <tr>
+              <th scope="col">ปีการศึกษา</th>
+              <th scope="col">ประเภท</th>
+              <th scope="col">ชื่อทุนการศึกษา</th>
+              <th scope="col">จำนวนเงิน</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let x of this.student101.scholarship">
+              <td>{{ x.year }}</td>
+              <td>{{ x.type }}</td>
+              <td>{{ x.name }}</td>
+              <td>{{ x.amount }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="this.student101.scholarship[0].status != 'เคย'">
+        <p><b>สถานะ&nbsp;:&nbsp;</b>{{ "ไม่เคยได้รับทุนการศึกษา" }}</p>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <b>6. เคยกู้ยืมเงินจากกองทุนเงินให้กู้ยืมเพื่อการศึกษา</b>
+  <div class="box-padding">
+    <div *ngIf="this.student101.borrow.length <= 0">
+      <p>
+        <b>สถานะ&nbsp;:&nbsp;</b
+        >{{ "ไม่เคยกู้ยืมเงินจากกองทุนเงินให้กู้ยืมเพื่อการศึกษา" }}
+      </p>
+    </div>
+    <div *ngIf="this.student101.borrow.length > 0">
+      <div *ngIf="this.student101.borrow[0].status == 'เคย'">
+        <p>
+          <b>สถานะ&nbsp;:&nbsp;</b
+          >{{ "เคยกู้ยืมเงินจากกองทุนเงินให้กู้ยืมเพื่อการศึกษา" }}
+        </p>
+        <p><b>ประเภท&nbsp;:&nbsp;</b>{{ this.student101.borrow[0].type }}</p>
+        <table
+          class="table table-bordered mt-2 table-sm table-hover table-striped"
+        >
+          <thead>
+            <tr>
+              <th scope="col">ปีการศึกษา</th>
+              <th scope="col">ระดับการศึกษา</th>
+              <th scope="col">ชั้นปี</th>
+              <th scope="col">สถานศึกษา</th>
+              <th scope="col">จำนวนเงิน</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let x of this.student101.borrow">
+              <td>{{ x.year }}</td>
+              <td>{{ x.educationLevel }}</td>
+              <td>{{ x.level }}</td>
+              <td>{{ x.schoolName }}</td>
+              <td>{{ x.amount }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="this.student101.borrow[0].status != 'เคย'">
+        <p>
+          <b>สถานะ&nbsp;:&nbsp;</b
+          >{{ "ไม่เคยกู้ยืมเงินจากกองทุนเงินให้กู้ยืมเพื่อการศึกษา" }}
+        </p>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <b>7. ข้าพเจ้าได้รับการอุปการะด้านการเงินจาก</b>
+  <div class="box-padding">
+    <p><b>ชื่อ&nbsp;:&nbsp;</b>{{ this.student101.support.name }}</p>
+    <p>
+      <b>ความสัมพันธ์&nbsp;:&nbsp;</b>{{ this.student101.support.relationship }}
+    </p>
+  </div>
+  <hr />
+  <b>8. ข้าพเจ้าได้รับค่าใช่จ่ายเดือนละ</b>
+  <div class="box-padding">
+    <p><b>จำนวนเงิน&nbsp;:&nbsp;</b>{{ this.student101.support.amount }} บาท</p>
+  </div>
+  <hr />
+</div>

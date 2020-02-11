@@ -24,8 +24,8 @@ export class Check103Component implements OnInit {
       term: [data != null ? data.term : ""],
       year: [data != null ? data.year : ""],
       teacher: [this.service.localStorage.get("userlogin")["username"]],
-      selectRemark: ["อนุมัติให้กู้ยืม", Validators.required],
-      remark: ["อนุมัติให้กู้ยืม", Validators.required]
+      selectRemark: ["เห็นสมควร", Validators.required],
+      remark: ["เห็นสมควร", Validators.required]
     });
   };
 
@@ -35,6 +35,8 @@ export class Check103Component implements OnInit {
     let http_remark: any = await this.service.http.get(
       "103_teacherremark/getall"
     );
+
+    console.log(http_remark)
     if (http_remark.rowCount > 0) {
       this.remarkList = this.service.underscore.where(http_remark.result, {
         teacher: this.service.localStorage.get("userlogin")["username"]

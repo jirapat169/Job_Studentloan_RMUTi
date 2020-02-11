@@ -14,6 +14,7 @@ export class ViewTerm1Component implements OnInit {
   };
   public initialBorrow: any = null;
   public tabIndex: number = 0;
+  public pageWaitting: boolean = false;
 
   //  ---- 101 ----
 
@@ -28,12 +29,14 @@ export class ViewTerm1Component implements OnInit {
   };
 
   async ngOnInit() {
+    this.pageWaitting = true;
     this.routeValue = {
       username: this.route.snapshot.paramMap.get("username"),
       role: this.route.snapshot.paramMap.get("role")
     };
     console.log("route", this.routeValue);
     await this.getInitialBorrow();
+    this.pageWaitting = false;
   }
 
   private getInitialBorrow = async () => {

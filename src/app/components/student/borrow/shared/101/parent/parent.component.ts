@@ -13,7 +13,7 @@ export class ParentComponent implements OnInit {
   public saveWaitting: boolean = false;
   public fetchWaitting: boolean = false;
 
-  public fatherLife:boolean = false;
+  public fatherLife: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -197,6 +197,16 @@ export class ParentComponent implements OnInit {
   };
 
   public submitParent = async () => {
+    if (
+      this.formParent.value.father.income == "ร่วมกับมารดา" &&
+      this.formParent.value.mother.income == "ร่วมกับบิดา"
+    ) {
+      this.service.alert.alert(
+        "warning",
+        "โปรดกรอกรายได้ของบิดา - มารดา ให้ถูกต้อง"
+      );
+      return false;
+    }
     this.saveWaitting = true;
     let formParent = { ...this.formParent.value };
     console.log(this.formParent.value);
