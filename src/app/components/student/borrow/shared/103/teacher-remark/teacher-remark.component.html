@@ -15,11 +15,13 @@
       </div>
 
       <div *ngIf="teacherRemark != null">
-        {{
-          teacherRemark == "อนุมัติให้กู้ยืม" ||
-          teacherRemark == "รอการอนุมัติจากอาจารย์ที่ปรึกษา"
+        <b>ความเห็นจากอาจารย์ที่ปรึกษา : </b
+        >{{
+          teacherRemark == "เห็นสมควร"
+            ? "เห็นควรพิจารณา"
+            : teacherRemark == "รอการอนุมัติจากอาจารย์ที่ปรึกษา"
             ? teacherRemark
-            : "ไม่อนุมัติให้กู้ยืม เพราะ" + teacherRemark
+            : "ไม่เห็นควรพิจารณา เพราะ" + teacherRemark
         }}
       </div>
     </div>

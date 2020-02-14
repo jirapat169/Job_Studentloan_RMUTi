@@ -34,7 +34,7 @@ export class ViewTerm1Component implements OnInit {
       username: this.route.snapshot.paramMap.get("username"),
       role: this.route.snapshot.paramMap.get("role")
     };
-    console.log("route", this.routeValue);
+    // console.log("route", this.routeValue);
     await this.getInitialBorrow();
     this.pageWaitting = false;
   }

@@ -14,7 +14,7 @@ export class CheckDocComponent implements OnInit {
   constructor(public service: AppService) {}
 
   ngOnInit() {
-    console.log(this.service.localStorage.get("userlogin"));
+    //  console.log(this.service.localStorage.get("userlogin"));
     this.getInitialBorrow();
     this.getOrganize();
   }

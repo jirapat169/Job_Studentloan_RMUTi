@@ -1,5 +1,25 @@
-<div *ngIf="!onLoadForm && !pageWaitting" class="box-padding">
-  <b>{{ remark }}</b>
+<div *ngIf="!pageWaitting">
+  <div
+    class="alert alert-danger"
+    role="alert"
+    *ngIf="remark == 'เอกสารไม่ถูกต้อง'"
+  >
+    <b>เอกสารไม่ถูกต้อง</b> : {{ remark2 }}
+  </div>
+  <div
+    class="alert alert-success"
+    role="alert"
+    *ngIf="remark == 'เอกสารถูกต้อง'"
+  >
+    <b>ผ่านการตรวจสอบแล้ว</b> : {{ remark }}
+  </div>
+  <div
+    class="alert alert-warning"
+    role="alert"
+    *ngIf="remark == 'รอการตรวจสอบจากเจ้าหน้าที่กองทุน'"
+  >
+    <b>รอการตรวจสอบจากเจ้าหน้าที่กองทุน</b>
+  </div>
 </div>
 
 <div class="spinner-border text-warning" role="status" *ngIf="pageWaitting">

@@ -13,6 +13,7 @@ export class MapComponent implements OnInit {
   public foundData: boolean = false;
   public onLoadForm: boolean = true;
   public remark: string = null;
+  public remark2: string = null;
 
   constructor(private formBuilder: FormBuilder, public service: AppService) {}
 
@@ -64,9 +65,13 @@ export class MapComponent implements OnInit {
         http_confirm.result[0]["remark"] == "รอการตรวจสอบจากเจ้าหน้าที่กองทุน"
       ) {
         this.onLoadForm = false;
-        this.remark = http_confirm.result[0]["remark"];
+      } else if (http_confirm.result[0]["remark"] == "เอกสารถูกต้อง") {
+        this.onLoadForm = false;
       }
+      this.remark = http_confirm.result[0]["remark"];
+      this.remark2 = http_confirm.result[0]["remark2"];
     }
+
     console.log("http_confirm", http_confirm);
   };
 

@@ -1,5 +1,3 @@
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { BrowserModule } from "@angular/platform-browser";
 import { ViewTerm2Component } from "./shared/view-term2/view-term2.component";
 import { ViewTerm1Component } from "./shared/view-term1/view-term1.component";
 import { ChangePasswordComponent } from "./shared/change-password/change-password.component";
@@ -54,6 +52,10 @@ import { ProfileComponent as Profile101 } from "./shared/view-term1/std101/profi
 import { ParentComponent } from "./shared/view-term1/std101/parent/parent.component";
 import { NonParentComponent } from "./shared/view-term1/std101/non-parent/non-parent.component";
 import { SpouseComponent } from "./shared/view-term1/std101/spouse/spouse.component";
+import { Std102Component } from "./shared/view-term1/std102/std102.component";
+import { Std103Component } from "./shared/view-term1/std103/std103.component";
+import { Std104Component } from "./shared/view-term1/std104/std104.component";
+import { StddocComponent } from "./shared/view-term1/stddoc/stddoc.component";
 
 @NgModule({
   imports: [
@@ -110,6 +112,10 @@ import { SpouseComponent } from "./shared/view-term1/std101/spouse/spouse.compon
     ViewTerm1Component,
     ViewTerm2Component,
     Std101Component,
+    Std102Component,
+    Std103Component,
+    Std104Component,
+    StddocComponent,
     Profile101,
     ParentComponent,
     NonParentComponent,
@@ -166,6 +172,10 @@ import { SpouseComponent } from "./shared/view-term1/std101/spouse/spouse.compon
     ViewTerm1Component,
     ViewTerm2Component,
     Std101Component,
+    Std102Component,
+    Std103Component,
+    Std104Component,
+    StddocComponent,
     Profile101,
     ParentComponent,
     NonParentComponent,

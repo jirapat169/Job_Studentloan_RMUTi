@@ -34,7 +34,7 @@ export class StatusComponent implements OnInit {
         term: "1",
         year: this.service.yearOnSystem()
       })[0];
-      
+
       this.history2 = this.service.underscore.where(init.result, {
         username: this.service.localStorage.get("userlogin")["username"],
         term: "2",
@@ -67,7 +67,12 @@ export class StatusComponent implements OnInit {
   public getFormDoc = (arr: any, data: string) => {
     let search = this.service.underscore.where(arr, { formDoc: data });
     if (search.length > 0) {
-      return search[0]["remark"];
+      return (
+        search[0]["remark"] +
+        (search[0]["remark"] == "เอกสารไม่ถูกต้อง"
+          ? " : (" + search[0]["remark2"] + ")"
+          : "")
+      );
     } else {
       return "ยังไม่ยืนยันเอกสาร";
     }

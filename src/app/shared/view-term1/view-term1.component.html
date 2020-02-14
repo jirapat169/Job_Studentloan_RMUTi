@@ -1,8 +1,8 @@
-<div class="spinner-border text-warning" role="status" *ngIf="pageWaitting" >
+<div class="spinner-border text-warning" role="status" *ngIf="pageWaitting">
   <span class="sr-only">Loading...</span>
 </div>
 
-<div *ngIf="!pageWaitting" >
+<div *ngIf="!pageWaitting">
   <b>ตรวจสอบเอกสาร</b>
   <p>{{ initialBorrow.type }}</p>
 
@@ -11,6 +11,7 @@
     <mat-tab-group
       *ngIf="initialBorrow.type != 'รายเก่า'"
       (selectedTabChange)="tabSelect($event)"
+      [(selectedIndex)]="tabIndex"
     >
       <mat-tab label="กยศ.101">
         <app-std101-std
@@ -18,24 +19,47 @@
           [route]="routeValue"
         ></app-std101-std>
       </mat-tab>
-      <mat-tab label="เอกสารรับรองรายได้"> Content 2 </mat-tab>
-      <mat-tab label="กยศ.103"> Content 3 </mat-tab>
-      <mat-tab label="กยศ.104"> Content 3 </mat-tab>
-      <mat-tab label="เอกสารประกอบ"> Content 3 </mat-tab>
+      <mat-tab label="เอกสารรับรองรายได้">
+        <app-std102-std
+          *ngIf="tabIndex == 1"
+          [route]="routeValue"
+        ></app-std102-std>
+      </mat-tab>
+      <mat-tab label="กยศ.103">
+        <app-std103-std
+          *ngIf="tabIndex == 2"
+          [route]="routeValue"
+          [term]="'1'"
+        ></app-std103-std>
+      </mat-tab>
+      <mat-tab label="กยศ.104">
+        <app-std104-std
+          *ngIf="tabIndex == 3"
+          [route]="routeValue"
+        ></app-std104-std>
+      </mat-tab>
+      <mat-tab label="เอกสารประกอบ">
+        <app-stddoc-std
+          *ngIf="tabIndex == 4"
+          [route]="routeValue"
+          [term]="'1'"
+          [typeDoc]="'news'"
+        ></app-stddoc-std>
+      </mat-tab>
     </mat-tab-group>
 
-    <!-- รายเก่า -->
-    <mat-horizontal-stepper
-      labelPosition="bottom"
-      *ngIf="initialBorrow.type == 'รายเก่า'"
-    >
-      <mat-step [completed]="false">
-        <ng-template matStepLabel>กยศ. 103</ng-template>
-      </mat-step>
+    <mat-tab-group *ngIf="initialBorrow.type == 'รายเก่า'">
+      <mat-tab label="กยศ.103">
+        <app-std103-std [route]="routeValue" [term]="'1'"></app-std103-std>
+      </mat-tab>
 
-      <mat-step [completed]="false">
-        <ng-template matStepLabel>เอกสารประกอบ</ng-template>
-      </mat-step>
-    </mat-horizontal-stepper>
+      <mat-tab label="เอกสารประกอบ">
+        <app-stddoc-std
+          [route]="routeValue"
+          [term]="'1'"
+          [typeDoc]="'old'"
+        ></app-stddoc-std>
+      </mat-tab>
+    </mat-tab-group>
   </div>
 </div>

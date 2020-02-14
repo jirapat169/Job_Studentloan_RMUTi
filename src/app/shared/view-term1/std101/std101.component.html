@@ -28,6 +28,76 @@
 
     <mat-step [completed]="false" *ngIf="route.role == 'authorities'">
       <ng-template matStepLabel>ยืนยันการตรวจสอบเอกสาร</ng-template>
+      <div
+        class="spinner-border text-warning"
+        role="status"
+        *ngIf="pageWaitting"
+      >
+        <span class="sr-only">Loading...</span>
+      </div>
+
+      <div *ngIf="!pageWaitting">
+        <div *ngIf="confirmForm101 == null">
+          <b>ยังไม่ยืนยันเอกสาร</b>
+        </div>
+        <div *ngIf="confirmForm101 != null">
+          <div *ngIf="confirmForm101['remark'] == 'เอกสารถูกต้อง'">
+            <p><b>ตรวจสอบแล้ว</b> : {{ confirmForm101["remark"] }}</p>
+          </div>
+          <div *ngIf="confirmForm101['remark'] == 'เอกสารไม่ถูกต้อง'">
+            <p><b>ตรวจสอบแล้ว</b></p>
+            <p>การแก้ไขเอกสาร : {{ confirmForm101["remark2"] }}</p>
+          </div>
+          <div
+            *ngIf="
+              confirmForm101['remark'] == 'รอการตรวจสอบจากเจ้าหน้าที่กองทุน'
+            "
+          >
+            <form
+              [formGroup]="form101Confirm"
+              (ngSubmit)="
+                form101Confirm.valid
+                  ? form101ConfirmSubmit()
+                  : service.alert.alert('warning', 'โปรดกรอกข้อมูลให้ครบถ้วน')
+              "
+            >
+              <mat-radio-group
+                class="vertical-radio-group"
+                formControlName="remark"
+              >
+                <mat-radio-button
+                  class="vertical-radio-button"
+                  value="เอกสารถูกต้อง"
+                >
+                  เอกสารถูกต้อง
+                </mat-radio-button>
+                <mat-radio-button
+                  class="vertical-radio-button"
+                  value="เอกสารไม่ถูกต้อง"
+                >
+                  เอกสารไม่ถูกต้อง
+                </mat-radio-button>
+              </mat-radio-group>
+
+              <div *ngIf="form101Confirm.value.remark == 'เอกสารไม่ถูกต้อง'">
+                <mat-form-field>
+                  <textarea
+                    matInput
+                    placeholder="การแก้ไข"
+                    formControlName="remark2"
+                  ></textarea>
+                </mat-form-field>
+              </div>
+
+              <div class="mt-3 text-center">
+                <button type="submit" class="btn btn-warning">
+                  บันทึกข้อมูล
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </mat-step>
   </mat-horizontal-stepper>
 </div>

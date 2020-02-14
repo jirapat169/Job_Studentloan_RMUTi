@@ -1,0 +1,144 @@
+<div class="spinner-border text-warning" role="status" *ngIf="pageWaitting">
+  <span class="sr-only">Loading...</span>
+</div>
+
+<div *ngIf="!pageWaitting" class="box-padding">
+  <p>
+    <b>แบบคำขอกู้ยืมเงิน จากระบบ e-Studentloan&nbsp;:&nbsp;</b
+    ><a
+      target="_blank"
+      *ngIf="doc.eStudentLoan.length > 0"
+      href="{{ service.filePath + doc.eStudentLoan }}"
+      >เอกสาร</a
+    >
+  </p>
+  <p *ngIf="term == '1'">
+    <b>ใบแสดงประวัติการศึกษา&nbsp;:&nbsp;</b
+    ><a
+      target="_blank"
+      *ngIf="doc.gpx.length > 0"
+      href="{{ service.filePath + doc.gpx }}"
+      >เอกสาร</a
+    >
+  </p>
+  <p *ngIf="typeDoc == 'news'">
+    <b>สำเนาบัตรประชาชนและสำเนาทะเบียนบ้านของนักศึกษา&nbsp;:&nbsp;</b
+    ><a
+      target="_blank"
+      *ngIf="doc.studentDoc.length > 0"
+      href="{{ service.filePath + doc.studentDoc }}"
+      >เอกสาร</a
+    >
+  </p>
+  <p *ngIf="typeDoc == 'news'">
+    <b
+      >สำเนาบัตรประชาชนและสำเนาทะเบียนบ้านของบิดา
+      (กรณีบิดายังมีชีวิต)&nbsp;:&nbsp;</b
+    ><a
+      *ngIf="doc.fatherDoc.length > 0"
+      target="_blank"
+      href="{{ service.filePath + doc.fatherDoc }}"
+      >เอกสาร</a
+    >
+  </p>
+  <p *ngIf="typeDoc == 'news'">
+    <b
+      >สำเนาบัตรประชาชนและสำเนาทะเบียนบ้านของมารดา
+      (กรณีมารดายังมีชีวิต)&nbsp;:&nbsp;</b
+    ><a
+      *ngIf="doc.motherDoc.length > 0"
+      target="_blank"
+      href="{{ service.filePath + doc.motherDoc }}"
+      >เอกสาร</a
+    >
+  </p>
+  <p *ngIf="typeDoc == 'news'">
+    <b>สำเนาบัตรประชาชนและสำเนาทะเบียนบ้านของผู้ปกครอง (ถ้ามี)&nbsp;:&nbsp;</b
+    ><a
+      *ngIf="doc.parentDoc.length > 0"
+      target="_blank"
+      href="{{ service.filePath + doc.parentDoc }}"
+      >เอกสาร</a
+    >
+  </p>
+  <p>
+    <b>รูปถ่ายการเข้าร่วมโครงการ/กิจกรรมจิตอาสา&nbsp;:&nbsp;</b
+    ><a
+      *ngIf="doc.volunteerImg.length > 0"
+      target="_blank"
+      href="{{ service.filePath + doc.volunteerImg }}"
+      >เอกสาร</a
+    >
+  </p>
+  <p>
+    <b>ใบรับรองการเข้าร่วมโครงการ/กิจกรรมจิตอาสา&nbsp;:&nbsp;</b
+    ><a
+      *ngIf="doc.volunteerDoc.length > 0"
+      target="_blank"
+      href="{{ service.filePath + doc.volunteerDoc }}"
+      >เอกสาร</a
+    >
+  </p>
+
+  <hr />
+  <div *ngIf="route.role == 'authorities'">
+    <div *ngIf="confirmFormDoc == null">
+      <b>ยังไม่ยืนยันเอกสาร</b>
+    </div>
+    <div *ngIf="confirmFormDoc != null">
+      <div *ngIf="confirmFormDoc['remark'] == 'เอกสารถูกต้อง'">
+        <p><b>ตรวจสอบแล้ว</b> : {{ confirmFormDoc["remark"] }}</p>
+      </div>
+      <div *ngIf="confirmFormDoc['remark'] == 'เอกสารไม่ถูกต้อง'">
+        <p><b>ตรวจสอบแล้ว</b></p>
+        <p>การแก้ไขเอกสาร : {{ confirmFormDoc["remark2"] }}</p>
+      </div>
+      <div
+        *ngIf="confirmFormDoc['remark'] == 'รอการตรวจสอบจากเจ้าหน้าที่กองทุน'"
+      >
+        <form
+          [formGroup]="formDocConfirm"
+          (ngSubmit)="
+            formDocConfirm.valid
+              ? form104ConfirmSubmit()
+              : service.alert.alert('warning', 'โปรดกรอกข้อมูลให้ครบถ้วน')
+          "
+        >
+          <mat-radio-group
+            class="vertical-radio-group"
+            formControlName="remark"
+          >
+            <mat-radio-button
+              class="vertical-radio-button"
+              value="เอกสารถูกต้อง"
+            >
+              เอกสารถูกต้อง
+            </mat-radio-button>
+            <mat-radio-button
+              class="vertical-radio-button"
+              value="เอกสารไม่ถูกต้อง"
+            >
+              เอกสารไม่ถูกต้อง
+            </mat-radio-button>
+          </mat-radio-group>
+
+          <div *ngIf="formDocConfirm.value.remark == 'เอกสารไม่ถูกต้อง'">
+            <mat-form-field>
+              <textarea
+                matInput
+                placeholder="การแก้ไข"
+                formControlName="remark2"
+              ></textarea>
+            </mat-form-field>
+          </div>
+
+          <div class="mt-3 text-center">
+            <button type="submit" class="btn btn-warning">
+              บันทึกข้อมูล
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

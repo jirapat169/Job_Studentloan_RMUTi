@@ -1,1 +1,17 @@
-<p>view-term2 works!</p>
+<div class="spinner-border text-warning" role="status" *ngIf="pageWaitting">
+  <span class="sr-only">Loading...</span>
+</div>
+
+<div *ngIf="!pageWaitting">
+  <b>ตรวจสอบเอกสาร</b>
+  <p>{{ initialBorrow.type }}</p>
+  <mat-tab-group>
+    <mat-tab label="เอกสารประกอบ">
+      <app-stddoc-std
+        [route]="routeValue"
+        [term]="'2'"
+        [typeDoc]="'old'"
+      ></app-stddoc-std>
+    </mat-tab>
+  </mat-tab-group>
+</div>

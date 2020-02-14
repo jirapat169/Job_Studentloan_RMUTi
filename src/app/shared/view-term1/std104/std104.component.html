@@ -1,0 +1,89 @@
+<div class="spinner-border text-warning" role="status" *ngIf="pageWaitting">
+  <span class="sr-only">Loading...</span>
+</div>
+
+<div *ngIf="!pageWaitting" class="box-padding">
+  <p>
+    <b>รูปถ่ายบ้านเป็นบ้านพักของ&nbsp;:&nbsp;</b>{{ map.guesthouse_title
+    }}{{ map.guesthouse_fname }}&nbsp;{{ map.guesthouse_lname }}
+  </p>
+  <p><b>เกี่ยวข้องเป็น&nbsp;:&nbsp;</b>{{ map.guesthouse_related }}</p>
+  <p>
+    <b>เจ้าบ้านคือ&nbsp;:&nbsp;</b>{{ map.ownerhouse_title
+    }}{{ map.ownerhouse_fname }}&nbsp;{{ map.ownerhouse_lname }}
+  </p>
+  <p><b>เกี่ยวข้องเป็น&nbsp;:&nbsp;</b>{{ map.ownerhouse_related }}</p>
+  <p><b>บ้านเลขที่&nbsp;:&nbsp;</b>{{ map.address_num }}</p>
+  <p><b>หมู่ที่&nbsp;:&nbsp;</b>{{ map.address_village }}</p>
+  <p><b>ตรอก/ซอย&nbsp;:&nbsp;</b>{{ map.address_alley }}</p>
+  <p><b>ถนน&nbsp;:&nbsp;</b>{{ map.address_road }}</p>
+  <p><b>ตำบล/แขวง&nbsp;:&nbsp;</b>{{ map.address_subdis }}</p>
+  <p><b>อำเภอ/เขต&nbsp;:&nbsp;</b>{{ map.address_district }}</p>
+  <p><b>จังหวัด&nbsp;:&nbsp;</b>{{ map.address_province }}</p>
+  <p><b>หมายเลขโทรศัพท์&nbsp;:&nbsp;</b>{{ map.phone }}</p>
+  <p>
+    <b>แผนที่&nbsp;:&nbsp;</b
+    ><a target="_blank" href="{{ map.googlemap_text }}">Google Map</a>
+  </p>
+  <hr />
+  <div *ngIf="route.role == 'authorities'">
+    <div *ngIf="confirmForm104 == null">
+      <b>ยังไม่ยืนยันเอกสาร</b>
+    </div>
+    <div *ngIf="confirmForm104 != null">
+      <div *ngIf="confirmForm104['remark'] == 'เอกสารถูกต้อง'">
+        <p><b>ตรวจสอบแล้ว</b> : {{ confirmForm104["remark"] }}</p>
+      </div>
+      <div *ngIf="confirmForm104['remark'] == 'เอกสารไม่ถูกต้อง'">
+        <p><b>ตรวจสอบแล้ว</b></p>
+        <p>การแก้ไขเอกสาร : {{ confirmForm104["remark2"] }}</p>
+      </div>
+      <div
+        *ngIf="confirmForm104['remark'] == 'รอการตรวจสอบจากเจ้าหน้าที่กองทุน'"
+      >
+        <form
+          [formGroup]="form104Confirm"
+          (ngSubmit)="
+            form104Confirm.valid
+              ? form104ConfirmSubmit()
+              : service.alert.alert('warning', 'โปรดกรอกข้อมูลให้ครบถ้วน')
+          "
+        >
+          <mat-radio-group
+            class="vertical-radio-group"
+            formControlName="remark"
+          >
+            <mat-radio-button
+              class="vertical-radio-button"
+              value="เอกสารถูกต้อง"
+            >
+              เอกสารถูกต้อง
+            </mat-radio-button>
+            <mat-radio-button
+              class="vertical-radio-button"
+              value="เอกสารไม่ถูกต้อง"
+            >
+              เอกสารไม่ถูกต้อง
+            </mat-radio-button>
+          </mat-radio-group>
+
+          <div *ngIf="form104Confirm.value.remark == 'เอกสารไม่ถูกต้อง'">
+            <mat-form-field>
+              <textarea
+                matInput
+                placeholder="การแก้ไข"
+                formControlName="remark2"
+              ></textarea>
+            </mat-form-field>
+          </div>
+
+          <div class="mt-3 text-center">
+            <button type="submit" class="btn btn-warning">
+              บันทึกข้อมูล
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

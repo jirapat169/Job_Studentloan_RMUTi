@@ -16,6 +16,7 @@ export class IncomeComponent implements OnInit {
   // Check Confirm
   public onLoadForm: boolean = true;
   public remark: string = "";
+  public remark2: string = "";
   public confirmWait: boolean = false;
 
   // ValShow
@@ -77,7 +78,7 @@ export class IncomeComponent implements OnInit {
 
     let http_income = await this.service.http.post("102_income/inup", formData);
     console.log(http_income);
-    await this.getIncome()
+    await this.getIncome();
   };
 
   public submitConfirm = async () => {
@@ -90,7 +91,7 @@ export class IncomeComponent implements OnInit {
         "username",
         this.service.localStorage.get("userlogin")["username"]
       );
-      formData.append("year", this.service.yearOnSystem());
+      formData.append("year", "2562");
       formData.append("term", "1");
       formData.append("formDoc", "102");
       formData.append("remark", "รอการตรวจสอบจากเจ้าหน้าที่กองทุน");
@@ -100,7 +101,7 @@ export class IncomeComponent implements OnInit {
         formData
       );
 
-      if(http_confirm.success){
+      if (http_confirm.success) {
         window.location.reload();
       }
       console.log(http_confirm);
@@ -111,7 +112,7 @@ export class IncomeComponent implements OnInit {
     this.formIncome = this.formBuilder.group({
       username: [this.service.localStorage.get("userlogin")["username"]],
       type: ["มีรายได้ประจำ", Validators.required],
-      year: [this.service.yearOnSystem()],
+      year: ["2562"],
       term: ["1"],
       val1: ["", Validators.required],
       val2: ["", Validators.required]
@@ -125,7 +126,7 @@ export class IncomeComponent implements OnInit {
       "username",
       this.service.localStorage.get("userlogin")["username"]
     );
-    formData.append("year", this.service.yearOnSystem());
+    formData.append("year", "2562");
     formData.append("term", "1");
 
     let http_income: any = await this.service.http.get(
@@ -150,7 +151,7 @@ export class IncomeComponent implements OnInit {
       "username",
       this.service.localStorage.get("userlogin")["username"]
     );
-    formData.append("year", this.service.yearOnSystem());
+    formData.append("year", "2562");
     formData.append("term", "1");
     formData.append("formDoc", "102");
 
@@ -164,8 +165,11 @@ export class IncomeComponent implements OnInit {
         http_confirm.result[0]["remark"] == "รอการตรวจสอบจากเจ้าหน้าที่กองทุน"
       ) {
         this.onLoadForm = false;
-        this.remark = http_confirm.result[0]["remark"];
+      } else if (http_confirm.result[0]["remark"] == "เอกสารถูกต้อง") {
+        this.onLoadForm = false;
       }
+      this.remark = http_confirm.result[0]["remark"];
+      this.remark2 = http_confirm.result[0]["remark2"];
     }
     this.confirmWait = false;
     console.log("http_confirm", http_confirm);

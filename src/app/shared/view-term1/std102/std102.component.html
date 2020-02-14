@@ -1,0 +1,98 @@
+<div class="spinner-border text-warning" role="status" *ngIf="pageWaitting">
+  <span class="sr-only">Loading...</span>
+</div>
+
+<div *ngIf="!pageWaitting" class="box-padding">
+  <p><b>ประเภทเอกสารรับรองรายได้&nbsp;:&nbsp;</b>{{ income.type }}</p>
+  <div *ngIf="income.type == 'มีรายได้ประจำ'">
+    <p>
+      <b>รายได้ต่อเดือน&nbsp;:&nbsp;</b
+      >{{ service.numberWithCommas(income.val1) }} บาท
+    </p>
+    <p>
+      <b>หนังสือรับรองเงินเดือน/สลิปเงินเดือน&nbsp;:&nbsp;</b
+      ><a target="_blank" href="{{ service.filePath + income.val2 }}">เอกสาร</a>
+    </p>
+  </div>
+  <div *ngIf="income.type == 'มีบัตรสวัสดิการแห่งรัฐ'">
+    <p>
+      <b>สำเนาบัตรสวัสดิการแห่งรัฐของบิดา&nbsp;:&nbsp;</b
+      ><a target="_blank" href="{{ service.filePath + income.val1 }}">เอกสาร</a>
+    </p>
+    <p>
+      <b>สำเนาบัตรสวัสดิการแห่งรัฐของมารดา&nbsp;:&nbsp;</b
+      ><a target="_blank" href="{{ service.filePath + income.val2 }}">เอกสาร</a>
+    </p>
+  </div>
+  <div *ngIf="income.type == 'ไม่มีรายได้ประจำ'">
+    <p>
+      <b>กยศ. 102&nbsp;:&nbsp;</b
+      ><a target="_blank" href="{{ service.filePath + income.val1 }}">เอกสาร</a>
+    </p>
+    <p>
+      <b>สำเนาบัตรข้าราชการผู้รับรองรายได้&nbsp;:&nbsp;</b
+      ><a target="_blank" href="{{ service.filePath + income.val2 }}">เอกสาร</a>
+    </p>
+  </div>
+  <hr />
+  <div *ngIf="route.role == 'authorities'">
+    <div *ngIf="confirmForm102 == null">
+      <b>ยังไม่ยืนยันเอกสาร</b>
+    </div>
+    <div *ngIf="confirmForm102 != null">
+      <div *ngIf="confirmForm102['remark'] == 'เอกสารถูกต้อง'">
+        <p><b>ตรวจสอบแล้ว</b> : {{ confirmForm102["remark"] }}</p>
+      </div>
+      <div *ngIf="confirmForm102['remark'] == 'เอกสารไม่ถูกต้อง'">
+        <p><b>ตรวจสอบแล้ว</b></p>
+        <p>การแก้ไขเอกสาร : {{ confirmForm102["remark2"] }}</p>
+      </div>
+      <div
+        *ngIf="confirmForm102['remark'] == 'รอการตรวจสอบจากเจ้าหน้าที่กองทุน'"
+      >
+        <form
+          [formGroup]="form102Confirm"
+          (ngSubmit)="
+            form102Confirm.valid
+              ? form102ConfirmSubmit()
+              : service.alert.alert('warning', 'โปรดกรอกข้อมูลให้ครบถ้วน')
+          "
+        >
+          <mat-radio-group
+            class="vertical-radio-group"
+            formControlName="remark"
+          >
+            <mat-radio-button
+              class="vertical-radio-button"
+              value="เอกสารถูกต้อง"
+            >
+              เอกสารถูกต้อง
+            </mat-radio-button>
+            <mat-radio-button
+              class="vertical-radio-button"
+              value="เอกสารไม่ถูกต้อง"
+            >
+              เอกสารไม่ถูกต้อง
+            </mat-radio-button>
+          </mat-radio-group>
+
+          <div *ngIf="form102Confirm.value.remark == 'เอกสารไม่ถูกต้อง'">
+            <mat-form-field>
+              <textarea
+                matInput
+                placeholder="การแก้ไข"
+                formControlName="remark2"
+              ></textarea>
+            </mat-form-field>
+          </div>
+
+          <div class="mt-3 text-center">
+            <button type="submit" class="btn btn-warning">
+              บันทึกข้อมูล
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
