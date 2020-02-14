@@ -1,1 +1,75 @@
-<p>non-parent works!</p>
+<div class="spinner-border text-warning" role="status" *ngIf="pageWaitting">
+  <span class="sr-only">Loading...</span>
+</div>
+
+<div *ngIf="!pageWaitting">
+  <b>14. ข้อมูลผู้ปกครอง (ถ้ามี)</b>
+  <div
+    class="box-padding"
+    *ngIf="nonParent.status == 'ไม่มีผู้ปกครอง' && nonParent != null"
+  >
+    {{ nonParent.status }}
+  </div>
+  <div
+    class="box-padding"
+    *ngIf="nonParent.status != 'ไม่มีผู้ปกครอง' && nonParent != null"
+  >
+    <p><b>ชื่อ&nbsp;:&nbsp;</b>{{ nonParent.name }}</p>
+    <p><b>สถานะ&nbsp;:&nbsp;</b>{{ nonParent.life }}</p>
+    <div *ngIf="nonParent.life == 'ยังมีชีวิตอยู่'">
+      <p><b>เลขประจำตัวประชาชน&nbsp;:&nbsp;</b>{{ nonParent.personalId }}</p>
+      <p>
+        <b>จบการศึกษาสูงสุดในระดับ&nbsp;:&nbsp;</b
+        >{{ nonParent.levelEducation }}
+      </p>
+      <p><b>จากสถานศึกษา&nbsp;:&nbsp;</b>{{ nonParent.schoolName }}</p>
+      <p><b>อาชีพ&nbsp;:&nbsp;</b>{{ nonParent.career }}</p>
+
+      <p
+        *ngIf="
+          nonParent.career == 'รับราชการ' ||
+          nonParent.career == 'พนักงาน/ลูกจ้างบริษัท'
+        "
+      >
+        <b>ตำแหน่ง&nbsp;:&nbsp;</b>{{ nonParent.typeCareer }}
+      </p>
+      <p
+        *ngIf="
+          nonParent.career == 'รับราชการ' ||
+          nonParent.career == 'พนักงาน/ลูกจ้างบริษัท'
+        "
+      >
+        <b>สถานที่ทำงาน&nbsp;:&nbsp;</b>{{ nonParent.locationCareer }}
+      </p>
+      <p *ngIf="nonParent.career == 'รับจ้าง'">
+        <b>ประเภทงานรับจ้าง&nbsp;:&nbsp;</b>{{ nonParent.typeCareer }}
+      </p>
+      <p *ngIf="nonParent.career == 'ค้าขาย'">
+        <b>ค้าขายโดยเป็น&nbsp;:&nbsp;</b>{{ nonParent.typeCareer }}
+      </p>
+      <p *ngIf="nonParent.career == 'ค้าขาย'">
+        <b>ลักษณะสินค้า&nbsp;:&nbsp;</b>{{ nonParent.locationCareer }}
+      </p>
+      <p *ngIf="nonParent.career == 'เกษตรกร'">
+        <b>ประเภท&nbsp;:&nbsp;</b>{{ nonParent.typeCareer }}
+      </p>
+      <p *ngIf="nonParent.career == 'เกษตรกร'">
+        <b>ที่ดิน&nbsp;:&nbsp;</b>{{ nonParent.locationCareer }}
+      </p>
+      <p *ngIf="nonParent.career == 'เกษตรกร'">
+        <b>จำนวนที่ดิน (ไร่)&nbsp;:&nbsp;</b>{{ nonParent.land }}
+      </p>
+
+      <p><b>รายได้ปีละ&nbsp;:&nbsp;</b>{{ nonParent.income }}</p>
+      <p><b>บ้านเลขที่&nbsp;:&nbsp;</b>{{ nonParent.homeNumber }}</p>
+      <p><b>หมู่ที่&nbsp;:&nbsp;</b>{{ nonParent.villageNumber }}</p>
+      <p><b>ตรอก/ซอย&nbsp;:&nbsp;</b>{{ nonParent.alley }}</p>
+      <p><b>ถนน&nbsp;:&nbsp;</b>{{ nonParent.road }}</p>
+      <p><b>ตำบล/แขวง&nbsp;:&nbsp;</b>{{ nonParent.subDistrict }}</p>
+      <p><b>อำเภอ/เขต&nbsp;:&nbsp;</b>{{ nonParent.district }}</p>
+      <p><b>จังหวัด&nbsp;:&nbsp;</b>{{ nonParent.province }}</p>
+      <p><b>รหัสไปรษณีย์&nbsp;:&nbsp;</b>{{ nonParent.zipCode }}</p>
+      <p><b>หมายเลขโทรศัพท์&nbsp;:&nbsp;</b>{{ nonParent.phone }}</p>
+    </div>
+  </div>
+</div>

@@ -114,19 +114,19 @@
           </td>
           <td>{{ x.branch_name }}</td>
           <td>
-            <button
-              type="button"
+            <a
               class="btn btn-warning btn-sm"
-              [routerLink]="[
+              href="{{
                 '/authorities/checkdoc/' +
                   termSelect +
                   '/' +
                   x.username +
                   '/authorities'
-              ]"
+              }}"
+              target="_blank"
+              role="button"
+              >ตรวจสอบเอกสาร</a
             >
-              ตรวจสอบเอกสาร
-            </button>
           </td>
         </tr>
       </tbody>

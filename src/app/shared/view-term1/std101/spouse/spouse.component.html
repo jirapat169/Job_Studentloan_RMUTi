@@ -1,1 +1,74 @@
-<p>spouse works!</p>
+<div class="spinner-border text-warning" role="status" *ngIf="pageWaitting">
+  <span class="sr-only">Loading...</span>
+</div>
+
+<div *ngIf="!pageWaitting">
+  <b>15. ข้อมูลคู่สมรส (ถ้ามี)</b>
+  <div
+    class="box-padding"
+    *ngIf="spouse.status == 'ไม่มีคู่สมรส' && spouse != null"
+  >
+    {{ spouse.status }}
+  </div>
+  <div
+    class="box-padding"
+    *ngIf="spouse.status != 'ไม่มีคู่สมรส' && spouse != null"
+  >
+    <p><b>ชื่อ&nbsp;:&nbsp;</b>{{ spouse.name }}</p>
+    <p><b>สถานะ&nbsp;:&nbsp;</b>{{ spouse.life }}</p>
+    <div *ngIf="spouse.life == 'ยังมีชีวิตอยู่'">
+      <p><b>เลขประจำตัวประชาชน&nbsp;:&nbsp;</b>{{ spouse.personalId }}</p>
+      <p>
+        <b>จบการศึกษาสูงสุดในระดับ&nbsp;:&nbsp;</b>{{ spouse.levelEducation }}
+      </p>
+      <p><b>จากสถานศึกษา&nbsp;:&nbsp;</b>{{ spouse.schoolName }}</p>
+      <p><b>อาชีพ&nbsp;:&nbsp;</b>{{ spouse.career }}</p>
+
+      <p
+        *ngIf="
+          spouse.career == 'รับราชการ' ||
+          spouse.career == 'พนักงาน/ลูกจ้างบริษัท'
+        "
+      >
+        <b>ตำแหน่ง&nbsp;:&nbsp;</b>{{ spouse.typeCareer }}
+      </p>
+      <p
+        *ngIf="
+          spouse.career == 'รับราชการ' ||
+          spouse.career == 'พนักงาน/ลูกจ้างบริษัท'
+        "
+      >
+        <b>สถานที่ทำงาน&nbsp;:&nbsp;</b>{{ spouse.locationCareer }}
+      </p>
+      <p *ngIf="spouse.career == 'รับจ้าง'">
+        <b>ประเภทงานรับจ้าง&nbsp;:&nbsp;</b>{{ spouse.typeCareer }}
+      </p>
+      <p *ngIf="spouse.career == 'ค้าขาย'">
+        <b>ค้าขายโดยเป็น&nbsp;:&nbsp;</b>{{ spouse.typeCareer }}
+      </p>
+      <p *ngIf="spouse.career == 'ค้าขาย'">
+        <b>ลักษณะสินค้า&nbsp;:&nbsp;</b>{{ spouse.locationCareer }}
+      </p>
+      <p *ngIf="spouse.career == 'เกษตรกร'">
+        <b>ประเภท&nbsp;:&nbsp;</b>{{ spouse.typeCareer }}
+      </p>
+      <p *ngIf="spouse.career == 'เกษตรกร'">
+        <b>ที่ดิน&nbsp;:&nbsp;</b>{{ spouse.locationCareer }}
+      </p>
+      <p *ngIf="spouse.career == 'เกษตรกร'">
+        <b>จำนวนที่ดิน (ไร่)&nbsp;:&nbsp;</b>{{ spouse.land }}
+      </p>
+
+      <p><b>รายได้ปีละ&nbsp;:&nbsp;</b>{{ spouse.income }}</p>
+      <p><b>บ้านเลขที่&nbsp;:&nbsp;</b>{{ spouse.homeNumber }}</p>
+      <p><b>หมู่ที่&nbsp;:&nbsp;</b>{{ spouse.villageNumber }}</p>
+      <p><b>ตรอก/ซอย&nbsp;:&nbsp;</b>{{ spouse.alley }}</p>
+      <p><b>ถนน&nbsp;:&nbsp;</b>{{ spouse.road }}</p>
+      <p><b>ตำบล/แขวง&nbsp;:&nbsp;</b>{{ spouse.subDistrict }}</p>
+      <p><b>อำเภอ/เขต&nbsp;:&nbsp;</b>{{ spouse.district }}</p>
+      <p><b>จังหวัด&nbsp;:&nbsp;</b>{{ spouse.province }}</p>
+      <p><b>รหัสไปรษณีย์&nbsp;:&nbsp;</b>{{ spouse.zipCode }}</p>
+      <p><b>หมายเลขโทรศัพท์&nbsp;:&nbsp;</b>{{ spouse.phone }}</p>
+    </div>
+  </div>
+</div>

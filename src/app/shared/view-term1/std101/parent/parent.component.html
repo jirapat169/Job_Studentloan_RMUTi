@@ -3,8 +3,201 @@
 </div>
 
 <div *ngIf="!pageWaitting">
-    <b>9. ข้อมูลบิดา</b>
-    <div class="box-padding">
-        <p><b>ชื่อ&nbsp;:&nbsp;</b>{{ parent.father.name }}</p>
+  <b>9. ข้อมูลบิดา</b>
+  <div class="box-padding">
+    <p><b>ชื่อ&nbsp;:&nbsp;</b>{{ parent.father.name }}</p>
+    <p><b>สถานะ&nbsp;:&nbsp;</b>{{ parent.father.life }}</p>
+    <div *ngIf="parent.father.life == 'ยังมีชีวิตอยู่'">
+      <p>
+        <b>เลขประจำตัวประชาชน&nbsp;:&nbsp;</b>{{ parent.father.personalId }}
+      </p>
+      <p>
+        <b>จบการศึกษาสูงสุดในระดับ&nbsp;:&nbsp;</b
+        >{{ parent.father.levelEducation }}
+      </p>
+      <p><b>จากสถานศึกษา&nbsp;:&nbsp;</b>{{ parent.father.schoolName }}</p>
+      <p><b>อาชีพ&nbsp;:&nbsp;</b>{{ parent.father.career }}</p>
+
+      <p
+        *ngIf="
+          parent.father.career == 'รับราชการ' ||
+          parent.father.career == 'พนักงาน/ลูกจ้างบริษัท'
+        "
+      >
+        <b>ตำแหน่ง&nbsp;:&nbsp;</b>{{ parent.father.typeCareer }}
+      </p>
+      <p
+        *ngIf="
+          parent.father.career == 'รับราชการ' ||
+          parent.father.career == 'พนักงาน/ลูกจ้างบริษัท'
+        "
+      >
+        <b>สถานที่ทำงาน&nbsp;:&nbsp;</b>{{ parent.father.locationCareer }}
+      </p>
+      <p *ngIf="parent.father.career == 'รับจ้าง'">
+        <b>ประเภทงานรับจ้าง&nbsp;:&nbsp;</b>{{ parent.father.typeCareer }}
+      </p>
+      <p *ngIf="parent.father.career == 'ค้าขาย'">
+        <b>ค้าขายโดยเป็น&nbsp;:&nbsp;</b>{{ parent.father.typeCareer }}
+      </p>
+      <p *ngIf="parent.father.career == 'ค้าขาย'">
+        <b>ลักษณะสินค้า&nbsp;:&nbsp;</b>{{ parent.father.locationCareer }}
+      </p>
+      <p *ngIf="parent.father.career == 'เกษตรกร'">
+        <b>ประเภท&nbsp;:&nbsp;</b>{{ parent.father.typeCareer }}
+      </p>
+      <p *ngIf="parent.father.career == 'เกษตรกร'">
+        <b>ที่ดิน&nbsp;:&nbsp;</b>{{ parent.father.locationCareer }}
+      </p>
+      <p *ngIf="parent.father.career == 'เกษตรกร'">
+        <b>จำนวนที่ดิน (ไร่)&nbsp;:&nbsp;</b>{{ parent.father.land }}
+      </p>
+
+      <p><b>รายได้ปีละ&nbsp;:&nbsp;</b>{{ parent.father.income }}</p>
+      <p><b>บ้านเลขที่&nbsp;:&nbsp;</b>{{ parent.father.homeNumber }}</p>
+      <p><b>หมู่ที่&nbsp;:&nbsp;</b>{{ parent.father.villageNumber }}</p>
+      <p><b>ตรอก/ซอย&nbsp;:&nbsp;</b>{{ parent.father.alley }}</p>
+      <p><b>ถนน&nbsp;:&nbsp;</b>{{ parent.father.road }}</p>
+      <p><b>ตำบล/แขวง&nbsp;:&nbsp;</b>{{ parent.father.subDistrict }}</p>
+      <p><b>อำเภอ/เขต&nbsp;:&nbsp;</b>{{ parent.father.district }}</p>
+      <p><b>จังหวัด&nbsp;:&nbsp;</b>{{ parent.father.province }}</p>
+      <p><b>รหัสไปรษณีย์&nbsp;:&nbsp;</b>{{ parent.father.zipCode }}</p>
+      <p><b>หมายเลขโทรศัพท์&nbsp;:&nbsp;</b>{{ parent.father.phone }}</p>
     </div>
+  </div>
+  <hr />
+  <b>10. ข้อมูลมารดา</b>
+  <div class="box-padding">
+    <p><b>ชื่อ&nbsp;:&nbsp;</b>{{ parent.mother.name }}</p>
+    <p><b>สถานะ&nbsp;:&nbsp;</b>{{ parent.mother.life }}</p>
+    <div *ngIf="parent.mother.life == 'ยังมีชีวิตอยู่'">
+      <p>
+        <b>เลขประจำตัวประชาชน&nbsp;:&nbsp;</b>{{ parent.mother.personalId }}
+      </p>
+      <p>
+        <b>จบการศึกษาสูงสุดในระดับ&nbsp;:&nbsp;</b
+        >{{ parent.mother.levelEducation }}
+      </p>
+      <p><b>จากสถานศึกษา&nbsp;:&nbsp;</b>{{ parent.mother.schoolName }}</p>
+      <p><b>อาชีพ&nbsp;:&nbsp;</b>{{ parent.mother.career }}</p>
+
+      <p
+        *ngIf="
+          parent.mother.career == 'รับราชการ' ||
+          parent.mother.career == 'พนักงาน/ลูกจ้างบริษัท'
+        "
+      >
+        <b>ตำแหน่ง&nbsp;:&nbsp;</b>{{ parent.mother.typeCareer }}
+      </p>
+      <p
+        *ngIf="
+          parent.mother.career == 'รับราชการ' ||
+          parent.mother.career == 'พนักงาน/ลูกจ้างบริษัท'
+        "
+      >
+        <b>สถานที่ทำงาน&nbsp;:&nbsp;</b>{{ parent.mother.locationCareer }}
+      </p>
+      <p *ngIf="parent.mother.career == 'รับจ้าง'">
+        <b>ประเภทงานรับจ้าง&nbsp;:&nbsp;</b>{{ parent.mother.typeCareer }}
+      </p>
+      <p *ngIf="parent.mother.career == 'ค้าขาย'">
+        <b>ค้าขายโดยเป็น&nbsp;:&nbsp;</b>{{ parent.mother.typeCareer }}
+      </p>
+      <p *ngIf="parent.mother.career == 'ค้าขาย'">
+        <b>ลักษณะสินค้า&nbsp;:&nbsp;</b>{{ parent.mother.locationCareer }}
+      </p>
+      <p *ngIf="parent.mother.career == 'เกษตรกร'">
+        <b>ประเภท&nbsp;:&nbsp;</b>{{ parent.mother.typeCareer }}
+      </p>
+      <p *ngIf="parent.mother.career == 'เกษตรกร'">
+        <b>ที่ดิน&nbsp;:&nbsp;</b>{{ parent.mother.locationCareer }}
+      </p>
+      <p *ngIf="parent.mother.career == 'เกษตรกร'">
+        <b>จำนวนที่ดิน (ไร่)&nbsp;:&nbsp;</b>{{ parent.mother.land }}
+      </p>
+
+      <p><b>รายได้ปีละ&nbsp;:&nbsp;</b>{{ parent.mother.income }}</p>
+      <p><b>บ้านเลขที่&nbsp;:&nbsp;</b>{{ parent.mother.homeNumber }}</p>
+      <p><b>หมู่ที่&nbsp;:&nbsp;</b>{{ parent.mother.villageNumber }}</p>
+      <p><b>ตรอก/ซอย&nbsp;:&nbsp;</b>{{ parent.mother.alley }}</p>
+      <p><b>ถนน&nbsp;:&nbsp;</b>{{ parent.mother.road }}</p>
+      <p><b>ตำบล/แขวง&nbsp;:&nbsp;</b>{{ parent.mother.subDistrict }}</p>
+      <p><b>อำเภอ/เขต&nbsp;:&nbsp;</b>{{ parent.mother.district }}</p>
+      <p><b>จังหวัด&nbsp;:&nbsp;</b>{{ parent.mother.province }}</p>
+      <p><b>รหัสไปรษณีย์&nbsp;:&nbsp;</b>{{ parent.mother.zipCode }}</p>
+      <p><b>หมายเลขโทรศัพท์&nbsp;:&nbsp;</b>{{ parent.mother.phone }}</p>
+    </div>
+  </div>
+  <hr />
+  <b>11. สถานภาพสมรสของบิดา-มารดา</b>
+  <div class="box-padding">
+    <p><b>สถานภาพ&nbsp;:&nbsp;</b>{{ parent.relationship.status }}</p>
+    <p><b>อื่นๆ&nbsp;:&nbsp;</b>{{ parent.relationship.remark }}</p>
+  </div>
+  <hr />
+  <b>12. พี่น้องร่วมบิดา-มารดา (รวมผู้ขอกู้ยืม)</b>
+  <div class="box-padding">
+    <p><b>จำนวนพี่น้อง&nbsp;:&nbsp;</b>{{ parent.brethren.amount }}</p>
+    <p><b>เพศชาย&nbsp;:&nbsp;</b>{{ parent.brethren.male }}</p>
+    <p><b>เพศหญิง&nbsp;:&nbsp;</b>{{ parent.brethren.female }}</p>
+    <p><b>ผู้ขอกู้ยืมเป็นคนที่&nbsp;:&nbsp;</b>{{ parent.brethren.iNum }}</p>
+    <p><b>พี่น้องที่กำลังศึกษา&nbsp;:&nbsp;</b>{{ parent.brethren.study }}</p>
+    <br />
+    <table class="table table-bordered mt-2 table-sm table-hover table-striped">
+      <thead>
+        <tr>
+          <th scope="col">คนที่</th>
+          <th scope="col">เพศ</th>
+          <th scope="col">อายุ</th>
+          <th scope="col">ชั้นปี</th>
+          <th scope="col">สถานศึกษา</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="parent.brethrenStudy.length > 0">
+        <tr *ngFor="let x of parent.brethrenStudy">
+          <td>{{ x.num }}</td>
+          <td>{{ x.sex }}</td>
+          <td>{{ x.age }}</td>
+          <td>{{ x.level }}</td>
+          <td>{{ x.schoolName }}</td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="parent.brethrenStudy.length <= 0">
+        <tr>
+          <td colspan="5">ไม่พบข้อมูล</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <hr />
+  <b>13. พี่น้องที่ประกอบอาชีพแล้ว</b>
+  <div class="box-padding">
+    <table class="table table-bordered mt-2 table-sm table-hover table-striped">
+      <thead>
+        <tr>
+          <th scope="col">คนที่</th>
+          <th scope="col">เพศ</th>
+          <th scope="col">อายุ</th>
+          <th scope="col">การศึกษาสูงสุด</th>
+          <th scope="col">สถานที่ทำงาน</th>
+          <th scope="col">รายได้เดือนละ</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="parent.brethrenWorked.length > 0">
+        <tr *ngFor="let x of parent.brethrenWorked">
+          <td>{{ x.num }}</td>
+          <td>{{ x.sex }}</td>
+          <td>{{ x.age }}</td>
+          <td>{{ x.level }}</td>
+          <td>{{ x.workName }}</td>
+          <td>{{ service.numberWithCommas(x.amount) }}</td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="parent.brethrenWorked.length <= 0">
+        <tr>
+          <td colspan="6">ไม่พบข้อมูล</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
