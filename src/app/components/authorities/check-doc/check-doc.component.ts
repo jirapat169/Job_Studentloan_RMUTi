@@ -18,6 +18,12 @@ export class CheckDocComponent implements OnInit {
     this.getInitialBorrow();
     this.getOrganize();
   }
+  public createExcel = async (branch: string) => {
+    let http: any = await this.service.http.get(
+      `excel01/${branch}/${this.service.yearOnSystem()}/${this.termSelect}`
+    );
+    window.open(`${this.service.filePath}${http.message}`);
+  };
 
   public searchStudent = (branch: string = "") => {
     if (branch.length > 0)

@@ -156,7 +156,22 @@
         </div>
       </div>
 
-      <div class="text-center">
+      <div class="mt-3" *ngIf="remark == 'ไม่อนุมัติให้กู้ยืม'">
+        <div class="alert alert-danger" role="alert">
+          {{ remark }}&nbsp;เพราะ{{ remark2 }}
+        </div>
+      </div>
+
+      <div class="mt-3" *ngIf="remark == 'อนุมัติให้กู้ยืม'">
+        <div class="alert alert-success" role="alert">
+          {{ remark }}
+        </div>
+      </div>
+
+      <div
+        class="text-center"
+        *ngIf="remark != 'ไม่อนุมัติให้กู้ยืม' && remark != 'อนุมัติให้กู้ยืม'"
+      >
         <span
           style="margin-left: 10px;margin-right: 10px;"
           *ngIf="databaseSave"

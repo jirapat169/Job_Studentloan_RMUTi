@@ -11,6 +11,7 @@
         <th scope="col">ภาคเรียนที่</th>
         <th scope="col">ปีการศึกษา</th>
         <th scope="col">สถานะการกู้ยืม</th>
+        <th scope="col">หมายเหตุ</th>
       </tr>
     </thead>
     <tbody *ngIf="history.length > 0">
@@ -19,12 +20,18 @@
         <td>{{ x.type }}</td>
         <td>{{ service.numberWithCommas(x.termMoney) }} บาท</td>
         <td>
-          {{ x.monthMoney == "กู้" ? service.numberWithCommas("14400") : 0 }} บาท
+          {{
+            x.monthMoney == "กู้" ? service.numberWithCommas("14400") : 0
+          }}
+          บาท
         </td>
         <td>{{ x.term }}</td>
         <td>{{ x.year }}</td>
         <td>
           {{ x.remark == "กำลังจัดเตรียมเอกสาร" ? "รอตรวจสอบ" : x.remark }}
+        </td>
+        <td>
+          {{ x.remark == "ไม่อนุมัติให้กู้ยืม" ? x.remark2 : "-" }}
         </td>
       </tr>
     </tbody>

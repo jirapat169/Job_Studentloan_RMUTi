@@ -13,6 +13,10 @@ export class Term1Component implements OnInit {
   public loadData: boolean = false;
   public databaseSave: boolean = false;
   public saveDataWaitting: boolean = false;
+
+  public remark: string = null;
+  public remark2: string = null;
+
   constructor(
     private formBuilder: FormBuilder,
     public service: AppService,
@@ -41,15 +45,17 @@ export class Term1Component implements OnInit {
     );
     console.log(http);
     this.loadData = true;
-    if (http.connect) {
-      if (http.result.length > 0) {
-        this.databaseSave = true;
-        this.formFirst.patchValue({
-          type: http.result[0]["type"],
-          termMoney: http.result[0]["termMoney"],
-          monthMoney: http.result[0]["monthMoney"]
-        });
-      }
+
+    if (http.result.length > 0) {
+      this.databaseSave = true;
+      this.formFirst.patchValue({
+        type: http.result[0]["type"],
+        termMoney: http.result[0]["termMoney"],
+        monthMoney: http.result[0]["monthMoney"]
+      });
+
+      this.remark = http.result[0]["remark"];
+      this.remark2 = http.result[0]["remark2"];
     }
   };
 

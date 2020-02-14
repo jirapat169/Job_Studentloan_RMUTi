@@ -100,22 +100,25 @@
         <tr>
           <th scope="col"></th>
           <th scope="col">ชื่อ</th>
+          <th scope="col">ประเภท</th>
           <th scope="col">สถานะ</th>
-          <th scope="col">สาขาวิชา</th>
+          <th></th>
           <th></th>
         </tr>
       </thead>
       <tbody *ngIf="searchStudent(branch.value).length > 0">
         <tr *ngFor="let x of searchStudent(branch.value); let i = index">
-          <td>{{ i + 1 }}</td>
-          <td>{{ x.title + "" + x.fname + " " + x.lname }}</td>
-          <td>
+          <td style="vertical-align: middle;">{{ i + 1 }}</td>
+          <td style="vertical-align: middle;">
+            {{ x.title + "" + x.fname + " " + x.lname }}
+          </td>
+          <td style="vertical-align: middle;">{{ x.type }}</td>
+          <td style="vertical-align: middle;">
             {{ x.remark == "กำลังจัดเตรียมเอกสาร" ? "รอตรวจสอบ" : x.remark }}
           </td>
-          <td>{{ x.branch_name }}</td>
-          <td>
+          <td style="vertical-align: middle;">
             <a
-              class="btn btn-warning btn-sm"
+              class="btn btn-secondary btn-sm"
               href="{{
                 '/committee/confirm/' +
                   termSelect +
@@ -128,13 +131,122 @@
               >ตรวจสอบเอกสาร</a
             >
           </td>
+          <td style="vertical-align: middle;">
+            <button
+              type="button"
+              class="btn btn-warning btn-sm"
+              data-toggle="modal"
+              data-target="#confirmInitial"
+              [disabled]="!getListComfirm(x.username, x.type)"
+              (click)="studentSelect(x)"
+            >
+              พิจารณาการกู้ยืม
+            </button>
+          </td>
         </tr>
       </tbody>
       <tbody *ngIf="searchStudent(branch.value).length <= 0">
         <tr>
-          <td colspan="5">ไม่พบข้อมูลนักศึกษา</td>
+          <td colspan="6">ไม่พบข้อมูลนักศึกษา</td>
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="confirmInitial"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="confirmInitialLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <form
+      [formGroup]="formFirst"
+      (ngSubmit)="
+        formFirst.valid
+          ? submitFormFirst()
+          : this.service.alert.alert('warning', 'โปรดกรอกข้อมูลให้ครบถ้วน')
+      "
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmInitialLabel">พิจารณาการกู้ยืม</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" *ngIf="selectStudent != null">
+          <div class="text-center">
+            <img
+              src="{{ service.filePath + selectStudent.imgpath }}"
+              width="250px;"
+              alt="studentImg"
+            />
+          </div>
+          <div class="mt-3">
+            <p><b>รหัสนักศึกษา :</b> {{ selectStudent.studentId }}</p>
+            <p class="mt-1">
+              <b>ชื่อ :</b> {{ selectStudent.title
+              }}{{ selectStudent.fname }}&nbsp;{{ selectStudent.lname }}
+            </p>
+            <p class="mt-1">
+              <b>หมายเลขโทรศัพท์ :</b> {{ selectStudent.phone }}
+            </p>
+            <p class="mt-1">
+              <b>ค่าเล่าเรียน :</b>
+              {{ service.numberWithCommas(selectStudent.termMoney) }}
+            </p>
+            <p class="mt-1">
+              <b>ค่าใช้จ่ายรายเดือน :</b>
+              {{
+                selectStudent.monthMoney == "กู้"
+                  ? service.numberWithCommas("14400")
+                  : "ไม่กู้"
+              }}
+            </p>
+          </div>
+          <hr />
+          <mat-radio-group
+            class="vertical-radio-group"
+            formControlName="remark"
+            (change)="formFirst.patchValue({ remark2: '' })"
+          >
+            <mat-radio-button
+              class="vertical-radio-button"
+              value="อนุมัติให้กู้ยืม"
+            >
+              อนุมัติให้กู้ยืม
+            </mat-radio-button>
+            <mat-radio-button
+              class="vertical-radio-button"
+              value="ไม่อนุมัติให้กู้ยืม"
+            >
+              ไม่อนุมัติให้กู้ยืม
+            </mat-radio-button>
+          </mat-radio-group>
+
+          <mat-form-field
+            *ngIf="formFirst.value.remark == 'ไม่อนุมัติให้กู้ยืม'"
+          >
+            <input matInput placeholder="เหตุผล" formControlName="remark2" />
+          </mat-form-field>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            ปิด
+          </button>
+          <button type="submit" class="btn btn-warning">บันทึก</button>
+        </div>
+      </div>
+    </form>
   </div>
 </div>
