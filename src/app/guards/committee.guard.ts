@@ -21,14 +21,14 @@ export class CommitteeGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    // if (this.service.localStorage.get("userlogin")) {
-    //   let userlogin: any = this.service.localStorage.get("userlogin");
-    //   if (userlogin.role == "1500") {
-    //     return true;
-    //   }
-    // }
-    // this.router.navigate(["/notfound"]);
-    return true;
+    if (this.service.localStorage.get("userlogin")) {
+      let userlogin: any = this.service.localStorage.get("userlogin");
+      if (userlogin.role == "1500") {
+        return true;
+      }
+    }
+    this.router.navigate(["/notfound"]);
+    return false;
   }
 
   constructor(private service: AppService, private router: Router) {}

@@ -20,6 +20,9 @@ import { ContactComponent } from "./components/contact/contact.component";
 import { NotfoundComponent } from "./components/notfound/notfound.component";
 import { StatisticsComponent } from "./components/statistics/statistics.component";
 import { MAT_DATE_LOCALE } from "@angular/material/core";
+import { BackgroundComponent } from './components/index/background/background.component';
+import { PropertyComponent } from './components/index/property/property.component';
+import { StepComponent } from './components/index/step/step.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +33,9 @@ import { MAT_DATE_LOCALE } from "@angular/material/core";
     ContactComponent,
     NotfoundComponent,
     StatisticsComponent,
+    BackgroundComponent,
+    PropertyComponent,
+    StepComponent,
   ],
   imports: [
     BrowserModule,

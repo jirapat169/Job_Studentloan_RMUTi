@@ -1,3 +1,4 @@
+import { PropertyComponent } from "./components/index/property/property.component";
 import { AuthoritiesGuard } from "./guards/authorities.guard";
 import { StatisticsComponent } from "./components/statistics/statistics.component";
 import { NotfoundComponent } from "./components/notfound/notfound.component";
@@ -11,9 +12,20 @@ import { ContactComponent } from "./components/contact/contact.component";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { IndexComponent } from "./components/index/index.component";
+import { BackgroundComponent } from "./components/index/background/background.component";
+import { StepComponent } from "./components/index/step/step.component";
 
 const routes: Routes = [
-  { path: "index", component: IndexComponent },
+  {
+    path: "index",
+    component: IndexComponent,
+    children: [
+      { path: "background", component: BackgroundComponent },
+      { path: "property", component: PropertyComponent },
+      { path: "step", component: StepComponent },
+      { path: "", redirectTo: "/index/background", pathMatch: "full" }
+    ]
+  },
   { path: "statistics", component: StatisticsComponent },
   { path: "contact", component: ContactComponent },
   { path: "login", component: LoginComponent },

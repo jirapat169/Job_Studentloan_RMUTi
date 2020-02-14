@@ -1,1 +1,45 @@
-<p>index works!</p>
+<div class="row">
+  <div class="col-md-3 mb-3">
+    <div class="card">
+      <div class="card-body">
+        <b>หน้าหลัก</b>
+        <mat-nav-list>
+          <mat-list-item>
+            <a
+              matLine
+              [routerLink]="['/index/background']"
+              routerLinkActive="menu-actived"
+            >
+              ความเป็นมาของกองทุน
+            </a>
+          </mat-list-item>
+          <mat-list-item>
+            <a
+              matLine
+              [routerLink]="['/index/property']"
+              routerLinkActive="menu-actived"
+            >
+              คุณสมบัติของผู้กู้ยืมเงิน กยศ.
+            </a>
+          </mat-list-item>
+          <mat-list-item>
+            <a
+              matLine
+              [routerLink]="['/index/step']"
+              routerLinkActive="menu-actived"
+            >
+              ขั้นตอนการกู้ยืมเงิน
+            </a>
+          </mat-list-item>
+        </mat-nav-list>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9 mb-3">
+    <div class="card">
+      <div class="card-body">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
