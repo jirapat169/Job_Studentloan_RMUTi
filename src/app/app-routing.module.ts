@@ -14,16 +14,17 @@ import { Routes, RouterModule } from "@angular/router";
 import { IndexComponent } from "./components/index/index.component";
 import { BackgroundComponent } from "./components/index/background/background.component";
 import { StepComponent } from "./components/index/step/step.component";
+import { HomeComponent } from './components/index/home/home.component';
 
 const routes: Routes = [
   {
-    path: "index",
+    path: "home",
     component: IndexComponent,
     children: [
+      { path: "", component: HomeComponent },
       { path: "background", component: BackgroundComponent },
       { path: "property", component: PropertyComponent },
-      { path: "step", component: StepComponent },
-      { path: "", redirectTo: "/index/background", pathMatch: "full" }
+      { path: "step", component: StepComponent }
     ]
   },
   { path: "statistics", component: StatisticsComponent },
@@ -64,7 +65,7 @@ const routes: Routes = [
       ),
     canActivate: [AuthoritiesGuard]
   },
-  { path: "", redirectTo: "/index", pathMatch: "full" },
+  { path: "", redirectTo: "/home", pathMatch: "full" },
   {
     path: "**",
     component: NotfoundComponent

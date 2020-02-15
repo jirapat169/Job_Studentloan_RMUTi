@@ -67,3 +67,7 @@ mat-form-field {
 .box-padding {
   padding: 15px;
 }
+
+.form-control.ng-invalid.ng-touched {
+  border: 1px solid red;
+}

@@ -23,6 +23,7 @@ import { MAT_DATE_LOCALE } from "@angular/material/core";
 import { BackgroundComponent } from './components/index/background/background.component';
 import { PropertyComponent } from './components/index/property/property.component';
 import { StepComponent } from './components/index/step/step.component';
+import { HomeComponent } from './components/index/home/home.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { StepComponent } from './components/index/step/step.component';
     BackgroundComponent,
     PropertyComponent,
     StepComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,

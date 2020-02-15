@@ -129,14 +129,24 @@ export class DocComponent implements OnInit {
         event.target.value = "";
         return;
       }
-      file.append("FileUpload", event.target.files[0]);
-      let fileUpload: any = await this.service.http.post("uploadFile", file);
-      if (fileUpload.success) {
-        this.formDoc.patchValue({
-          [`${key}`]: fileUpload.path
-        });
+
+      if (
+        event.target.files[0].type == "application/pdf" ||
+        event.target.files[0].type.includes("pdf")
+      ) {
+        file.append("FileUpload", event.target.files[0]);
+        let fileUpload: any = await this.service.http.post("uploadFile", file);
+        if (fileUpload.success) {
+          this.formDoc.patchValue({
+            [`${key}`]: fileUpload.path
+          });
+        }
+        event.target.value = "";
+      } else {
+        this.service.alert.alert("error", "รองรับไฟล์ PDF เท่านั้น");
+        event.target.value = "";
+        return;
       }
-      event.target.value = "";
     }
   };
 

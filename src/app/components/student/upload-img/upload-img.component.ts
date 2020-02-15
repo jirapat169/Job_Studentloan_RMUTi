@@ -34,18 +34,29 @@ export class UploadImgComponent implements OnInit {
   public fileUpload = async (event: any) => {
     let file = new FormData();
     if (event.target.files[0]) {
+      console.log(event.target.files[0].type);
       if (event.target.files[0].size > 1000000) {
         this.service.alert.alert("error", "ไม่รองรับไฟล์ขนาดเกิน 1MB");
         event.target.value = "";
         return;
       }
-      file.append("FileUpload", event.target.files[0]);
-      let fileUpload: any = await this.service.http.post("uploadFile", file);
-      if (fileUpload.success) {
-        console.log(fileUpload);
-        this.imgShow = fileUpload.path;
+
+      if (
+        event.target.files[0].type == "image/jpeg" ||
+        event.target.files[0].type == "image/png"
+      ) {
+        file.append("FileUpload", event.target.files[0]);
+        let fileUpload: any = await this.service.http.post("uploadFile", file);
+        if (fileUpload.success) {
+          console.log(fileUpload);
+          this.imgShow = fileUpload.path;
+        }
+        event.target.value = "";
+      } else {
+        this.service.alert.alert("error", "รองรับไฟล์ JPG และ PNG เท่านั้น");
+        event.target.value = "";
+        return;
       }
-      event.target.value = "";
     }
   };
 }

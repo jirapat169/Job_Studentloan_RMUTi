@@ -17,7 +17,7 @@
         class="custom-file-input"
         id="imgUpload"
         (change)="fileUpload($event)"
-        accept="image/x-png,image/gif,image/jpeg"
+        accept=".png,.jpg"
       />
       <label class="custom-file-label" for="imgUpload">
         {{ "เลือกไฟล์ใหม่" }}
@@ -31,5 +31,11 @@
 </div>
 
 <div class="mt-3 text-center" *ngIf="imgShow != null">
-  <button type="button" class="btn btn-warning btn-sm" (click)="submitProfile()">บันทึก</button>
+  <button
+    type="button"
+    class="btn btn-warning btn-sm"
+    (click)="submitProfile()"
+  >
+    บันทึก
+  </button>
 </div>

@@ -1,8 +1,14 @@
 <div class="text-center">
-  <h4 class="mb-3">กองทุนให้กู้ยืม มทร.อีสาน ยินดีต้อนรับ</h4>
+  <h4 class="mb-3"><b>กองทุนให้กู้ยืม มทร.อีสาน ยินดีต้อนรับ</b></h4>
+  <h4 class="mb-3">
+    {{ service.localStorage.get("userlogin")["title"]
+    }}{{ service.localStorage.get("userlogin")["fname"] }}&nbsp;{{
+      service.localStorage.get("userlogin")["lname"]
+    }}
+  </h4>
 </div>
 
-<div style="margin-top: 50px;">
+<!-- <div style="margin-top: 50px;">
   <div class="mb-2">
     <h6>
       <b><u>แสดงความประสงค์ขอกู้ยืมเงิน</u></b>
@@ -20,10 +26,17 @@
       ให้แก่นักเรียนหรือนักศึกษาในสาขาที่เป็นความต้องการหลักฯ
     </span>
   </div>
+</div> -->
+<div class="text-center">
+  <img
+    src="https://www.studentloan.or.th/sites/default/files/user/images/logo%E0%B8%81%E0%B8%A2%E0%B8%A8%20%E0%B8%A2%E0%B9%88%E0%B8%AD%20%282%29-01_2.jpg"
+    width="300px;"
+    alt="logo.png"
+  />
 </div>
 
-<div style="margin-top: 50px;" class="text-center">
-  <h4 class="mb-1">โปรดเลือก ปีการศึกษาและภาคการศึกษา</h4>
+<div class="text-center">
+  <h4 class="mb-1"><b>โปรดเลือก ปีการศึกษาและภาคการศึกษา</b></h4>
   <button
     type="button"
     class="btn btn-link"
