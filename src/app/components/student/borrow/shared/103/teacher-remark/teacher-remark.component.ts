@@ -9,8 +9,9 @@ import { AppService } from "src/app/services/app.service";
 export class TeacherRemarkComponent implements OnInit {
   public foundTeacher: boolean = false;
   public pageWaitting: boolean = false;
-  private idTeacher: string = null;
+  public idTeacher: string = "";
   public teacherRemark: string = null;
+  public teacherList: Array<any> = null;
   constructor(public service: AppService) {}
 
   async ngOnInit() {
@@ -21,23 +22,36 @@ export class TeacherRemarkComponent implements OnInit {
     this.pageWaitting = false;
   }
 
-  public sendToTeacher = async () => {
-    let formData = new FormData();
-    formData.append(
-      "username",
-      this.service.localStorage.get("userlogin").username
+  public getTeacherInBranch = () => {
+    return this.teacherList.filter(
+      value =>
+        value.branch.indexOf(
+          this.service.localStorage.get("userlogin")["branch"]
+        ) > -1
     );
-    formData.append("term", "1");
-    formData.append("year", this.service.yearOnSystem());
-    formData.append("teacher", this.idTeacher);
-    formData.append("remark", "รอความเห็นจากอาจารย์ที่ปรึกษา");
+  };
 
-    let http_sentTeacher: any = await this.service.http.post(
-      "103_teacherremark/inup",
-      formData
-    );
-    console.log(http_sentTeacher);
-    await this.getRemark();
+  public sendToTeacher = async () => {
+    if (this.idTeacher.length > 0) {
+      let formData = new FormData();
+      formData.append(
+        "username",
+        this.service.localStorage.get("userlogin").username
+      );
+      formData.append("term", "1");
+      formData.append("year", this.service.yearOnSystem());
+      formData.append("teacher", this.idTeacher);
+      formData.append("remark", "รอความเห็นจากอาจารย์ที่ปรึกษา");
+
+      let http_sentTeacher: any = await this.service.http.post(
+        "103_teacherremark/inup",
+        formData
+      );
+      console.log(http_sentTeacher);
+      await this.getRemark();
+    } else {
+      this.service.alert.alert("warning", "โปรดเลือกอาจารย์ที่ปรึกษา");
+    }
   };
 
   private getRemark = async () => {
@@ -60,16 +74,13 @@ export class TeacherRemarkComponent implements OnInit {
   };
 
   private getTeacher = async () => {
-    let profile: any = await this.service.http.get(
-      `101_profile/get/${
-        this.service.localStorage.get("userlogin")["username"]
-      }`
-    );
-    console.log("profile", profile);
-    if (profile.connect) {
-      if (profile.result.length > 0) {
-        this.foundTeacher = true;
-        this.idTeacher = profile.result[0]["advisors"];
+    this.teacherList = null;
+    let http: any = await this.service.http.get("member/getmember/3500");
+    if (http.connect) {
+      if (http.rowCount > 0) {
+        this.teacherList = http.result;
+      } else {
+        this.teacherList = [];
       }
     }
   };

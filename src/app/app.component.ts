@@ -40,10 +40,10 @@ export class AppComponent {
   }
 
   public onLogout = () => {
-    this.service.alert.confirm("ยืนยันการออกจากะบบ").then((value: boolean) => {
+    this.service.alert.confirm("ยืนยันการออกจากระบบ").then((value: boolean) => {
       if (value) {
         this.service.localStorage.clear();
-        this.router.navigate(["/index"]);
+        this.router.navigate(["/home"]);
       }
     });
   };

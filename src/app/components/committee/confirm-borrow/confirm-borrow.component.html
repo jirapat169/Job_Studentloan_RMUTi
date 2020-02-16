@@ -103,7 +103,6 @@
           <th scope="col">ประเภท</th>
           <th scope="col">สถานะ</th>
           <th></th>
-          <th></th>
         </tr>
       </thead>
       <tbody *ngIf="searchStudent(branch.value).length > 0">
@@ -117,27 +116,11 @@
             {{ x.remark == "กำลังจัดเตรียมเอกสาร" ? "รอตรวจสอบ" : x.remark }}
           </td>
           <td style="vertical-align: middle;">
-            <a
-              class="btn btn-secondary btn-sm"
-              href="{{
-                '/committee/confirm/' +
-                  termSelect +
-                  '/' +
-                  x.username +
-                  '/committee'
-              }}"
-              target="_blank"
-              role="button"
-              >ตรวจสอบเอกสาร</a
-            >
-          </td>
-          <td style="vertical-align: middle;">
             <button
               type="button"
               class="btn btn-warning btn-sm"
               data-toggle="modal"
               data-target="#confirmInitial"
-              [disabled]="!getListComfirm(x.username, x.type)"
               (click)="studentSelect(x)"
             >
               พิจารณาการกู้ยืม
@@ -213,6 +196,21 @@
                   : "ไม่กู้"
               }}
             </p>
+          </div>
+          <div class="mt-3">
+            <a
+              class="btn btn-secondary btn-sm"
+              href="{{
+                '/committee/confirm/' +
+                  termSelect +
+                  '/' +
+                  selectStudent.username +
+                  '/committee'
+              }}"
+              target="_blank"
+              role="button"
+              >ตรวจสอบเอกสาร</a
+            >
           </div>
           <hr />
           <mat-radio-group

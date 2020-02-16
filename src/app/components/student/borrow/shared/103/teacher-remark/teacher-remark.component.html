@@ -4,26 +4,34 @@
   </div>
 
   <div *ngIf="!pageWaitting">
-    <div *ngIf="!foundTeacher">
-      ไม่พบข้อมูลอาจารย์ที่ปรึกษา โปรดตรวจสอบข้อมูลที่กยศ.101
+    <div class="col-md-6" *ngIf="teacherRemark == null">
+      <div class="mb-3">
+        <mat-form-field>
+          <mat-label>อาจารย์ที่ปรึกษา</mat-label>
+          <mat-select [(ngModel)]="idTeacher">
+            <mat-option value="">โปรดเลือกอาจารย์ที่ปรึกษา</mat-option>
+            <mat-option
+              *ngFor="let x of getTeacherInBranch()"
+              [value]="x.username"
+              >{{ x.title }}{{ x.fname }}&nbsp;{{ x.lname }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <button type="button" class="btn btn-warning" (click)="sendToTeacher()">
+        ส่ง กยศ.103 ถึง อาจารย์ที่ปรึกษา
+      </button>
     </div>
-    <div *ngIf="foundTeacher">
-      <div *ngIf="teacherRemark == null">
-        <button type="button" class="btn btn-warning" (click)="sendToTeacher()">
-          ส่ง กยศ.103 ถึง อาจารย์ที่ปรึกษา
-        </button>
-      </div>
 
-      <div *ngIf="teacherRemark != null">
-        <b>ความเห็นจากอาจารย์ที่ปรึกษา : </b
-        >{{
-          teacherRemark == "เห็นสมควร"
-            ? "เห็นควรพิจารณา"
-            : teacherRemark == "รอความเห็นจากอาจารย์ที่ปรึกษา"
-            ? teacherRemark
-            : "ไม่เห็นควรพิจารณา เพราะ" + teacherRemark
-        }}
-      </div>
+    <div *ngIf="teacherRemark != null">
+      <b>ความเห็นจากอาจารย์ที่ปรึกษา : </b
+      >{{
+        teacherRemark == "เห็นสมควร"
+          ? "เห็นควรพิจารณา"
+          : teacherRemark == "รอความเห็นจากอาจารย์ที่ปรึกษา"
+          ? teacherRemark
+          : "ไม่เห็นควรพิจารณา เพราะ" + teacherRemark
+      }}
     </div>
   </div>
 </div>

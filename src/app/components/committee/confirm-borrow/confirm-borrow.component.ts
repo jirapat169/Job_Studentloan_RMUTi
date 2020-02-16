@@ -93,7 +93,7 @@ export class ConfirmBorrowComponent implements OnInit {
         return listConfirm.length == 4 && listRemark.length == 1;
       } else {
         return (
-          (listConfirm.length == 1 || listConfirm.length == 4) &&
+          (listConfirm.length == 2 || listConfirm.length == 4) &&
           listRemark.length == 1
         );
       }
@@ -103,12 +103,27 @@ export class ConfirmBorrowComponent implements OnInit {
   };
 
   public searchStudent = (branch: string = "") => {
-    if (branch.length > 0)
-      return this.service.underscore.where(this.studentInitial, {
-        branch: branch,
-        term: this.termSelect
-      });
-    else
+    if (branch.length > 0) {
+      let student: Array<any> = this.service.underscore.where(
+        this.studentInitial,
+        {
+          branch: branch,
+          term: this.termSelect
+        }
+      );
+
+      let confirm = [];
+
+      if (student.length > 0) {
+        student.forEach(i => {
+          if (this.getListComfirm(i.username, i.type)) {
+            confirm.push(i);
+          }
+        });
+      }
+
+      return confirm;
+    } else
       return this.service.underscore.where(this.studentInitial, {
         term: this.termSelect
       });

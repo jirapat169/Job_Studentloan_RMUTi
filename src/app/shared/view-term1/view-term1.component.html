@@ -49,6 +49,10 @@
     </mat-tab-group>
 
     <mat-tab-group *ngIf="initialBorrow.type == 'รายเก่า'">
+      <mat-tab label="เอกสารรับรองรายได้">
+        <app-std102-std [route]="routeValue"></app-std102-std>
+      </mat-tab>
+      
       <mat-tab label="กยศ.103">
         <app-std103-std [route]="routeValue" [term]="'1'"></app-std103-std>
       </mat-tab>

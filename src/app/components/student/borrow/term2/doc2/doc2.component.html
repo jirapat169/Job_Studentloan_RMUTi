@@ -24,7 +24,6 @@
   </div>
 </div>
 
-
 <div class="spinner-border text-warning" role="status" *ngIf="pageWaitting">
   <span class="sr-only">Loading...</span>
 </div>
@@ -56,6 +55,7 @@
       <div class="custom-file">
         <input
           type="file"
+          accept=".pdf"
           class="custom-file-input"
           id="estudent"
           (change)="fileUpload($event, 'eStudentLoan')"
@@ -93,6 +93,7 @@
       <div class="custom-file">
         <input
           type="file"
+          accept=".pdf"
           class="custom-file-input"
           id="volunteerImg"
           (change)="fileUpload($event, 'volunteerImg')"
@@ -130,6 +131,7 @@
       <div class="custom-file">
         <input
           type="file"
+          accept=".pdf"
           class="custom-file-input"
           id="volunteerDoc"
           (change)="fileUpload($event, 'volunteerDoc')"

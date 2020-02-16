@@ -4,16 +4,16 @@
 
 <div *ngIf="!pageWaitting" class="box-padding">
   <div *ngIf="teacherRemark != null">
-    <div *ngIf="teacherRemark.remark == 'รอการอนุมัติจากอาจารย์ที่ปรึกษา'">
+    <div *ngIf="teacherRemark.remark == 'รอความเห็นจากอาจารย์ที่ปรึกษา'">
       <p><b>สถานะ&nbsp;:&nbsp;</b>รอความเห็นจากอาจารย์ที่ปรึกษา</p>
     </div>
-    <div *ngIf="teacherRemark.remark != 'รอการอนุมัติจากอาจารย์ที่ปรึกษา'">
+    <div *ngIf="teacherRemark.remark != 'รอความเห็นจากอาจารย์ที่ปรึกษา'">
       <p>
         <b>ความเห็นจากอาจารย์ที่ปรึกษา&nbsp;:&nbsp;</b
         >{{
           teacherRemark.remark == "เห็นสมควร"
             ? "เห็นควรพิจารณา"
-            : teacherRemark.remark == "รอการอนุมัติจากอาจารย์ที่ปรึกษา"
+            : teacherRemark.remark == 'รอความเห็นจากอาจารย์ที่ปรึกษา'
             ? teacherRemark.remark
             : "ไม่เห็นควรพิจารณา เพราะ" + teacherRemark.remark
         }}
