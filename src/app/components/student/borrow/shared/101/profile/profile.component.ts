@@ -198,9 +198,9 @@ export class ProfileComponent implements OnInit {
         // สำเร็จการศึกษาระดับปริญญาตรี
         username: [this.service.localStorage.get("userlogin")["username"]],
         status: ["ไม่เคย"],
-        schoolName: ["", Validators.required],
-        department: ["", Validators.required],
-        branch: ["", Validators.required]
+        schoolName: ["-", Validators.required],
+        department: ["-", Validators.required],
+        branch: ["-", Validators.required]
       }),
       scholarship: this.formBuilder.group({
         // เคยได้รับทุน
