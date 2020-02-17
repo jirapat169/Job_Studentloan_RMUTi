@@ -2,7 +2,6 @@
   <span class="sr-only">Loading...</span>
 </div>
 
-
 <div *ngIf="!pageWaitting">
   <div
     class="alert alert-danger"
@@ -265,21 +264,93 @@
       <div class="mb-2">
         <a href="https://www.google.co.th/maps/" target="_blank">ลิ้งแผนที่</a>
       </div>
-      <div>
-        <div class="mb-3">
-          <mat-form-field class="register-form">
-            <input
-              matInput
-              placeholder="คำสั่งแสดงแผนนที่"
-              type="text"
-              formControlName="googlemap_text"
-              readonly="{{ foundData }}"
-            />
-          </mat-form-field>
-        </div>
+
+      <div class="mb-3">
+        <mat-form-field class="register-form">
+          <input
+            matInput
+            placeholder="คำสั่งแสดงแผนนที่"
+            type="text"
+            formControlName="googlemap_text"
+            readonly="{{ foundData }}"
+          />
+        </mat-form-field>
       </div>
 
-      <div class="text-center">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <b class="mb-1">รูปบ้าน 1</b>
+          <div class="mb-3" *ngIf="formMap.value.file1">
+            <img
+              src="{{ service.filePath + formMap.value.file1 }}"
+              width="250px"
+              alt="file1"
+            />
+          </div>
+          <div class="mt-1">
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              (click)="service.jq('imgUpload1').click()"
+              [disabled]="foundData"
+            >
+              เลือกไฟล์
+            </button>
+          </div>
+
+          <div class="input-group" [hidden]="'true'">
+            <div class="custom-file">
+              <input
+                type="file"
+                class="custom-file-input"
+                id="imgUpload1"
+                (change)="fileUpload($event, 'file1')"
+                accept=".png,.jpg"
+              />
+              <label class="custom-file-label" for="imgUpload1">
+                {{ "เลือกไฟล์ใหม่" }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <b class="mb-1">รูปบ้าน 2</b>
+          <div class="mb-3" *ngIf="formMap.value.file2">
+            <img
+              src="{{ service.filePath + formMap.value.file2 }}"
+              width="250px"
+              alt="file2"
+            />
+          </div>
+          <div class="mt-1">
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              (click)="service.jq('imgUpload2').click()"
+              [disabled]="foundData"
+            >
+              เลือกไฟล์
+            </button>
+          </div>
+
+          <div class="input-group" [hidden]="'true'">
+            <div class="custom-file">
+              <input
+                type="file"
+                class="custom-file-input"
+                id="imgUpload2"
+                (change)="fileUpload($event, 'file2')"
+                accept=".png,.jpg"
+              />
+              <label class="custom-file-label" for="imgUpload2">
+                {{ "เลือกไฟล์ใหม่" }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="text-center mt-3">
         <button type="submit" class="btn btn-warning" *ngIf="!foundData">
           บันทึก
         </button>
@@ -287,7 +358,7 @@
           type="button"
           class="btn btn-dark"
           *ngIf="foundData"
-          (click)="foundData = true"
+          (click)="foundData = false"
         >
           แก้ไข
         </button>

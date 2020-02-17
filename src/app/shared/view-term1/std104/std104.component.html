@@ -21,10 +21,19 @@
   <p><b>อำเภอ/เขต&nbsp;:&nbsp;</b>{{ map.address_district }}</p>
   <p><b>จังหวัด&nbsp;:&nbsp;</b>{{ map.address_province }}</p>
   <p><b>หมายเลขโทรศัพท์&nbsp;:&nbsp;</b>{{ map.phone }}</p>
-  <p>
+  <p class="mb-1">
     <b>แผนที่&nbsp;:&nbsp;</b
     ><a target="_blank" href="{{ map.googlemap_text }}">Google Map</a>
   </p>
+
+  <div class="mb-1">
+    <p class="mb-1"><b>รูปบ้าน 1</b></p>
+    <img src="{{ service.filePath + map.file1 }}" width="250px" alt="file1" />
+  </div>
+  <div class="mb-1">
+    <p class="mb-1"><b>รูปบ้าน 2</b></p>
+    <img src="{{ service.filePath + map.file2 }}" width="250px" alt="file2" />
+  </div>
   <hr />
   <div *ngIf="route.role == 'authorities'">
     <div *ngIf="confirmForm104 == null">

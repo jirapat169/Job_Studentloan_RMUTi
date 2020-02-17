@@ -43,28 +43,40 @@ export class IncomeComponent implements OnInit {
         return;
       }
       // console.log(event.target.files[0]);
-      let file = new FormData();
-      file.append("FileUpload", event.target.files[0]);
-      let http_upload: any = await this.service.http.post("/uploadFile", file);
-      console.log(http_upload);
-      this.uploadWaitting = false;
       if (
-        type == "มีรายได้ประจำ" ||
-        type == "สำเนาบัตรสวัสดิการแห่งรัฐของมารดา"
+        event.target.files[0].type == "application/pdf" ||
+        event.target.files[0].type.includes("pdf")
       ) {
-        this.fileDump.file2 = event.target.files[0];
-        if (http_upload.success) {
-          this.formIncome.patchValue({
-            val2: http_upload.path
-          });
+        let file = new FormData();
+        file.append("FileUpload", event.target.files[0]);
+        let http_upload: any = await this.service.http.post(
+          "/uploadFile",
+          file
+        );
+        console.log(http_upload);
+        this.uploadWaitting = false;
+        if (
+          type == "มีรายได้ประจำ" ||
+          type == "สำเนาบัตรสวัสดิการแห่งรัฐของมารดา"
+        ) {
+          this.fileDump.file2 = event.target.files[0];
+          if (http_upload.success) {
+            this.formIncome.patchValue({
+              val2: http_upload.path
+            });
+          }
+        } else if (type == "สำเนาบัตรสวัสดิการแห่งรัฐของบิดา") {
+          this.fileDump.file1 = event.target.files[0];
+          if (http_upload.success) {
+            this.formIncome.patchValue({
+              val1: http_upload.path
+            });
+          }
         }
-      } else if (type == "สำเนาบัตรสวัสดิการแห่งรัฐของบิดา") {
-        this.fileDump.file1 = event.target.files[0];
-        if (http_upload.success) {
-          this.formIncome.patchValue({
-            val1: http_upload.path
-          });
-        }
+      } else {
+        this.service.alert.alert("error", "รองรับไฟล์ PDF เท่านั้น");
+        event.target.value = "";
+        return;
       }
     }
     this.uploadWaitting = false;

@@ -37,13 +37,45 @@ export class MapComponent implements OnInit {
       address_district: ["", Validators.required],
       address_province: ["", Validators.required],
       phone: ["", Validators.required],
-      googlemap_text: ["", Validators.required]
+      googlemap_text: ["", Validators.required],
+      file1: ["", Validators.required],
+      file2: ["", Validators.required]
     });
 
     await this.getConfirm();
     await this.getMap();
     this.pageWaitting = false;
   }
+
+  public fileUpload = async (event: any, key: string) => {
+    let file = new FormData();
+    if (event.target.files[0]) {
+      if (event.target.files[0].size > 1000000) {
+        this.service.alert.alert("error", "ไม่รองรับไฟล์ขนาดเกิน 1MB");
+        event.target.value = "";
+        return;
+      }
+
+      if (
+        event.target.files[0].type == "image/jpeg" ||
+        event.target.files[0].type == "image/png"
+      ) {
+        file.append("FileUpload", event.target.files[0]);
+        let fileUpload: any = await this.service.http.post("uploadFile", file);
+        if (fileUpload.success) {
+          console.log(fileUpload);
+          this.formMap.patchValue({
+            [`${key}`]: fileUpload.path
+          });
+        }
+        event.target.value = "";
+      } else {
+        this.service.alert.alert("error", "รองรับไฟล์ JPG และ PNG เท่านั้น");
+        event.target.value = "";
+        return;
+      }
+    }
+  };
 
   private getConfirm = async () => {
     let formData = new FormData();
