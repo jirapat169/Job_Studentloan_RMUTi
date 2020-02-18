@@ -1,1 +1,358 @@
-<p>student works!</p>
+<div>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <h5><b>ข้อมูลนักศึกษา</b></h5>
+    </div>
+    <!-- <div class="col-md-6 mb-3 text-right">
+        <button
+          type="button"
+          class="btn btn-dark btn-sm"
+          data-toggle="modal"
+          data-target="#TeacherModal"
+          (click)="stateEdit = false; initialForm()"
+          [disabled]="organize == null"
+        >
+          เพิ่มข้อมูล
+        </button>
+      </div> -->
+  </div>
+
+  <div class="box-padding">
+    <b class="mb-2">กรองข้อมูล</b>
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field>
+          <mat-label>วิทยาเขต</mat-label>
+          <mat-select
+            #campusSelect
+            (valueChange)="
+              departmentSelect.value = undefined;
+              group.value = undefined;
+              branch.value = undefined
+            "
+          >
+            <mat-option
+              *ngFor="let x of getCampus()"
+              [value]="x.code"
+              [hidden]="!x.code"
+            >
+              {{ x.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field>
+          <mat-label>คณะ</mat-label>
+          <mat-select
+            #departmentSelect
+            (valueChange)="group.value = undefined; branch.value = undefined"
+          >
+            <mat-option
+              *ngFor="let x of getDepartment(campusSelect.value)"
+              [value]="x.code"
+              [hidden]="!x.code"
+            >
+              {{ x.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field>
+          <mat-label>กลุ่มสาขา</mat-label>
+          <mat-select #group (valueChange)="branch.value = undefined">
+            <mat-option
+              *ngFor="let x of getGroup(departmentSelect.value)"
+              [value]="x.code"
+              [hidden]="!x.code"
+            >
+              {{ x.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field>
+          <mat-label>สาขาวิชา</mat-label>
+          <mat-select #branch>
+            <mat-option
+              *ngFor="let x of getBranch(group.value)"
+              [value]="x.code"
+              [hidden]="!x.code"
+            >
+              {{ x.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div
+      *ngIf="
+        studentList != null &&
+        campusSelect.value &&
+        departmentSelect.value &&
+        group.value &&
+        branch.value
+      "
+    >
+      <table class="table table-striped table-sm table-borderless table-hover">
+        <thead class="bg-warning text-dark">
+          <tr>
+            <td scope="col"></td>
+            <td scope="col">ชื่อจริง</td>
+            <td scope="col">นามสกุล</td>
+            <td scope="col">อีเมล์</td>
+            <td scope="col">หมายเลขโทรศัพท์</td>
+            <td scope="col"></td>
+            <td scope="col"></td>
+          </tr>
+        </thead>
+        <tbody *ngIf="studentList.length > 0">
+          <tr *ngIf="filterStudent(branch.value).length <= 0">
+            <td colspan="7">ไม่พบข้อมูล</td>
+          </tr>
+          <tr *ngFor="let x of filterStudent(branch.value); let i = index">
+            <td style="vertical-align: middle;">{{ i + 1 }}</td>
+            <td style="vertical-align: middle;">{{ x.fname }}</td>
+            <td style="vertical-align: middle;">{{ x.lname }}</td>
+            <td style="vertical-align: middle;">{{ x.email }}</td>
+            <td style="vertical-align: middle;">{{ x.phone }}</td>
+            <td style="vertical-align: middle;">
+              <button
+                type="button"
+                class="btn btn-dark btn-sm"
+                data-toggle="modal"
+                data-target="#StudentModal"
+                (click)="stateEdit = true; initialForm(x)"
+                [disabled]="organize == null"
+              >
+                แก้ไขข้อมูล
+              </button>
+            </td>
+            <td style="vertical-align: middle;">
+              <button
+                type="button"
+                class="btn btn-secondary btn-sm"
+                data-toggle="modal"
+                data-target="#resetPassModal"
+                (click)="
+                  formStudent.patchValue({
+                    username: x.username
+                  })
+                "
+              >
+                รีเซ็ตรหัสผ่าน
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Edit Committee-->
+<div
+  class="modal fade"
+  id="StudentModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="StudentModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form
+        [formGroup]="formStudent"
+        (ngSubmit)="
+          formStudent.valid
+            ? submitForm()
+            : service.alert.alert('warning', 'โปรดกรอกข้อมูลให้ถูกต้อง')
+        "
+      >
+        <div class="modal-header">
+          <h5 class="modal-title" id="StudentModalLabel">
+            {{ stateEdit ? "แก้ไขข้อมูล" : "เพิ่มข้อมูล" }}
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <mat-form-field>
+            <mat-label>คำนำหน้า</mat-label>
+            <mat-select formControlName="title">
+              <mat-option value="" selected>
+                {{ "กรุณาคำนำหน้า" }}
+              </mat-option>
+              <mat-option [value]="'นาย'">
+                {{ "นาย" }}
+              </mat-option>
+              <mat-option [value]="'นาง'">
+                {{ "นาง" }}
+              </mat-option>
+              <mat-option [value]="'นางสาว'">
+                {{ "นางสาว" }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput placeholder="ชื่อจริง" formControlName="fname" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput placeholder="นามสกุล" formControlName="lname" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="รหัสนักศึกษา"
+              formControlName="studentId"
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="หมายเลขประจำตัวประชาชน"
+              formControlName="personalId"
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput placeholder="อีเมล์" formControlName="email" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="หมายเลขโทรศัพท์"
+              formControlName="phone"
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>วิทยาเขต</mat-label>
+            <mat-select
+              formControlName="campus"
+              (valueChange)="
+                formStudent.patchValue({
+                  department: '',
+                  group: '',
+                  branch: ''
+                })
+              "
+            >
+              <mat-option value="" selected>
+                {{ "กรุณาเลือกวิทยาเขต" }}
+              </mat-option>
+              <mat-option
+                *ngFor="let x of getCampus()"
+                [value]="x.code"
+                [hidden]="!x.code"
+              >
+                {{ x.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>คณะ</mat-label>
+            <mat-select
+              formControlName="department"
+              (valueChange)="
+                formStudent.patchValue({
+                  group: '',
+                  branch: ''
+                })
+              "
+            >
+              <mat-option value="" selected>
+                {{ "กรุณาเลือกคณะ" }}
+              </mat-option>
+              <mat-option
+                *ngFor="let x of getDepartment(formStudent.value.campus)"
+                [value]="x.code"
+                [hidden]="!x.code"
+              >
+                {{ x.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>กลุ่มสาขาวิชา</mat-label>
+            <mat-select
+              formControlName="group"
+              (valueChange)="
+                formStudent.patchValue({
+                  branch: ''
+                })
+              "
+            >
+              <mat-option value="" selected>
+                {{ "กรุณาเลือกกลุ่มสาขาวิชา" }}
+              </mat-option>
+              <mat-option
+                *ngFor="let x of getGroup(formStudent.value.department)"
+                [value]="x.code"
+                [hidden]="!x.code"
+              >
+                {{ x.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>สาขาวิชา</mat-label>
+            <mat-select formControlName="branch">
+              <mat-option value="" selected>
+                {{ "กรุณาเลือกสาขาวิชา" }}
+              </mat-option>
+              <mat-option
+                *ngFor="let x of getBranch(formStudent.value.group)"
+                [value]="x.code"
+                [hidden]="!x.code"
+              >
+                {{ x.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            ปิด
+          </button>
+          <button
+            type="submit"
+            class="btn btn-warning"
+            [disabled]="saveWaitting"
+          >
+            <span
+              *ngIf="saveWaitting"
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            บันทึก
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<app-reset-pass [username]="formStudent.value.username"></app-reset-pass>

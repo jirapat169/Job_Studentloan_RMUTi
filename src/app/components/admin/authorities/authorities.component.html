@@ -45,7 +45,7 @@
             <td scope="col">นามสกุล</td>
             <td scope="col">อีเมล์</td>
             <td scope="col">หมายเลขโทรศัพท์</td>
-            <td scope="col">วิทยาเขต</td>
+            <td scope="col"></td>
             <td scope="col"></td>
           </tr>
         </thead>
@@ -64,7 +64,7 @@
             <td style="vertical-align: middle;">{{ x.lname }}</td>
             <td style="vertical-align: middle;">{{ x.email }}</td>
             <td style="vertical-align: middle;">{{ x.phone }}</td>
-            <td style="vertical-align: middle;">{{ x.campus_name }}</td>
+
             <td style="vertical-align: middle;">
               <button
                 type="button"
@@ -75,6 +75,21 @@
                 [disabled]="organize == null"
               >
                 แก้ไขข้อมูล
+              </button>
+            </td>
+            <td style="vertical-align: middle;">
+              <button
+                type="button"
+                class="btn btn-secondary btn-sm"
+                data-toggle="modal"
+                data-target="#resetPassModal"
+                (click)="
+                  formAuthorities.patchValue({
+                    username: x.username
+                  })
+                "
+              >
+                รีเซ็ตรหัสผ่าน
               </button>
             </td>
           </tr>
@@ -190,3 +205,5 @@
     </div>
   </div>
 </div>
+
+<app-reset-pass [username]="formAuthorities.value.username"></app-reset-pass>

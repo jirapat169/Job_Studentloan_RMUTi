@@ -1,0 +1,68 @@
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="resetPassModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="resetPassModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <form
+      [formGroup]="formResetPass"
+      (ngSubmit)="
+        formResetPass.valid
+          ? submitReset()
+          : service.alert.alert('warning', 'โปรดกรอกข้อมูลให้ถูกต้อง')
+      "
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="resetPassModalLabel">รีเซ็ตรหัสผ่าน</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="ชื่อผู้ใช้"
+              formControlName="username"
+              readonly
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="รหัสผ่าน"
+              formControlName="newPw"
+              type="password"
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="ยืนยันรหัสผ่าน"
+              formControlName="c_newPw"
+              type="password"
+            />
+          </mat-form-field>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            ปิด
+          </button>
+          <button type="submit" class="btn btn-warning">บันทึก</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

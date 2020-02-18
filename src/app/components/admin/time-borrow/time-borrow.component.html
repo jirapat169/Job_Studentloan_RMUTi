@@ -1,0 +1,104 @@
+<div>
+  <form
+    [formGroup]="formDateBorrow"
+    (ngSubmit)="
+      formDateBorrow.valid
+        ? submitDateBorrow()
+        : service.alert.alert('warning', 'โปรดตรวจสอบข้อมูลให้ถูกต้อง')
+    "
+  >
+    <b class="mb-3">ภาคเรียนที่ 1</b>
+    <div class="row" formGroupName="term1">
+      <div class="col-md-6">
+        <mat-form-field>
+          <input
+            matInput
+            [matDatepicker]="picker11"
+            placeholder="เปิดระบบ"
+            (click)="picker11.open()"
+            readonly
+            formControlName="open"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker11"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker11></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field>
+          <input
+            matInput
+            [matDatepicker]="picker12"
+            placeholder="ปิดระบบ"
+            (click)="picker12.open()"
+            readonly
+            formControlName="close"
+            [min]="
+              formDateBorrow.value.term1.open
+                ? formDateBorrow.value.term1.open
+                : ''
+            "
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker12"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker12></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <hr />
+
+    <b class="mb-3">ภาคเรียนที่ 2</b>
+    <div class="row" formGroupName="term2">
+      <div class="col-md-6">
+        <mat-form-field>
+          <input
+            matInput
+            [matDatepicker]="picker21"
+            placeholder="เปิดระบบ"
+            (click)="picker21.open()"
+            readonly
+            formControlName="open"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker21"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker21></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field>
+          <input
+            matInput
+            [matDatepicker]="picker22"
+            placeholder="ปิดระบบ"
+            (click)="picker22.open()"
+            readonly
+            formControlName="close"
+            [min]="
+              formDateBorrow.value.term2.open
+                ? formDateBorrow.value.term2.open
+                : ''
+            "
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker22"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker22></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="text-center">
+      <button type="submit" class="btn btn-warning btn-sm">บันทึกข้อมูล</button>
+    </div>
+  </form>
+</div>

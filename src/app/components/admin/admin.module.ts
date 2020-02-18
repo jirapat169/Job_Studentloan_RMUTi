@@ -8,6 +8,9 @@ import { StudentComponent } from "./student/student.component";
 import { TeacherComponent } from "./teacher/teacher.component";
 import { CommitteeComponent } from "./committee/committee.component";
 import { AuthoritiesComponent } from "./authorities/authorities.component";
+import { ResetPassComponent } from './reset-pass/reset-pass.component';
+import { EditOrganizationComponent } from './edit-organization/edit-organization.component';
+import { TimeBorrowComponent } from './time-borrow/time-borrow.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +18,10 @@ import { AuthoritiesComponent } from "./authorities/authorities.component";
     StudentComponent,
     TeacherComponent,
     CommitteeComponent,
-    AuthoritiesComponent
+    AuthoritiesComponent,
+    ResetPassComponent,
+    EditOrganizationComponent,
+    TimeBorrowComponent
   ],
   imports: [CommonModule, AdminRoutingModule, SharedModules]
 })
