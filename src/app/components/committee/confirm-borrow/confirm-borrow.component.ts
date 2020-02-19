@@ -93,7 +93,8 @@ export class ConfirmBorrowComponent implements OnInit {
         return listConfirm.length == 4 && listRemark.length == 1;
       } else {
         return (
-          (listConfirm.length == 2 || listConfirm.length == 4) &&
+          listConfirm.length >= 2 &&
+          listConfirm.length <= 4 &&
           listRemark.length == 1
         );
       }

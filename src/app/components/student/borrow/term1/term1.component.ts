@@ -23,9 +23,9 @@ export class Term1Component implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.initialFormFirst();
-    this.getFormFirst();
+    await this.getFormFirst();
   }
 
   private getFormFirst = async () => {
@@ -56,6 +56,24 @@ export class Term1Component implements OnInit {
 
       this.remark = http.result[0]["remark"];
       this.remark2 = http.result[0]["remark2"];
+    } else {
+      let http: any = await this.service.http.get("time_borrow/get/1");
+      if (http.rowCount > 0) {
+        let dt = new Date().getTime();
+        if (
+          dt >= parseInt(http.result[0]["open"]) &&
+          dt <= parseInt(http.result[0]["close"])
+        ) {
+        } else {
+          this.service.alert.alert(
+            "warning",
+            "ไม่อยู่ในช่วงที่กำหนด",
+            "ภาคเรียนที่ 1"
+          );
+          this.router.navigate(["/student/borrow/"]);
+        }
+      }
+      console.log(http);
     }
   };
 

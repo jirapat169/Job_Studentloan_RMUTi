@@ -69,6 +69,9 @@ export class TimeBorrowComponent implements OnInit {
       formData2
     );
 
+    if (term1.success || term2.success) {
+      this.service.alert.alert("success", "บันทึกข้อมูลสำเร็จ");
+    }
     console.log(term1, term2);
     await this.getDateBorrow();
   };

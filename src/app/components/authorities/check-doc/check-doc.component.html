@@ -110,7 +110,6 @@
           <th scope="col"></th>
           <th scope="col">ชื่อ</th>
           <th scope="col">สถานะ</th>
-          <th scope="col">สาขาวิชา</th>
           <th></th>
         </tr>
       </thead>
@@ -119,9 +118,14 @@
           <td>{{ i + 1 }}</td>
           <td>{{ x.title + "" + x.fname + " " + x.lname }}</td>
           <td>
-            {{ x.remark == "กำลังจัดเตรียมเอกสาร" ? "รอตรวจสอบ" : x.remark }}
+            {{
+              x.remark != "อนุมัติให้กู้ยืม"
+                ? x.remark != "ไม่อนุมัติให้กู้ยืม"
+                  ? getListComfirm(x.username, x.type)
+                  : x.remark + " เพราะ" + x.remark2
+                : x.remark
+            }}
           </td>
-          <td>{{ x.branch_name }}</td>
           <td>
             <a
               class="btn btn-warning btn-sm"

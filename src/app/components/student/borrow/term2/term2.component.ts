@@ -41,14 +41,31 @@ export class Term2Component implements OnInit {
     );
     console.log(http);
     this.loadData = true;
-    if (http.connect) {
-      if (http.result.length > 0) {
-        this.databaseSave = true;
-        this.formFirst.patchValue({
-          termMoney: http.result[0]["termMoney"],
-          monthMoney: http.result[0]["monthMoney"]
-        });
+
+    if (http.result.length > 0) {
+      this.databaseSave = true;
+      this.formFirst.patchValue({
+        termMoney: http.result[0]["termMoney"],
+        monthMoney: http.result[0]["monthMoney"]
+      });
+    } else {
+      let http: any = await this.service.http.get("time_borrow/get/2");
+      if (http.rowCount > 0) {
+        let dt = new Date().getTime();
+        if (
+          dt >= parseInt(http.result[0]["open"]) &&
+          dt <= parseInt(http.result[0]["close"])
+        ) {
+        } else {
+          this.service.alert.alert(
+            "warning",
+            "ไม่อยู่ในช่วงที่กำหนด",
+            "ภาคเรียนที่ 2"
+          );
+          this.router.navigate(["/student/borrow/"]);
+        }
       }
+      console.log(http);
     }
   };
 

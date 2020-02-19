@@ -7,6 +7,7 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { AuthoritiesComponent } from "./authorities/authorities.component";
 import { TimeBorrowComponent } from "./time-borrow/time-borrow.component";
+import { ChangePasswordComponent } from "src/app/shared/change-password/change-password.component";
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
       { path: "authorities", component: AuthoritiesComponent },
       { path: "organization", component: EditOrganizationComponent },
       { path: "time-borrow", component: TimeBorrowComponent },
+      { path: "changepass", component: ChangePasswordComponent },
       { path: "", redirectTo: "/admin/committee", pathMatch: "full" }
     ]
   }
