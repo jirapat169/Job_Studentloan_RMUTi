@@ -16,11 +16,26 @@ export class CommitteeComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, public service: AppService) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.getOrganize();
-    this.getCommittee();
     this.initialForm();
+    await this.getCommittee();
   }
+
+  public deleteMember = async (username: string) => {
+    if (await this.service.alert.confirm("ยือยันการลบข้อมูล")) {
+      let http: any = await this.service.http.get(
+        `member/ad_delmem/${username}`
+      );
+      if (http.success) {
+        this.service.alert.alert("success", "ลบข้อมูลสำเร็จ");
+      } else {
+        this.service.alert.alert("error", "ลบข้อมูลผิดพลาด", "server error");
+      }
+      console.log(http);
+      await this.getCommittee();
+    }
+  };
 
   private getOrganize = () => {
     this.service.http.get("organize").then((value: any) => {

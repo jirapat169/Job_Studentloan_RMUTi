@@ -47,11 +47,12 @@
             <td scope="col">หมายเลขโทรศัพท์</td>
             <td scope="col"></td>
             <td scope="col"></td>
+            <td scope="col"></td>
           </tr>
         </thead>
         <tbody *ngIf="committeeList.length > 0">
           <tr *ngIf="filterCommittee(campusSelect.value).length <= 0">
-            <td colspan="7">ไม่พบข้อมูล</td>
+            <td colspan="8">ไม่พบข้อมูล</td>
           </tr>
           <tr
             *ngFor="let x of filterCommittee(campusSelect.value); let i = index"
@@ -86,6 +87,15 @@
                 "
               >
                 รีเซ็ตรหัสผ่าน
+              </button>
+            </td>
+            <td style="vertical-align: middle;">
+              <button
+                type="button"
+                class="btn btn-danger btn-sm"
+                (click)="deleteMember(x.username)"
+              >
+                ลบข้อมูล
               </button>
             </td>
           </tr>

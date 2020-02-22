@@ -113,7 +113,13 @@
           </td>
           <td style="vertical-align: middle;">{{ x.type }}</td>
           <td style="vertical-align: middle;">
-            {{ 'เอกสารสมบูรณ์' }}
+            {{
+              x.remark == "อนุมัติให้กู้ยืม"
+                ? x.remark
+                : x.remark == "ไม่อนุมัติให้กู้ยืม"
+                ? x.remark + " เพราะ" + x.remark2
+                : "เอกสารสมบูรณ์"
+            }}
           </td>
           <td style="vertical-align: middle;">
             <button
