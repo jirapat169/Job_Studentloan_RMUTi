@@ -1,3 +1,4 @@
+import { HistoryBorrowComponent } from "./history-borrow/history-borrow.component";
 import { StatisticsBorrowComponent } from "./statistics-borrow/statistics-borrow.component";
 import { ChangePasswordComponent } from "./../../shared/change-password/change-password.component";
 import { CommitteeComponent } from "./committee.component";
@@ -17,6 +18,7 @@ const routes: Routes = [
         pathMatch: "prefix",
         children: [
           { path: "", component: ConfirmBorrowComponent },
+          { path: "history/:username", component: HistoryBorrowComponent },
           { path: "1/:username/:role", component: ViewTerm1Component },
           { path: "2/:username/:role", component: ViewTerm2Component }
         ]
