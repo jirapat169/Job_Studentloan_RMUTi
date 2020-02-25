@@ -57,7 +57,11 @@ export class LoginComponent implements OnInit {
           ]);
         } else {
           this.service.localStorage.clear();
-          this.service.alert.alert("warning", "ไม่พบบัญชีผู้ใช้งาน");
+          this.service.alert.alert(
+            "warning",
+            "ไม่พบบัญชีผู้ใช้งาน",
+            "โปรดติดต่อเจ้าหน้าที่ผู้ปฏิบัติงานกองทุนหรือผู้ดูแลระบบ "
+          );
         }
       } else this.service.localStorage.clear();
 

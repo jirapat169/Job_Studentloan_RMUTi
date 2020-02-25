@@ -6,15 +6,15 @@
   >
 </h5>
 <p>{{ service.localStorage.get("userlogin")["campus_name"] }}</p>
-<div class="box-padding">
-  <div
-    class="spinner-border text-warning"
-    role="status"
-    *ngIf="studentInitial == null"
-  >
-    <span class="sr-only">Loading...</span>
-  </div>
+<div
+  class="spinner-border text-warning"
+  role="status"
+  *ngIf="studentInitial == null"
+>
+  <span class="sr-only">Loading...</span>
+</div>
 
+<div class="box-padding" *ngIf="studentInitial != null">
   <div class="mt-3">
     <div class="mb-1">
       <b>กรองข้อมูล</b>
@@ -57,10 +57,10 @@
       </div>
       <div class="col-md-4">
         <mat-form-field>
-          <mat-label>กลุ่มสาขาวิชา</mat-label>
+          <mat-label>กลุ่มสาขา</mat-label>
           <mat-select #groupSelect (valueChange)="branch.value = ''">
             <mat-option value="" selected>
-              {{ "กรุณาเลือกกลุ่มสาขาวิชา" }}
+              {{ "กรุณาเลือกกลุ่มสาขา" }}
             </mat-option>
             <mat-option
               *ngFor="let x of getGroup(departmentSelect.value)"

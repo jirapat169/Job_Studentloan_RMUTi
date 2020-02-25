@@ -4,11 +4,14 @@
 
 <div *ngIf="!pageWaitting">
   <b>14. ข้อมูลผู้ปกครอง (ถ้ามี)</b>
+  <div class="box-padding" *ngIf="nonParent == null">
+    {{ "ผู้ปกครองคือ บิดา/มารดา" }}
+  </div>
   <div
     class="box-padding"
     *ngIf="nonParent.status == 'ไม่มีผู้ปกครอง' && nonParent != null"
   >
-    {{ nonParent.status }}
+    {{ "ผู้ปกครองคือ บิดา/มารดา" }}
   </div>
   <div
     class="box-padding"
