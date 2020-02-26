@@ -10,18 +10,27 @@
               [routerLink]="['/committee/confirm']"
               routerLinkActive="menu-actived"
             >
-              อนุมัติการกู้ยืมเงิน
+              อนุมัติการกู้ยืมเงิน ({{ service.yearOnSystem() }})
             </a>
           </mat-list-item>
-          <!-- <mat-list-item>
+          <mat-list-item>
             <a
               matLine
               [routerLink]="['/committee/statistice']"
               routerLinkActive="menu-actived"
             >
-              สถิติการกู้ยืมเงิน
+              สถิติการกู้ยืมเงิน ({{ service.yearOnSystem() }})
             </a>
-          </mat-list-item> -->
+          </mat-list-item>
+          <mat-list-item>
+            <a
+              matLine
+              [routerLink]="['/committee/parent']"
+              routerLinkActive="menu-actived"
+            >
+              ข้อมูลผู้ปกครอง
+            </a>
+          </mat-list-item>
           <mat-list-item>
             <a
               matLine

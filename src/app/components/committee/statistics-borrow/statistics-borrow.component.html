@@ -1,1 +1,96 @@
-<p>statistics-borrow works!</p>
+<div class="spinner-border text-warning" role="status" *ngIf="pageWaitting">
+  <span class="sr-only">Loading...</span>
+</div>
+
+<div *ngIf="!pageWaitting">
+  <h5 class="mb-3">
+    <b> สถิติการกู้ยืมเงิน {{ service.yearOnSystem() }}</b>
+  </h5>
+  <div *ngIf="initialBorrow == null">
+    <b> ไม่พบข้อมูล </b>
+  </div>
+  <div *ngIf="initialBorrow != null">
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field>
+          <mat-label>จังหวัด</mat-label>
+          <mat-select [(ngModel)]="provinceSelect">
+            <mat-option [value]="''">
+              {{ "โปรดเลือกจังหวัด" }}
+            </mat-option>
+            <mat-option *ngFor="let x of listProvince" [value]="x">
+              {{ x }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="box-padding" *ngIf="provinceSelect.length > 0">
+      <div class="mb-3">
+        <p>
+          <b>รายใหม่ : </b
+          >{{
+            service.underscore.where(getBorrow(), {
+              type: "รายใหม่"
+            }).length
+          }} คน
+        </p>
+        <p>
+          <b>รายเก่าย้ายสถานศึกษาหรือเปลี่ยนระดับชั้น : </b
+          >{{
+            service.underscore.where(getBorrow(), {
+              type: "รายเก่าย้ายสถานศึกษาหรือเปลี่ยนระดับชั้น"
+            }).length
+          }} คน
+        </p>
+        <p class="mb-3">
+          <b>รายเก่า : </b
+          >{{
+            service.underscore.where(getBorrow(), {
+              type: "รายเก่า"
+            }).length
+          }} คน
+        </p>
+        <p class="mb-3">
+          <b>ภาคเรียนที่ 2 : </b
+          >{{
+            service.underscore.where(getBorrow(), {
+              type: "ภาคเรียนที่2"
+            }).length
+          }} คน
+        </p>
+      </div>
+      <table class="table table-striped table-sm table-hover table-borderless">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">ชื่อ</th>
+            <th scope="col">ประเภท</th>
+            <th scope="col">สาขาวิชา</th>
+            <th scope="col">สถานะ</th>
+            <th scope="col">หมายเหตุ</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="getBorrow().length > 0">
+          <tr *ngFor="let x of getBorrow(); let i = index">
+            <td style="vertical-align: middle;">{{ i + 1 }}</td>
+            <td style="vertical-align: middle;">
+              {{ x.title + "" + x.fname + " " + x.lname }}
+            </td>
+            <td style="vertical-align: middle;">{{ x.type }}</td>
+            <td style="vertical-align: middle;">
+              {{ x.branch_name }}
+            </td>
+            <td style="vertical-align: middle;">
+              {{ x.remark }}
+            </td>
+            <td style="vertical-align: middle;">
+              {{ x.remark2 }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

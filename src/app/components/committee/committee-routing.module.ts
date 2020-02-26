@@ -7,6 +7,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { ConfirmBorrowComponent } from "./confirm-borrow/confirm-borrow.component";
 import { ViewTerm1Component } from "src/app/shared/view-term1/view-term1.component";
 import { ViewTerm2Component } from "src/app/shared/view-term2/view-term2.component";
+import { ParentComponent } from "./parent/parent.component";
 
 const routes: Routes = [
   {
@@ -24,6 +25,7 @@ const routes: Routes = [
         ]
       },
       { path: "statistice", component: StatisticsBorrowComponent },
+      { path: "parent", component: ParentComponent },
       { path: "changepass", component: ChangePasswordComponent },
       { path: "", redirectTo: "/committee/confirm", pathMatch: "full" }
     ]
