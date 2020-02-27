@@ -15,7 +15,16 @@
     </div>
   </div>
   <div class="body-content">
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+    <nav
+      class="navbar navbar-light navbar-light sticky-top"
+      [hidden]="!hideNav"
+    >
+      <a class="navbar-brand" [routerLink]="['/test']">ระบบอาจารย์ที่ปรึกษา</a>
+    </nav>
+    <nav
+      class="navbar navbar-expand-lg navbar-light sticky-top"
+      [hidden]="hideNav"
+    >
       <button
         class="navbar-toggler"
         type="button"

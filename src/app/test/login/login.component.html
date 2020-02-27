@@ -1,0 +1,48 @@
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title mb-3">เข้าสู่ระบบ</h5>
+        <div class="row justify-content-center">
+          <div class="col-md-10 mt-3">
+            <form
+              [formGroup]="formLogin"
+              (ngSubmit)="
+                formLogin.valid
+                  ? submitLogin()
+                  : service.alert.alert('warning', 'โปรดกรอกข้อมูลให้ครบถ้วน')
+              "
+            >
+              <mat-form-field>
+                <input
+                  matInput
+                  placeholder="ชื่อผู้ใช้งาน"
+                  formControlName="username"
+                />
+                <mat-hint class="text-dark">
+                  ชื่อผู้ใช้งานคือ test
+                </mat-hint>
+              </mat-form-field>
+              <mat-form-field>
+                <input
+                  matInput
+                  placeholder="รหัสผ่าน"
+                  type="password"
+                  formControlName="password"
+                />
+                <mat-hint class="text-dark">
+                  รหัสผ่านคือ test
+                </mat-hint>
+              </mat-form-field>
+              <div class="text-center mt-3">
+                <button type="submit" class="btn btn-warning">
+                  เข้าสู่ระบบ
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

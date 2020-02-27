@@ -20,10 +20,13 @@ import { ContactComponent } from "./components/contact/contact.component";
 import { NotfoundComponent } from "./components/notfound/notfound.component";
 import { StatisticsComponent } from "./components/statistics/statistics.component";
 import { MAT_DATE_LOCALE } from "@angular/material/core";
-import { BackgroundComponent } from './components/index/background/background.component';
-import { PropertyComponent } from './components/index/property/property.component';
-import { StepComponent } from './components/index/step/step.component';
-import { HomeComponent } from './components/index/home/home.component';
+import { BackgroundComponent } from "./components/index/background/background.component";
+import { PropertyComponent } from "./components/index/property/property.component";
+import { StepComponent } from "./components/index/step/step.component";
+import { HomeComponent } from "./components/index/home/home.component";
+import { LoginComponent as LoginTest } from "./test/login/login.component";
+import { ConfirmComponent } from './test/confirm/confirm.component';
+import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +41,9 @@ import { HomeComponent } from './components/index/home/home.component';
     PropertyComponent,
     StepComponent,
     HomeComponent,
+    LoginTest,
+    ConfirmComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule,

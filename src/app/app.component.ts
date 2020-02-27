@@ -1,11 +1,12 @@
-import { Component } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { AppService } from "./services/app.service";
 import {
   Router,
   NavigationStart,
   NavigationEnd,
   NavigationCancel,
-  NavigationError
+  NavigationError,
+  ActivatedRoute
 } from "@angular/router";
 
 @Component({
@@ -13,12 +14,24 @@ import {
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"]
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   year = new Date().getFullYear();
   loading = false;
-  constructor(public service: AppService, private router: Router) {
+  public hideNav: boolean = false;
+
+  ngOnInit() {}
+
+  ngOnDestroy() {}
+
+  constructor(
+    public service: AppService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     this.router.events.subscribe(async event => {
-      // console.log(event)
+      // console.log(this.router.url);
+      this.hideNav = this.router.url.split("/")[1] == "test"
+
       switch (true) {
         case event instanceof NavigationStart: {
           this.loading = true;
