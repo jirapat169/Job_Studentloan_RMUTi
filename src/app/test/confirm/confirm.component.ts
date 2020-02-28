@@ -28,7 +28,7 @@ export class ConfirmComponent implements OnInit, OnDestroy {
       username: [data != null ? data.username : ""],
       term: [data != null ? data.term : ""],
       year: [data != null ? data.year : ""],
-      teacher: [this.service.localStorage.get("userlogin")["username"]],
+      teacher: ["teacher"],
       selectRemark: ["เห็นสมควร", Validators.required],
       remark: ["เห็นสมควร", Validators.required]
     });
