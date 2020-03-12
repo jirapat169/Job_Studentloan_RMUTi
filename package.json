@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --aot -o --port=1999",
+    "start": "ng serve --aot -o --poll=2000",
     "build": "ng build --prod --build-optimizer --base-href=/",
     "test": "ng test",
     "lint": "ng lint",
