@@ -39,6 +39,12 @@
               <mat-option [value]="'ไม่กู้'">
                 ไม่กู้ค่าเล่าเรียน
               </mat-option>
+              <mat-option [value]="'4650'">
+                4650 บาท
+              </mat-option>
+              <mat-option [value]="'5650'">
+                5650 บาท
+              </mat-option>
               <mat-option [value]="'7150'">
                 7150 บาท
               </mat-option>
@@ -117,7 +123,7 @@
 
       <div class="text-center">
         <span
-          style="margin-left: 10px;margin-right: 10px;"
+          style="margin-left: 10px; margin-right: 10px;"
           *ngIf="databaseSave"
         >
           <button
@@ -128,7 +134,7 @@
             แก้ไข
           </button>
         </span>
-        <span style="margin-left: 10px;margin-right: 10px;">
+        <span style="margin-left: 10px; margin-right: 10px;">
           <button
             type="button"
             class="btn btn-warning"

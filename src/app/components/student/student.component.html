@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-body">
         <b>นักศึกษา</b>
-        <div class="text-center mt-3"  style="height: 150px;overflow: hidden;">
+        <div class="text-center mt-3" style="height: 150px; overflow: hidden;">
           <img
             *ngIf="service.localStorage.get('userlogin')['imgpath'] == null"
             src="./assets/รายเก่าเปลี่ยนสถานศึกษา.jpg"
@@ -63,21 +63,16 @@
               เปลี่ยนรหัสผ่าน
             </a>
           </mat-list-item>
-          <mat-list-item>
+          <!-- <mat-list-item>
             <a
               matLine
               target="_blank"
               href="https://docs.google.com/forms/d/e/1FAIpQLScYSs1R0xle7KzkQoICpTjH52FmsdXjcLUQGJ4FUZ5N5GnRKA/viewform"
               >แบบประเมินการใช้งานระบบ</a
             >
-          </mat-list-item>
+          </mat-list-item> -->
           <mat-list-item>
-            <a
-              matLine
-              target="_blank"
-              href="/assets/คู่มือการใช้งาน(นักศึกษา).pdf"
-              >คู่มือการใช้งาน</a
-            >
+            <a matLine href="javascript:void(0)">คู่มือการใช้งาน</a>
           </mat-list-item>
         </mat-nav-list>
       </div>

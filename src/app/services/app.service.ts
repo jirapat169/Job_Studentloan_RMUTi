@@ -6,11 +6,11 @@ const _window: any = window;
 const _localStorage: any = new _window.SecureLS({
   encodingType: "des",
   isCompression: false,
-  encryptionSecret: "studentloan_LocalStorage"
+  encryptionSecret: "studentloan_LocalStorage",
 });
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class AppService {
   private rootAPI: string = "http://cpeng.rmuti.ac.th/project/studentloan/api/";
@@ -31,10 +31,10 @@ export class AppService {
     },
     clear: () => {
       _localStorage.clear();
-    }
+    },
   };
 
-  public jq = id => {
+  public jq = (id) => {
     return _window.$(`#${id}`);
   };
 
@@ -50,11 +50,11 @@ export class AppService {
         title: title,
         text: text,
         confirmButtonColor: "#3085d6",
-        confirmButtonText: "ตกลง"
+        confirmButtonText: "ตกลง",
       });
     },
     confirm: (title: string, text: string = null) => {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         Swal.fire({
           title: title,
           text: text,
@@ -65,8 +65,8 @@ export class AppService {
           confirmButtonText: "ตกลง",
           cancelButtonText: "ยกเลิก",
           focusCancel: true,
-          focusConfirm: false
-        }).then(result => {
+          focusConfirm: false,
+        }).then((result) => {
           if (result.value) {
             resolve(true);
           } else {
@@ -74,20 +74,20 @@ export class AppService {
           }
         });
       });
-    }
+    },
   };
 
   // HttpClient
   public http = {
     get: (url: string) => {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         this._http
           .get(`${this.rootAPI}${url}`)
           .toPromise()
-          .then(value => {
+          .then((value) => {
             resolve({ connect: true, ...value });
           })
-          .catch(reason => {
+          .catch((reason) => {
             console.log(reason);
             this.alert.alert(
               "error",
@@ -99,14 +99,14 @@ export class AppService {
       });
     },
     post: (url: string, body: any = null) => {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         this._http
           .post(`${this.rootAPI}${url}`, body)
           .toPromise()
-          .then(value => {
+          .then((value) => {
             resolve({ connect: true, ...value });
           })
-          .catch(reason => {
+          .catch((reason) => {
             console.log(reason);
             this.alert.alert(
               "error",
@@ -116,13 +116,13 @@ export class AppService {
             resolve({ connect: false, ...reason });
           });
       });
-    }
+    },
   };
 
   constructor(private _http: HttpClient) {}
 
   public yearOnSystem = () => {
-    return new Date().getMonth() < 5
+    return new Date().getMonth() < 3
       ? `${new Date().getFullYear() + 542}`
       : `${new Date().getFullYear() + 543}`;
   };
@@ -142,14 +142,14 @@ export class AppService {
 
   public numberWithCommas = (...x) => {
     let sum = 0;
-    x.forEach(e => {
+    x.forEach((e) => {
       sum += this.stringToNumber(e);
     });
     return sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
   public delay = (time: number) => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         resolve();
       }, time);

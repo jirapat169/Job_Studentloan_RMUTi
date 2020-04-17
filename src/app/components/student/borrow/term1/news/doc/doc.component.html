@@ -28,6 +28,48 @@
 
 <div class="box-padding" *ngIf="onLoadForm && !pageWaitting">
   <div class="mb-3">
+    <b>เอกสาร กยศ.103</b>&nbsp;<a
+      href="https://www.rmuti.ac.th/support/activity/Kongton/data/62/103.pdf"
+      target="_blank"
+      >แบบฟอร์ม</a
+    >
+    <div class="mt-1">
+      <button
+        type="button"
+        class="btn btn-secondary btn-sm"
+        (click)="service.jq('doc103').click()"
+      >
+        เลือกไฟล์
+      </button>
+
+      <a
+        *ngIf="formDoc.value.doc103.length > 0"
+        href="{{ service.filePath + formDoc.value.doc103 }}"
+        role="button"
+        aria-pressed="true"
+        target="_blank"
+        class="ml-3"
+        >ไฟล์ที่อัพโหลด</a
+      >
+    </div>
+
+    <div class="input-group" [hidden]="'true'">
+      <div class="custom-file">
+        <input
+          type="file"
+          accept=".pdf"
+          class="custom-file-input"
+          id="doc103"
+          (change)="fileUpload($event, 'doc103')"
+        />
+        <label class="custom-file-label" for="estudent">
+          {{ "เลือกไฟล์ใหม่" }}
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3">
     <b>แบบคำขอกู้ยืมเงิน จากระบบ e-Studentloan</b>
     <div class="mt-1">
       <button

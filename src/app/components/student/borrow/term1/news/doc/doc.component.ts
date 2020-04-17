@@ -6,7 +6,7 @@ import { AppService } from "src/app/services/app.service";
 @Component({
   selector: "app-doc",
   templateUrl: "./doc.component.html",
-  styleUrls: ["./doc.component.scss"]
+  styleUrls: ["./doc.component.scss"],
 })
 export class DocComponent implements OnInit {
   public foundData: boolean = false;
@@ -31,8 +31,9 @@ export class DocComponent implements OnInit {
       fatherDoc: [""],
       motherDoc: [""],
       parentDoc: [""],
+      doc103: ["", Validators.required],
       volunteerDoc: ["", Validators.required],
-      volunteerImg: ["", Validators.required]
+      volunteerImg: ["", Validators.required],
     });
 
     await this.getDoc();
@@ -43,7 +44,7 @@ export class DocComponent implements OnInit {
         studentDoc: "-",
         fatherDoc: "-",
         motherDoc: "-",
-        parentDoc: "-"
+        parentDoc: "-",
       });
     }
     this.pageWaitting = false;
@@ -94,9 +95,9 @@ export class DocComponent implements OnInit {
     );
     if (getDoc.rowCount > 0) {
       this.foundData = true;
-      Object.keys(getDoc.result[0]).forEach(i => {
+      Object.keys(getDoc.result[0]).forEach((i) => {
         this.formDoc.patchValue({
-          [i]: getDoc.result[0][i]
+          [i]: getDoc.result[0][i],
         });
       });
     }
@@ -105,7 +106,7 @@ export class DocComponent implements OnInit {
   public submitDoc = async () => {
     if (this.formDoc.valid) {
       let formData = new FormData();
-      Object.keys(this.formDoc.value).forEach(i => {
+      Object.keys(this.formDoc.value).forEach((i) => {
         formData.append(i, this.formDoc.value[i]);
       });
 
@@ -138,7 +139,7 @@ export class DocComponent implements OnInit {
         let fileUpload: any = await this.service.http.post("uploadFile", file);
         if (fileUpload.success) {
           this.formDoc.patchValue({
-            [`${key}`]: fileUpload.path
+            [`${key}`]: fileUpload.path,
           });
         }
         event.target.value = "";
